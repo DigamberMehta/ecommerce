@@ -7,16 +7,16 @@
     --gray-dark: #343a40;
 }
 
-
+/* Navbar Container */
 .navbar {
     display: flex;
     align-items: center;
     background-color: var(--white);
     padding: 0.625rem;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    /* border-bottom: 10px solid #f0f0f0; */
 }
 
+/* Logo */
 .navbar .logo {
     color: var(--primary-blue);
     text-decoration: none;
@@ -26,9 +26,12 @@
     letter-spacing: 1px;
 }
 
-#search-form{
+/* Search Form */
+#search-form {
     width: 94%;
 }
+
+/* Search Bar */
 .navbar .search-bar {
     flex-grow: 1;
     display: flex;
@@ -56,102 +59,194 @@
     font-size: 1rem;
 }
 
+/* Navigation Right */
+.nav-right {
+    display: flex;
+    align-items: center;
+}
+
+/* Dropdown Container */
 .navbar .dropdown {
     position: relative;
     display: inline-block;
 }
 
+/* Dropdown Button */
 .navbar .dropdown button {
     outline: none;
     border: none;
     cursor: pointer;
-    background-color: white;
+    background-color: var(--white);
     margin-left: 1rem;
     padding: 0.5rem 1rem;
-
-    transition: background-color 0.3s, color 0.3s;
+    border-radius: 0.5rem; /* Rounded corners */
+    transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
 }
 
-
+/* Dropdown Content */
 .navbar .dropdown-content {
- display: none;
+    display: none; /* Ensure it starts hidden */
     position: absolute;
     background-color: var(--white);
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
+    border-radius: 0.5rem;
     min-width: 20rem;
     height: auto;
     z-index: 1;
-    border-radius: 0.25rem;
-    top: 49px;
-    left: -15px;
+    top: 100%;
+    left: -60px; /* Align with the button */
+    border: 1px solid #ddd;
+    overflow: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease; /* Add transition for opacity and visibility */
+    opacity: 0;
+    visibility: hidden; /* Start hidden for visibility */
 }
 
+/* Show Dropdown on Hover/Focus */
+.navbar .dropdown:hover .dropdown-content,
+.navbar .dropdown:focus-within .dropdown-content {
+    display: block;
+    opacity: 1;
+    visibility: visible; /* Show visibility when active */
+}
 
+/* Dropdown Top Section */
+.navbar .dropdown-content .top-section {
+    padding: 1rem;
+    border-bottom: 1px solid #ddd;
+    font-weight: bold;
+    text-align: center;
+    /* background-color: var(--gray-light); */
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem; /* Rounded top corners */
+}
+
+/* Dropdown Content Flexbox Layout */
+.navbar .dropdown-content .content {
+    display: flex;
+}
+
+/* Left Section */
+.navbar .dropdown-content .content .left {
+    flex: 1;
+    border-right: 1px solid #ddd;
+    padding: 1rem;
+   
+}
+
+/* Right Section */
+.navbar .dropdown-content .content .right {
+    flex: 1;
+    padding: 1rem;
+}
+
+/* Dropdown Links */
 .navbar .dropdown-content a {
     color: var(--gray-dark);
-    padding: 0.6rem 1rem;
     text-decoration: none;
     display: block;
-    font-size: 1.1rem;
-    transition: background-color 0.3s;
+    padding: 0.75rem 1rem; /* Comfortable click area */
+    transition: background-color 0.3s, color 0.3s;
+    border-radius: 0.25rem; /* Rounded corners */
 }
 
-.navbar .dropdown:hover .dropdown-content {
-    display: block;
-}
+/* Dropdown Link Hover Effect */
 .navbar .dropdown-content a:hover {
-    background-color: var(--gray-light);
+    /* background-color: var(--gray-light); */
+    color: var(--primary-blue); /* Color change on hover */
 }
 
+/* Dropdown Sign-out Option */
+.navbar .dropdown-content #signoutOption a {
+    font-weight: bold; /* Emphasize sign-out option */
+    color: var(--primary-blue);
+}
 
+/* Menu List */
 .navbar .menu-list {
     display: flex;
     align-items: center;
     margin-left: auto;
 }
 
-.navbar .menu-list>div {
+.navbar .menu-list > div {
     margin-left: 1rem;
     padding: 0.5rem 1rem;
     cursor: pointer;
     transition: background-color 0.3s, color 0.3s;
 }
 
-
-
+/* Profile Section */
 .navbar .menu-list .profile {
     display: flex;
     align-items: center;
     justify-content: center;
 }
-ul {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-}
-.cart-button i{
-    font-size: 1rem;
-    font-weight: 300;
-    margin-right: 0.5rem;
-}
-.profile i{
-    font-size: 1rem;
-    font-weight: 300;
-    margin-right: 0.5rem;
 
+/* Tooltip Text */
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    height: 30px;
+    background-color: #e0923f;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    top: 125%; /* Position below the button */
+    left: 50%;
+    margin-left: -60px;
+    opacity: 0;
+    transition: opacity 0.3s;
 }
+
+/* Tooltip Arrow */
+.tooltip .tooltiptext::after {
+    content: "";
+    position: absolute;
+    bottom: 100%; /* Arrow at the top of the tooltip */
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent #e0923f transparent;
+}
+
+/* Show Tooltip on Hover */
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Shake Animation */
+@keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    50% { transform: translateX(5px); }
+    75% { transform: translateX(-5px); }
+    100% { transform: translateX(0); }
+}
+
+.shake {
+    animation: shake 0.5s ease-in-out;
+    animation-iteration-count: 4; /* Shake left and right */
+}
+
+/* Suggestions Box */
 .suggestions-box {
     display: none;
     position: absolute;
-    top: 100%; /* Position it directly below the search bar */
+    top: 100%;
     left: 0;
     width: 100%;
     background-color: var(--white);
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
     border-radius: 0.25rem;
-    max-height: 200px; /* Adjust based on preference */
+    max-height: 200px;
     overflow-y: auto;
-    z-index: 1000; /* Ensure it's on top of other elements */
+    z-index: 1000;
 }
 
 .suggestion-item {
@@ -159,7 +254,6 @@ ul {
     padding: 0.75rem;
     text-decoration: none;
     color: var(--gray-dark);
-    /* border-bottom: 1px solid #ddd; */
 }
 
 .suggestion-item:last-child {
@@ -176,4 +270,23 @@ ul {
 
 .suggestion-price {
     color: var(--primary-blue);
+}
+
+.suggestion-image {
+    margin-top: 2px;
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    border-radius: 4px;
+    margin-right: 10px;
+}
+
+.suggestion-content {
+    display: flex;
+    align-items: center;
+}
+
+.suggestion-details {
+    display: flex;
+    flex-direction: column;
 }

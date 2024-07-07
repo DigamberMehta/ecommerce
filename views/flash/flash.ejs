@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flash Messages</title>
+    <style>
+        .flash-message {
+            display: none; /* Initially hidden */
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px;
+            background-color: #f44336; /* Red background color */
+            color: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            z-index: 1000; /* Ensure it's on top */
+            width: 250px; /* Adjust width as needed */
+        }
+        .flash-message.success {
+            background-color: #4CAF50; /* Green background color */
+        }
+        .flash-message.error {
+            background-color: #f44336; /* Red background color */
+        }
+        .flash-message.show {
+            display: block; /* Show the flash message */
+        }
+        .flash-message button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            line-height: 20px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        .progress-bar {
+            height: 5px;
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 2px;
+            margin-top: 10px;
+            position: relative;
+        }
+        .progress-bar-inner {
+            height: 100%;
+            width: 100%;
+            background-color: white;
+            position: absolute;
+            top: 0;
+            left: 0;
+            transition: width 0.1s linear;
+        }
+    </style>
+</head>
+<body>
+    <div id="flash-message" class="flash-message">
+        <span id="flash-message-content"></span>
+        <button id="close-flash-message" onclick="closeFlashMessage()">×</button>
+        <div class="progress-bar">
+            <div id="progress-bar-inner" class="progress-bar-inner"></div>
+        </div>
+    </div>
+
+    <script>
+        let timer;
+
+        function showFlashMessage(message, type, duration = 3000) {
+            const flashMessage = document.getElementById('flash-message');
+            const flashMessageContent = document.getElementById('flash-message-content');
+            const progressBarInner = document.getElementById('progress-bar-inner');
+            
+            flashMessageContent.textContent = message;
+            flashMessage.className = `flash-message show ${type}`;
+            progressBarInner.style.width = '100%'; // Reset progress bar to full width
+            
+            let timeLeft = duration;
+            const interval = 100; // Update interval in ms
+
+            // Update progress bar width every interval
+            timer = setInterval(() => {
+                timeLeft -= interval;
+                progressBarInner.style.width = `${(timeLeft / duration) * 100}%`;
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    flashMessage.classList.remove('show');
+                }
+            }, interval);
+
+            // Hide the flash message after the specified duration
+            setTimeout(() => {
+                flashMessage.classList.remove('show');
+                clearInterval(timer); // Clear the interval if the message is manually closed
+            }, duration);
+        }
+
+        function closeFlashMessage() {
+            const flashMessage = document.getElementById('flash-message');
+            flashMessage.classList.remove('show');
+            clearInterval(timer); // Clear the interval when the message is closed manually
+        }
+
+        // Display success messages
+        <% if (successMessages.length > 0) { %>
+            <% successMessages.forEach(message => { %>
+                showFlashMessage('<%= message %>', 'success', 5000);
+            <% }) %>
+        <% } %>
+
+        // Display error messages
+        <% if (errorMessages.length > 0) { %>
+            <% errorMessages.forEach(message => { %>
+                showFlashMessage('<%= message %>', 'error', 5000);
+            <% }) %>
+        <% } %>
+    </script>
+</body>
+</html>
