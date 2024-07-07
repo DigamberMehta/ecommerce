@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=0.9" />
+  <title>ecommerce</title>
+
+  <!-- Use absolute paths if static files are served from /public -->
+  <link rel="stylesheet" href="/css/navbar.css">
+  <link rel="stylesheet" href="/css/v-listing.css">
+  <link rel="stylesheet" href="/css/show.css">
+  <link rel="stylesheet" href="/css/checkout.css">
+  <link rel="stylesheet" href="/css/cart.css">
+  <link rel="stylesheet" href="/css/home.css">
+
+  <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.5.2/css/all.css">
+</head>
+
+<body>
+  <%- include('../includes/navbar.ejs') %>
+  <div class="main-container-body">
+    <%- body %>
+  </div>
+</body>
+
+</html>

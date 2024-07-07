@@ -1,0 +1,141 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+/* .home{
+    width: 96%;
+    margin: 0 auto;
+} */
+ a{
+    text-decoration: none;
+    color: inherit;
+ }
+
+.category-section {
+    display: flex;
+    justify-content: space-around;
+    /* padding: 20px; */
+    border-bottom: 20px solid #f0f0f0;
+}
+
+.category-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 4px;
+    padding-top: 15px;
+    background-color: #fff;
+    /* border: 1px solid #ddd; */
+    border-radius: 10px;
+    width: 90px;
+    height: 107px;
+    text-align: center;
+    margin-bottom: 8px;
+    margin-top: 5px;
+    margin-right: 1rem;
+}
+
+.category-card .img-container {
+    width: 100%;
+    height: 250px;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.category-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.product-section {
+    padding: 20px;
+    position: relative;
+    border-bottom: 20px solid #f0f0f0;
+}
+
+.product-section h2 {
+    margin-bottom: 10px;
+}
+
+.product-row {
+    display: flex;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+}
+
+.product-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    margin-right: 15px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    width: 210px;
+    text-align: center;
+    max-height: 230px;
+}
+
+.product-card .img-container {
+    width: 100%;
+    height: 250px;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.product-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.product-button-left,
+.product-button-right {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    border-radius: 15%;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.product-button-left:hover,
+.product-button-right:hover {
+    background: rgba(0, 0, 0, 0.7);
+}
+
+.product-button-left {
+    left: 10px;
+}
+
+.product-button-right {
+    right: 10px;
+}
+
+
+
+.category-img-container {
+    height: 80px;
+    width: 150px;
+}
+
+div::-webkit-scrollbar {
+    display: none;
+}
+.product-desc p{
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+}
+.product-name{
+    opacity: 0.8;
+}

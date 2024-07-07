@@ -1,0 +1,44 @@
+<% layout('layouts/boilerplate') %>
+<div class="container">
+    <div class="filter">
+        <div class="filter-option">
+            <ul>
+                <li class="filter-item">a</li>
+                <li class="filter-item">b</li>
+                <li class="filter-item">c</li>
+                <li class="filter-item">d</li>
+                <li class="filter-item">e</li>
+            </ul>
+        </div>
+    </div>
+    <div class="main-content">
+        <!-- <h1>Search Results for "<%= query %>"</h1> -->
+        <div class="content-wrapper">
+            <% if (products.length > 0) { %>
+                <% products.forEach(product => { %>
+                    <div class="card">
+                        <div class="card-image">
+                            <img src="<%= product.images[0] %>" alt="<%= product.title %>">
+                        </div>
+                        <div class="card-content">
+                            <div class="card-title"><%= product.title %></div>
+                            <div class="card-bought">5K+ bought in past month</div>
+                            <div class="card-price">
+                                <span class="main-price">₹<%= product.price %></span>
+                                <span class="mrp">₹<%= (product.price * 1.1).toFixed(2) %></span>
+                                <span class="discount">(10% off)</span>
+                            </div>
+                            <div class="card-card-discount">Flat INR 1000 Off on ICICI Credit Cards</div>
+                            <div class="card-delivery">FREE delivery</div>
+                            <div class="card-button">
+                                <button class="add-to-cart-btn">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+                <% }); %>
+            <% } else { %>
+                <p>No products found.</p>
+            <% } %>
+        </div>
+    </div>
+</div>

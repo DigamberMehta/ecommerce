@@ -1,0 +1,125 @@
+<style>
+  table {
+      width: 100%;
+      border-collapse: collapse;
+  }
+  th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+  }
+  th {
+      background-color: #f2f2f2;
+  }
+</style>
+
+
+<% layout('layouts/boilerplate') %>
+<div class="show-page">
+  <div class="product-show-container">
+    <div class="product-show-content">
+      <div class="product-show-image">
+        <div class="product-image">
+          <img src="<%= product.images[0] %>" alt="<%= product.title %>" />
+        </div>
+      </div>
+      <div class="product-show-details">
+        <h1 class="product-show-title">
+          <%= product.title %>
+        </h1>
+        <p class="product-show-ratings">
+          <%= product.rating %>★ <%= product.reviews.length %> Ratings & <%= product.reviews.length %> Reviews
+        </p>
+        <div class="product-show-price">
+          <span class="product-show-current-price">₹<%= product.sellingPrice %></span>
+          <span class="product-show-original-price">₹<%= product.mrpPrice %></span>
+          <span class="product-show-discount"></span>
+      </div>
+        <div class="product-show-available-offers">
+          <div class="product-show-available-offers-title">
+            Available Offers
+          </div>
+          <div class="carousel-container">
+            <!-- Add your offers dynamically if you have them; otherwise, you can leave these static -->
+            <div class="arrow-button arrow-button-left" onclick="scrollCarousel(-1)">
+              &#9664;
+            </div>
+            <div class="offer-card">
+              <div class="offer-card-title">Offer 1</div>
+              <div class="offer-card-details">
+                Extra ₹1000 Off on ICICI Credit Cards
+              </div>
+            </div>
+            <div class="offer-card">
+              <div class="offer-card-title">Offer 2</div>
+              <div class="offer-card-details">
+                Partner Offer: Buy this and get additional 10% off on Rakhi gifts
+              </div>
+            </div>
+            <div class="offer-card">
+              <div class="offer-card-title">Offer 3</div>
+              <div class="offer-card-details">
+                Bank Offer: 5% Cashback on HDFC Credit Card
+              </div>
+            </div>
+            <div class="arrow-button arrow-button-right" onclick="scrollCarousel(1)">
+              &#9654;
+            </div>
+          </div>
+        </div>
+        <button class="product-show-btn-add-to-cart">Add to Cart</button>
+        <button class="product-show-btn-buy-now">Buy Now</button>
+
+        <div class="product-show-highlight">
+          <div class="product-show-highlight-title">Specifications</div>
+          <table>
+              <tr>
+                  <th>Category</th>
+                  <th>Details</th>
+              </tr>
+              <% 
+              function camelCaseToTitleCase(camelCase) {
+                  return camelCase
+                      .replace(/([A-Z])/g, ' $1') // Add space before capital letters
+                      .replace(/^./, function(str){ return str.toUpperCase(); }); // Capitalize the first letter
+              }
+  
+              for (let key in product.specifications) { %>
+                  <tr>
+                      <td><strong><%= camelCaseToTitleCase(key) %></strong></td>
+                      <td>
+                          <% if (typeof product.specifications[key] === 'object') { %>
+                              <ul>
+                                  <% for (let subKey in product.specifications[key]) { %>
+                                      <li><strong><%= camelCaseToTitleCase(subKey) %>:</strong> <%= product.specifications[key][subKey] %></li>
+                                  <% } %>
+                              </ul>
+                          <% } else { %>
+                              <%= product.specifications[key] %>
+                          <% } %>
+                      </td>
+                  </tr>
+              <% } %>
+          </table>
+      </div>
+
+  <script>
+    function scrollCarousel(direction) {
+      const container = document.querySelector(".carousel-container");
+      const scrollAmount = 250; // Amount to scroll with each click
+      container.scrollLeft += direction * scrollAmount;
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+            const sellingPrice = <%= product.sellingPrice %>;
+            const mrpPrice = <%= product.mrpPrice %>;
+            const discountElement = document.querySelector(".product-show-discount");
+
+            const discountAmount = mrpPrice - sellingPrice;
+            const discountPercentage = ((discountAmount / mrpPrice) * 100).toFixed(2);
+
+            discountElement.textContent = `${discountPercentage}% off`;
+        });
+
+  </script>
+
+</div>

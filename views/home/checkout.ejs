@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout Page</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f7f7f7;
+            color: #333;
+        }
+
+        .container {
+            /* max-width: 1200px; */
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .order-details, .price-address-details {
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 20px;
+            width: 48%;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+
+        h2, h3 {
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .order-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .order-item img {
+            width: 100px;
+            margin-right: 20px;
+            border-radius: 8px;
+        }
+
+        .item-info p, .additional-info p, .price-details p, .address-details p, .payment-method p, .promo-code h3 {
+            margin: 5px 0;
+            font-size: 16px;
+        }
+
+        .payment-method input, .promo-code input {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="order-details">
+            <h2>Order Details</h2>
+            <div class="order-item">
+                <img src="#" alt="Product Image">
+                <div class="item-info">
+                    <p><strong>Product Name:</strong> Awesome T-Shirt</p>
+                    <p><strong>Quantity:</strong> 2</p>
+                    <p><strong>Price per Unit:</strong> $20.00</p>
+                </div>
+            </div>
+            <div class="additional-info">
+                <p><strong>Estimated Delivery Date:</strong> July 10, 2024</p>
+                <p><strong>Shipping Method:</strong> Standard</p>
+            </div>
+        </div>
+        <div class="price-address-details">
+            <h2>Price & Address Details</h2>
+            <div class="price-details">
+                <p><strong>Subtotal:</strong> $40.00</p>
+                <p><strong>Shipping:</strong> $5.00</p>
+                <p><strong>Tax:</strong> $3.00</p>
+                <p><strong>Total:</strong> $48.00</p>
+            </div>
+            <div class="address-details">
+                <h3>Billing Address</h3>
+                <p><strong>Full Name:</strong> John Doe</p>
+                <p><strong>Street Address:</strong> 123 Main St</p>
+                <p><strong>City, State, ZIP Code:</strong> Anytown, CA, 12345</p>
+                <p><strong>Country:</strong> USA</p>
+                <h3>Shipping Address</h3>
+                <p><strong>Full Name:</strong> John Doe</p>
+                <p><strong>Street Address:</strong> 123 Main St</p>
+                <p><strong>City, State, ZIP Code:</strong> Anytown, CA, 12345</p>
+                <p><strong>Country:</strong> USA</p>
+            </div>
+            <div class="payment-method">
+                <h3>Payment Method</h3>
+                <p>Credit Card</p>
+                <p>Card Number: <input type="text"></p>
+                <p>Expiration Date: <input type="text"></p>
+                <p>CVV: <input type="text"></p>
+                <p>PayPal</p>
+                <p>Other Payment Methods</p>
+            </div>
+            <div class="promo-code">
+                <h3>Promotional Code</h3>
+                <input type="text" placeholder="Enter Code Here">
+            </div>
+            <div class="buttons">
+                <button type="button">Back to Cart</button>
+                <button type="button">Place Order</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
