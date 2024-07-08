@@ -83,7 +83,7 @@ const products = [
     slug: "smartphone-xyz"
   },
   {
-    title: "Running Shoes ABC",
+    title: "Running Shoes",
     description: "Comfortable and durable running shoes for all terrains.",
     sellingPrice: 149.99,
     mrpPrice: 199.99,

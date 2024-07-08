@@ -1,12 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-  
-</head>
-<body>
+
     <nav class="navbar">
         <div class="logo-container">
             <a href="/home" class="logo">ShopLogo</a>
@@ -62,53 +54,58 @@
     </nav>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const searchInput = document.getElementById('search-input');
-            const suggestionsBox = document.getElementById('suggestions');
-            const MIN_CHARACTERS = 3; // Minimum number of characters before showing suggestions
+      document.addEventListener('DOMContentLoaded', () => {
+    const searchInput = document.getElementById('search-input');
+    const suggestionsBox = document.getElementById('suggestions');
+    const MIN_CHARACTERS = 3; // Minimum number of characters before showing suggestions
 
-            searchInput.addEventListener('input', async () => {
-                const query = searchInput.value.trim();
+    searchInput.addEventListener('input', async () => {
+        const query = searchInput.value.trim();
+        console.log(`Search query: ${query}`); // Debugging: log the search query
 
-                if (query.length < MIN_CHARACTERS) {
-                    suggestionsBox.innerHTML = '';
-                    suggestionsBox.style.display = 'none';
-                    return;
-                }
+        if (query.length < MIN_CHARACTERS) {
+            suggestionsBox.innerHTML = '';
+            suggestionsBox.style.display = 'none';
+            return;
+        }
 
-                try {
-                    const response = await fetch(`/search?q=${encodeURIComponent(query)}&suggestions=true`);
-                    const suggestions = await response.json();
+        try {
+            const response = await fetch(`/search?q=${encodeURIComponent(query)}&suggestions=true`);
+            const suggestions = await response.json();
+            console.log('Suggestions received:', suggestions); // Debugging: log the received suggestions
 
-                    if (suggestions.length === 0) {
-                        suggestionsBox.innerHTML = '<p>No suggestions found.</p>';
-                        suggestionsBox.style.display = 'block';
-                        return;
-                    }
+            if (suggestions.length === 0) {
+                suggestionsBox.innerHTML = '<p>No suggestions found.</p>';
+                suggestionsBox.style.display = 'block';
+                return;
+            }
 
-                    suggestionsBox.innerHTML = suggestions.map(suggestion => `
-                        <a href="/products/${suggestion._id}/${suggestion.slug}" class="suggestion-item">
-                            <div class="suggestion-content">
-                                <img src="${suggestion.images[0]}" alt="${suggestion.title}" class="suggestion-image">
-                                <div class="suggestion-details">
-                                    <div class="suggestion-title">${suggestion.title}</div>
-                                    <div class="suggestion-price">$${suggestion.sellingPrice.toFixed(2)}</div>
-                                </div>
-                            </div>
-                        </a>
-                    `).join('');
-                    suggestionsBox.style.display = 'block';
-                } catch (error) {
-                    console.error('Error fetching suggestions:', error);
-                }
-            });
+            suggestionsBox.innerHTML = suggestions.map(suggestion => `
+                <a href="/products/${suggestion._id}/${suggestion.slug}" class="suggestion-item">
+                    <div class="suggestion-content">
+                        <img src="${suggestion.images[0]}" alt="${suggestion.title}" class="suggestion-image">
+                        <div class="suggestion-details">
+                            <div class="suggestion-title">${suggestion.title}</div>
+                            <div class="suggestion-price">$${suggestion.sellingPrice.toFixed(2)}</div>
+                        </div>
+                    </div>
+                </a>
+            `).join('');
+            suggestionsBox.style.display = 'block';
+        } catch (error) {
+            console.error('Error fetching suggestions:', error);
+            // suggestionsBox.innerHTML = '<p>Error fetching suggestions.</p>';
+            // suggestionsBox.style.display = 'block';
+        }
+    });
 
-            document.addEventListener('click', (event) => {
-                if (!event.target.closest('.search-bar')) {
-                    suggestionsBox.style.display = 'none';
-                }
-            });
-        });
+    document.addEventListener('click', (event) => {
+        if (!event.target.closest('.search-bar')) {
+            suggestionsBox.style.display = 'none';
+        }
+    });
+});
+
     </script>
 
     <script>
@@ -168,5 +165,3 @@
             dropdownContent.addEventListener('mouseleave', hideDropdown);
         });
     </script>
-</body>
-</html>

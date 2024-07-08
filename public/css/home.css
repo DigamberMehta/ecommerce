@@ -70,7 +70,7 @@ a {
     background-color: #fff;
     border: 1px solid #ddd;
     border-radius: 5px;
-    width: 210px;
+    min-width: 210px;
     text-align: center;
     max-height: 230px;
 }

@@ -14,6 +14,7 @@ const userRouter = require('./routes/user');
 const flash = require('connect-flash');
 const { isLoggedIn } = require('./middleware');
 const cartRoutes = require('./routes/cart');
+const Fuse = require('fuse.js');
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -97,9 +98,11 @@ app.get('/search', async (req, res) => {
   try {
     const searchTerm = req.query.q || '';
     const suggestions = req.query.suggestions === 'true';
+    // console.log(`Search term: ${searchTerm}, Suggestions: ${suggestions}`); 
 
     if (suggestions) {
-      const products = await Product.find();
+      // Fetch only the necessary fields for suggestions
+      const products = await Product.find({}, 'title slug images sellingPrice');
       const fuse = new Fuse(products, {
         keys: ['title'],
         includeScore: true,
@@ -107,6 +110,7 @@ app.get('/search', async (req, res) => {
       });
 
       const results = fuse.search(searchTerm).map(result => result.item);
+      // console.log('Suggestions results:', results.slice(0, 5)); 
       res.json(results.slice(0, 5));
     } else {
       const products = await Product.find();
@@ -117,10 +121,11 @@ app.get('/search', async (req, res) => {
       });
 
       const results = fuse.search(searchTerm).map(result => result.item);
+      // console.log('Search results:', results); // Debugging
       res.render('home/searchResult', { products: results, query: searchTerm });
     }
   } catch (err) {
-    console.error(err);
+    // console.error('Error in search endpoint:', err);
     res.status(500).send('Server Error');
   }
 });
