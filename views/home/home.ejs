@@ -44,74 +44,70 @@
 
 
     
-        <div class="product-section">
-            
-            <h2>Electronics</h2>
-            <div class="product-row" id="row-1">
-                <% product.forEach(prod => { %>
-                    <% if (prod.categories.includes("Mobile")) { %>
-                        <a href="/products/<%= prod._id %>/<%= prod.slug %>" class="product-card">
-                            <div class="img-container">
-                                <img src="<%= prod.images[0] %>" alt="<%= prod.title %>" />
-                            </div>
-                            <div class="product-desc">
-                                <p class="product-name"><%= prod.title %></p>
-                                <p class="product-price"><b>₹<%= prod.sellingPrice.toFixed(2) %></b></p>
-                            </div>
-                        </a>
-                    <% } %>
-                <% }); %>
-            </div>
-            
-            <button class="product-button-left" onclick="slide('row-1', -1)">&#9664;</button>
-            <button class="product-button-right" onclick="slide('row-1', 1)">&#9654;</button>
+    <div class="product-section">
+        <h2>Electronics</h2>
+        <div class="product-row" id="row-1">
+          <% products.forEach(prod => { %>
+            <% if (prod.categories.includes("Mobile")) { %>
+              <a href="/products/<%= prod._id %>/<%= prod.slug %>" class="product-card">
+                <div class="img-container">
+                  <img src="<%= prod.images[0] %>" alt="<%= prod.title %>" />
+                </div>
+                <div class="product-desc">
+                  <p class="product-name"><%= prod.title %></p>
+                  <p class="product-price"><b>₹<%= prod.sellingPrice.toFixed(2) %></b></p>
+                </div>
+              </a>
+            <% } %>
+          <% }); %>
         </div>
-
-        <div class="product-section">
-            <h2>Laptops</h2>
-            <div class="product-row" id="row-2">
-                <% product.forEach(prod => { %>
-                    <% if (prod.categories.includes("Laptops")) { %>
-                        <a href="/products/<%= prod._id %>/<%= prod.slug %>" class="product-card">
-                            <div class="img-container">
-                                <img src="<%= prod.images[0] %>" alt="<%= prod.title %>" />
-                            </div>
-                            <div class="product-desc">
-                                <p class="product-name"><%= prod.title %></p>
-                                <p class="product-price"><b>₹<%= prod.sellingPrice.toFixed(2) %></b></p>
-                            </div>
-                        </a>
-                    <% } %>
-                <% }); %>
-            </div>
-            
-            <button class="product-button-left" onclick="slide('row-2', -1)">&#9664;</button>
-            <button class="product-button-right" onclick="slide('row-2', 1)">&#9654;</button>
-        </div>
+        <button class="product-button-left" onclick="slide('row-1', -1)">&#9664;</button>
+        <button class="product-button-right" onclick="slide('row-1', 1)">&#9654;</button>
+      </div>
 
 
-        <div class="product-section">
-            <h2>Kitchen Appliances</h2>
-            <div class="product-row" id="row-3">
-                <% product.forEach(prod => { %>
-                    <% if (prod.categories.includes("Kitchen Appliances")) { %>
-                        <a href="/products/<%= prod._id %>/<%= prod.slug %>" class="product-card">
-                            <div class="img-container">
-                                <img src="<%= prod.images[0] %>" alt="<%= prod.title %>" />
-                            </div>
-                            <div class="product-desc">
-                                <p class="product-name"><%= prod.title %></p>
-                                <p class="product-price"><b>₹<%= prod.sellingPrice.toFixed(2) %></b></p>
-                            </div>
-                        </a>
-                    <% } %>
-                <% }); %>
-            </div>
-            
-            <button class="product-button-left" onclick="slide('row-3', -1)">&#9664;</button>
-            <button class="product-button-right" onclick="slide('row-3', 1)">&#9654;</button>
+      <div class="product-section">
+        <h2>Laptops</h2>
+        <div class="product-row" id="row-1">
+          <% products.forEach(prod => { %>
+            <% if (prod.categories.includes("Laptops")) { %>
+              <a href="/products/<%= prod._id %>/<%= prod.slug %>" class="product-card">
+                <div class="img-container">
+                  <img src="<%= prod.images[0] %>" alt="<%= prod.title %>" />
+                </div>
+                <div class="product-desc">
+                  <p class="product-name"><%= prod.title %></p>
+                  <p class="product-price"><b>₹<%= prod.sellingPrice.toFixed(2) %></b></p>
+                </div>
+              </a>
+            <% } %>
+          <% }); %>
         </div>
-  
+        <button class="product-button-left" onclick="slide('row-1', -1)">&#9664;</button>
+        <button class="product-button-right" onclick="slide('row-1', 1)">&#9654;</button>
+      </div>
+
+
+      <div class="product-section">
+        <h2>Kitchen Appliances</h2>
+        <div class="product-row" id="row-1">
+          <% products.forEach(prod => { %>
+            <% if (prod.categories.includes("Kitchen Appliances")) { %>
+              <a href="/products/<%= prod._id %>/<%= prod.slug %>" class="product-card">
+                <div class="img-container">
+                  <img src="<%= prod.images[0] %>" alt="<%= prod.title %>" />
+                </div>
+                <div class="product-desc">
+                  <p class="product-name"><%= prod.title %></p>
+                  <p class="product-price"><b>₹<%= prod.sellingPrice.toFixed(2) %></b></p>
+                </div>
+              </a>
+            <% } %>
+          <% }); %>
+        </div>
+        <button class="product-button-left" onclick="slide('row-1', -1)">&#9664;</button>
+        <button class="product-button-right" onclick="slide('row-1', 1)">&#9654;</button>
+      </div>
         
      <div class="product-section">
         <div class="big-card-section">
@@ -151,6 +147,13 @@
 </div> 
 
 
+
+
+    <% if (recommendedProducts.length > 0) { %>
+        <%- include('../partials/_recommendations.ejs', { products: recommendedProducts }) %>
+      <% } %>
+  
+   
 
 
 

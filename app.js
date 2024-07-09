@@ -16,6 +16,7 @@ const { isLoggedIn } = require('./middleware');
 const cartRoutes = require('./routes/cart');
 const Fuse = require('fuse.js');
 const CartItem = require('./models/cartItem');
+const UserInteraction = require('./models/userInteraction');
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -96,12 +97,38 @@ app.post('/cart/update', isLoggedIn, async (req, res) => {
 app.get('/home', async (req, res) => {
   try {
     const products = await Product.find();
-    res.render('home/home', { product: products });
+    let recommendedProducts = [];
+
+    if (req.isAuthenticated()) {
+      const userId = req.user._id;
+      const interactions = await UserInteraction.find({ user: userId });
+
+      const viewedCategories = interactions
+        .filter(interaction => interaction.action === 'view')
+        .map(interaction => interaction.category);
+
+      const searchedCategories = interactions
+        .filter(interaction => interaction.action === 'search')
+        .map(interaction => interaction.category);
+
+      const addedToCartCategories = interactions
+        .filter(interaction => interaction.action === 'add_to_cart')
+        .map(interaction => interaction.category);
+
+      const allCategories = [...viewedCategories, ...searchedCategories, ...addedToCartCategories];
+      const uniqueCategories = [...new Set(allCategories)];
+
+      recommendedProducts = await Product.find({ categories: { $in: uniqueCategories } });
+    }
+
+    res.render('home/home', { products, recommendedProducts });
   } catch (err) {
     console.error(err);
     res.status(500).send('Server Error');
   }
 });
+
+
 
 app.get('/products/:id/:slug', async (req, res) => {
   try {
@@ -112,21 +139,54 @@ app.get('/products/:id/:slug', async (req, res) => {
       return res.status(404).send('Product not found');
     }
 
-    res.render('home/show', { product, camelCaseToTitleCase });
+    // Log product view
+    if (req.user) {
+      await UserInteraction.create({
+        user: req.user._id,
+        product: product._id,
+        action: 'view',
+        category: product.categories[0]
+      });
+    }
+
+    let recommendedProducts = [];
+
+    if (req.isAuthenticated()) {
+      const userId = req.user._id;
+      const interactions = await UserInteraction.find({ user: userId });
+
+      const viewedCategories = interactions
+        .filter(interaction => interaction.action === 'view')
+        .map(interaction => interaction.category);
+
+      const searchedCategories = interactions
+        .filter(interaction => interaction.action === 'search')
+        .map(interaction => interaction.category);
+
+      const addedToCartCategories = interactions
+        .filter(interaction => interaction.action === 'add_to_cart')
+        .map(interaction => interaction.category);
+
+      const allCategories = [...viewedCategories, ...searchedCategories, ...addedToCartCategories];
+      const uniqueCategories = [...new Set(allCategories)];
+
+      recommendedProducts = await Product.find({ categories: { $in: uniqueCategories } });
+    }
+
+    res.render('home/show', { product, recommendedProducts, camelCaseToTitleCase });
   } catch (error) {
     console.error(error);
     res.status(500).send('Server Error');
   }
 });
 
+
 app.get('/search', async (req, res) => {
   try {
     const searchTerm = req.query.q || '';
     const suggestions = req.query.suggestions === 'true';
-    // console.log(`Search term: ${searchTerm}, Suggestions: ${suggestions}`); 
 
     if (suggestions) {
-      // Fetch only the necessary fields for suggestions
       const products = await Product.find({}, 'title slug images sellingPrice');
       const fuse = new Fuse(products, {
         keys: ['title'],
@@ -135,7 +195,6 @@ app.get('/search', async (req, res) => {
       });
 
       const results = fuse.search(searchTerm).map(result => result.item);
-      // console.log('Suggestions results:', results.slice(0, 5)); 
       res.json(results.slice(0, 5));
     } else {
       const products = await Product.find();
@@ -146,14 +205,56 @@ app.get('/search', async (req, res) => {
       });
 
       const results = fuse.search(searchTerm).map(result => result.item);
-      // console.log('Search results:', results); // Debugging
+
+      // Log search interaction
+      if (req.user) {
+        const matchedCategories = results.map(product => product.categories).flat();
+        const uniqueCategories = [...new Set(matchedCategories)];
+        for (const category of uniqueCategories) {
+          await UserInteraction.create({
+            user: req.user._id,
+            action: 'search',
+            category: category
+          });
+        }
+      }
+
       res.render('home/searchResult', { products: results, query: searchTerm });
     }
   } catch (err) {
-    // console.error('Error in search endpoint:', err);
     res.status(500).send('Server Error');
   }
 });
+
+
+// app.get('/recommendations', isLoggedIn, async (req, res) => {
+//   try {
+//     const userId = req.user._id;
+//     const interactions = await UserInteraction.find({ user: userId });
+
+//     const viewedCategories = interactions
+//       .filter(interaction => interaction.action === 'view')
+//       .map(interaction => interaction.category);
+
+//     const searchedCategories = interactions
+//       .filter(interaction => interaction.action === 'search')
+//       .map(interaction => interaction.category);
+
+//     const addedToCartCategories = interactions
+//       .filter(interaction => interaction.action === 'add_to_cart')
+//       .map(interaction => interaction.category);
+
+//     const allCategories = [...viewedCategories, ...searchedCategories, ...addedToCartCategories];
+//     const uniqueCategories = [...new Set(allCategories)];
+
+//     const recommendedProducts = await Product.find({ categories: { $in: uniqueCategories } });
+
+//     res.render('home/recommendations', { products: recommendedProducts });
+//   } catch (error) {
+//     console.error('Error generating recommendations:', error);
+//     res.status(500).send('Server Error');
+//   }
+// });
 
 // Utility function to convert camelCase to Title Case
 function camelCaseToTitleCase(camelCase) {

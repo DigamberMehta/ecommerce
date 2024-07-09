@@ -14,17 +14,17 @@ router.post('/add', isLoggedIn, async (req, res) => {
   console.log('User ID:', userId);
 
   try {
+    // Check if the product exists
     const product = await Product.findById(productId);
-
     if (!product) {
       console.log('Product not found');
-      return res.json({ success: false, message: 'Product not found' });
+      return res.status(404).json({ success: false, message: 'Product not found' });
     }
 
+    // Check if the cart item already exists
     let cartItem = await CartItem.findOne({ user: userId, product: productId });
-
     if (cartItem) {
-      cartItem.quantity += 1;
+      cartItem.quantity += 1; // Increase quantity if item already in cart
     } else {
       cartItem = new CartItem({
         user: userId,
@@ -46,7 +46,7 @@ router.post('/add', isLoggedIn, async (req, res) => {
     return res.json({ success: true, message: 'Product added to cart successfully' });
   } catch (error) {
     console.error('Error adding product to cart:', error);
-    return res.json({ success: false, message: 'An error occurred. Please try again.' });
+    return res.status(500).json({ success: false, message: 'An error occurred. Please try again.' });
   }
 });
 

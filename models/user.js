@@ -21,7 +21,12 @@ const userSchema = new mongoose.Schema({
   roles: { type: [String], default: ['user'] },
   preferences: mongoose.Schema.Types.Mixed,
   createdAt: { type: Date, default: Date.now },
-  updatedAt: { type: Date, default: Date.now }
+  updatedAt: { type: Date, default: Date.now },
+  preferences: {
+    viewedCategories: [String],
+    searchedCategories: [String],
+    addedToCartCategories: [String]
+  }
 });
 
 userSchema.plugin(passLocalMongoose);
