@@ -94,7 +94,7 @@
     height: auto;
     z-index: 1;
     top: 100%;
-    left: -60px; /* Align with the button */
+    left: -110px; /* Align with the button */
     border: 1px solid #ddd;
     overflow: hidden;
     transition: opacity 0.3s ease, visibility 0.3s ease; /* Add transition for opacity and visibility */

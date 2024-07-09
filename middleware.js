@@ -1,10 +1,15 @@
 module.exports.isLoggedIn = (req, res, next) => {
-    if (!req.isAuthenticated()) {
-      req.flash("error", "You must be signed in first!");
-      return res.redirect("/login");
-    }
-    next();
-  };
+  if (!req.isAuthenticated()) {
+      if (req.accepts('json')) {
+          return res.status(401).json({ success: false, message: 'You must be signed in first!' });
+      } else {
+          req.flash('error', 'You must be signed in first!');
+          return res.redirect('/login');
+      }
+  }
+  next();
+};
+
 
 
   module.exports.isReviewAuthor = async (req, res, next) => {

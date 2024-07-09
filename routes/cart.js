@@ -1,3 +1,4 @@
+// routes/cart.js
 const express = require('express');
 const router = express.Router();
 const CartItem = require('../models/cartItem');
@@ -9,12 +10,15 @@ router.post('/add', isLoggedIn, async (req, res) => {
   const { productId } = req.body;
   const userId = req.user._id;
 
+  console.log('Product ID:', productId);
+  console.log('User ID:', userId);
+
   try {
     const product = await Product.findById(productId);
 
     if (!product) {
-      req.flash('error', 'Product not found');
-      return res.redirect('back');
+      console.log('Product not found');
+      return res.json({ success: false, message: 'Product not found' });
     }
 
     let cartItem = await CartItem.findOne({ user: userId, product: productId });
@@ -38,10 +42,23 @@ router.post('/add', isLoggedIn, async (req, res) => {
       await user.save();
     }
 
-    req.flash('success', 'Product added to cart successfully');
-    res.redirect('back');
+    console.log('Product added to cart successfully');
+    return res.json({ success: true, message: 'Product added to cart successfully' });
   } catch (error) {
     console.error('Error adding product to cart:', error);
+    return res.json({ success: false, message: 'An error occurred. Please try again.' });
+  }
+});
+
+router.get('/view', isLoggedIn, async (req, res) => {
+  const userId = req.user._id;
+
+  try {
+    const cartItems = await CartItem.find({ user: userId }).populate('product');
+
+    res.render('home/cart', { cartItems });
+  } catch (error) {
+    console.error('Error retrieving cart items:', error);
     req.flash('error', 'An error occurred. Please try again.');
     res.redirect('back');
   }

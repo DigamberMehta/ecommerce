@@ -15,6 +15,7 @@ const flash = require('connect-flash');
 const { isLoggedIn } = require('./middleware');
 const cartRoutes = require('./routes/cart');
 const Fuse = require('fuse.js');
+const CartItem = require('./models/cartItem');
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -63,11 +64,35 @@ app.use((req, res, next) => {
 
 app.use("/", userRouter);
 app.use('/cart', cartRoutes);
+app.use('/cart', cartRoutes)
 
 app.get("/", (req, res) => {
   res.redirect("/home");
 });
 
+app.post('/cart/update', isLoggedIn, async (req, res) => {
+  const { cartItemId, newQuantity } = req.body;
+
+  try {
+    const cartItem = await CartItem.findById(cartItemId);
+
+    if (!cartItem) {
+      return res.json({ success: false, message: 'Cart item not found' });
+    }
+
+    cartItem.quantity = newQuantity;
+    await cartItem.save();
+
+    const userId = req.user._id;
+    const cartItems = await CartItem.find({ user: userId }).populate('product');
+    const newSubtotal = cartItems.reduce((sum, item) => sum + item.product.sellingPrice * item.quantity, 0);
+
+    res.json({ success: true, newSubtotal });
+  } catch (error) {
+    console.error('Error updating cart item quantity:', error);
+    res.json({ success: false, message: 'An error occurred. Please try again.' });
+  }
+});
 app.get('/home', async (req, res) => {
   try {
     const products = await Product.find();
@@ -78,7 +103,7 @@ app.get('/home', async (req, res) => {
   }
 });
 
-app.get('/products/:id/:slug', isLoggedIn, async (req, res) => {
+app.get('/products/:id/:slug', async (req, res) => {
   try {
     const { id, slug } = req.params;
     const product = await Product.findOne({ _id: id, slug: slug });

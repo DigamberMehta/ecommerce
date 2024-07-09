@@ -1,26 +1,51 @@
 <% layout('layouts/boilerplate') %>
+<style>
+
+</style>
 
 <div class="home">
     <div class="category-section">
+
         <div class="category-card">
             <div class="category-img-container">
-                <img src="https://m.media-amazon.com/images/I/5155PFA2N+L._AC_UY327_FMwebp_QL65_.jpg" alt="Category 1" />
+                <img src="https://m.media-amazon.com/images/I/718BSofEGRL._AC_UL480_FMwebp_QL65_.jpg" alt="Category 1" />
             </div>
-            <p>Category 1</p>
+            <p>Wears</p>
         </div>
+        <div class="category-card">
+            <div class="category-img-container">
+                <img src="https://m.media-amazon.com/images/I/413BwJNyC1L._SX300_SY300_QL70_FMwebp_.jpg" alt="Category 1" />
+            </div>
+            <p>Appliances</p>
+        </div>
+        <div class="category-card">
+            <div class="category-img-container">
+                <img src="https://m.media-amazon.com/images/I/61GkvvDNnCL._AC_UY327_FMwebp_QL65_.jpg" alt="Category 1" />
+            </div>
+            <p>Laptop</p>
+        </div>
+        <div class="category-card">
+            <div class="category-img-container">
+                <img src="https://m.media-amazon.com/images/I/41xi2LXCRPL._SX300_SY300_QL70_FMwebp_.jpg" alt="Category 1" />
+            </div>
+            <p>Mobile</p>
+        </div>
+        <div class="category-card">
+            <div class="category-img-container">
+                <img src="https://m.media-amazon.com/images/I/41N4wmHtXML._SX300_SY300_QL70_FMwebp_.jpg" alt="Category 1" />
+            </div>
+            <p>Kitchen</p>
+        </div>
+
     </div>
 
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Home Page</title>
-        <link rel="stylesheet" href="/styles.css"> <!-- Link to your CSS -->
-        <script src="/script.js" defer></script> <!-- Link to your JavaScript -->
-    </head>
-    <body>
+
+
+
+
+    
         <div class="product-section">
+            
             <h2>Electronics</h2>
             <div class="product-row" id="row-1">
                 <% product.forEach(prod => { %>
@@ -31,7 +56,7 @@
                             </div>
                             <div class="product-desc">
                                 <p class="product-name"><%= prod.title %></p>
-                                <p class="product-price"><b>$<%= prod.sellingPrice.toFixed(2) %></b></p>
+                                <p class="product-price"><b>₹<%= prod.sellingPrice.toFixed(2) %></b></p>
                             </div>
                         </a>
                     <% } %>
@@ -41,8 +66,97 @@
             <button class="product-button-left" onclick="slide('row-1', -1)">&#9664;</button>
             <button class="product-button-right" onclick="slide('row-1', 1)">&#9654;</button>
         </div>
-    </body>
-    </html>
+
+        <div class="product-section">
+            <h2>Laptops</h2>
+            <div class="product-row" id="row-2">
+                <% product.forEach(prod => { %>
+                    <% if (prod.categories.includes("Laptops")) { %>
+                        <a href="/products/<%= prod._id %>/<%= prod.slug %>" class="product-card">
+                            <div class="img-container">
+                                <img src="<%= prod.images[0] %>" alt="<%= prod.title %>" />
+                            </div>
+                            <div class="product-desc">
+                                <p class="product-name"><%= prod.title %></p>
+                                <p class="product-price"><b>₹<%= prod.sellingPrice.toFixed(2) %></b></p>
+                            </div>
+                        </a>
+                    <% } %>
+                <% }); %>
+            </div>
+            
+            <button class="product-button-left" onclick="slide('row-2', -1)">&#9664;</button>
+            <button class="product-button-right" onclick="slide('row-2', 1)">&#9654;</button>
+        </div>
+
+
+        <div class="product-section">
+            <h2>Kitchen Appliances</h2>
+            <div class="product-row" id="row-3">
+                <% product.forEach(prod => { %>
+                    <% if (prod.categories.includes("Kitchen Appliances")) { %>
+                        <a href="/products/<%= prod._id %>/<%= prod.slug %>" class="product-card">
+                            <div class="img-container">
+                                <img src="<%= prod.images[0] %>" alt="<%= prod.title %>" />
+                            </div>
+                            <div class="product-desc">
+                                <p class="product-name"><%= prod.title %></p>
+                                <p class="product-price"><b>₹<%= prod.sellingPrice.toFixed(2) %></b></p>
+                            </div>
+                        </a>
+                    <% } %>
+                <% }); %>
+            </div>
+            
+            <button class="product-button-left" onclick="slide('row-3', -1)">&#9664;</button>
+            <button class="product-button-right" onclick="slide('row-3', 1)">&#9654;</button>
+        </div>
+  
+        
+     <div class="product-section">
+        <div class="big-card-section">
+        <div class="product-row" id="row-4">
+            <div class="big-card">
+                <div class="big-card-heading">
+                <h2 >You may also like</h2></div>
+                <div class="small-cards-container">
+                    <div class="small-card">
+                        <img src="" alt="Image 1">
+                        <p class="description">Description 1</p>
+                    </div>
+                    <div class="small-card">
+                        <img src="image2.jpg" alt="Image 2">
+                        <p class="description">Description 2</p>
+                    </div>
+                    <div class="small-card">
+                        <img src="image3.jpg" alt="Image 3">
+                        <p class="description">Description 3</p>
+                    </div>
+                    <div class="small-card">
+                        <img src="image4.jpg" alt="Image 4">
+                        <p class="description">Description 4</p>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+
+        <button class="product-button-left" onclick="slide('row-4', -1)">
+            &#9664;
+        </button>
+        <button class="product-button-right" onclick="slide('row-4', 1)">
+            &#9654;
+        </button>
+    </div>
+</div> 
+
+
+
+
+
+
+
+
 </div>
 
 <script>

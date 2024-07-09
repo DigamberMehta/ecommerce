@@ -3,6 +3,7 @@ body {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    background: #f0f0f0;
 }
 
 a {
@@ -14,6 +15,7 @@ a {
     display: flex;
     justify-content: space-around;
     border-bottom: 20px solid #f0f0f0;
+    background: white;
 }
 
 .category-card {
@@ -49,6 +51,7 @@ a {
     padding: 20px;
     position: relative; /* Ensure buttons are positioned relative to this */
     border-bottom: 20px solid #f0f0f0;
+    background-color: white;
 }
 
 .product-section h2 {
@@ -59,6 +62,7 @@ a {
     display: flex;
     overflow-x: auto;
     scroll-behavior: smooth;
+    
 }
 
 .product-card {
@@ -133,4 +137,73 @@ div::-webkit-scrollbar {
 
 .product-name {
     opacity: 0.8;
+}
+
+/* Big cards */
+
+.big-card {
+    min-width: 250px;
+    max-width: 300px;
+    background-color: #fff;
+    /* border-radius: 8px; */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 1rem;
+}
+
+.big-card-heading h2{
+    margin: 0 0 20px;
+    text-align: left;
+   
+}
+.big-card-heading{
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    display: flex;
+    justify-content: start;
+    
+}
+
+.small-cards-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.small-card {
+  
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: calc(50% - 10px);
+    margin-bottom: 20px;
+    padding: 10px;
+    box-sizing: border-box;
+    text-align: center;
+    aspect-ratio: 1 / 1; /* Makes the card square */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.small-card img {
+    max-width: 100%;
+    max-height: 70%;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    object-fit: contain;
+}
+
+.description {
+    margin: 0;
+    font-size: 16px;
+}
+.big-card-section{
+    background-color: #e7e7e7;
+    padding: 20px;
 }
