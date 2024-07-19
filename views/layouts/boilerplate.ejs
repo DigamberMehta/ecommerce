@@ -5,24 +5,66 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=0.9" />
   <title>ecommerce</title>
+  <link rel="stylesheet" data-purpose="Layout StyleSheet" title="Web Awesome"
+    href="/css/app-wa-d53d10572a0e0d37cb8d614a3f177a0c.css?vsn=d" />
 
+  <link rel="stylesheet" data-purpose="Layout StyleSheet" title="Web Awesome"
+    href="/css/app-wa-54e7be3a62ca9b7580d7f8c669f59e74.css?vsn=d" />
+
+  <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.6.0/css/all.css" />
+
+  <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.6.0/css/sharp-duotone-solid.css" />
+
+  <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.6.0/css/sharp-thin.css" />
+
+  <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.6.0/css/sharp-solid.css" />
+
+  <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.6.0/css/sharp-regular.css" />
+
+  <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.6.0/css/sharp-light.css" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap"
+    rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap"
+    rel="stylesheet" />
   <!-- Use absolute paths if static files are served from /public -->
-  <link rel="stylesheet" href="/css/navbar.css">
-  <link rel="stylesheet" href="/css/v-listing.css">
-  <link rel="stylesheet" href="/css/show.css">
-  <link rel="stylesheet" href="/css/checkout.css">
-  <link rel="stylesheet" href="/css/cart.css">
-  <link rel="stylesheet" href="/css/home.css">
+  <link rel="stylesheet" href="/css/navbar.css" />
+  <link rel="stylesheet" href="/css/v-listing.css" />
+  <link rel="stylesheet" href="/css/show.css" />
+  <link rel="stylesheet" href="/css/checkout.css" />
+  <link rel="stylesheet" href="/css/cart.css" />
+  <link rel="stylesheet" href="/css/home.css" />
+  <link rel="stylesheet" href="/css/browsing.css" />
+  <link rel="stylesheet" href="/css/footer.css" />
 
-  <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.5.2/css/all.css">
+  <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.5.2/css/all.css" />
 </head>
+<style>
+  .main-container-body {
+    width: 100%;
+  }
+  body{
+    margin: 0;
+    padding: 0;
+    font-family: 'Noto Sans', sans-serif;
+    background-color: #f5f5f5;
+  
+  }
+  
+
+</style>
 
 <body>
-  <%- include('../includes/navbar.ejs') %>
   <div class="main-container-body">
-    <%- include('../flash/flash.ejs') %>
+    <%- include('../includes/navbar.ejs') %> 
+    <%- include('../flash/flash.ejs') %> 
     <%- body %>
   </div>
+  <%- include('../includes/footer.ejs') %>
 </body>
 
 </html>

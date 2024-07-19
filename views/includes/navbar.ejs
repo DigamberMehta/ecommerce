@@ -1,168 +1,190 @@
+<style>
+ 
+</style>
 
-    <nav class="navbar">
+<header class="header" id="header">
+  <nav class="navbar">
+    <div class="upper-container">
+      <div class="mobile-left">
+        <div class="burger" id="burger">
+          <i class="fa-sharp fa-solid fa-bars"></i>
+        </div>
         <div class="logo-container">
-            <a href="/home" class="logo">ShopLogo</a>
+          <a href="/">
+            <img
+              src="https://static-assets-web.flixcart.com/batman-returns/batman-returns/p/images/fkheaderlogo_plus-055f80.svg"
+              alt="Logo" />
+          </a>
         </div>
+      </div>
+      <div class="menu-mobile" id="menu">
+        <div class="menu-inner">
+          <div class="dropdown">
+            <span class="menu-item">
+              <a href="#" class="menu-link">
+                <i class="fa-light fa-user s-icons"></i>digamber
+              </a>
+            </span>
+            <div class="dropdown-menu">
+              <div class="dropdown-item"><i class="fa-light fa-user icons"></i> Profile</div>
+              <div class="dropdown-item"><i class="fa-light fa-cube icons"></i> Orders</div>
+              <div class="dropdown-item"><i class="fa-light fa-heart icons"></i> Wishlist</div>
+              <div class="dropdown-item"><i class="fa-thin fa-map-location-dot icons"></i> Addresses</div>
+              <div class="dropdown-item"><i class="fa-sharp fa-light fa-tag icons"></i> Coupon</div>
 
-        <div class="search-bar">
-            <form id="search-form" action="/search" method="GET">
-                <input type="text" name="q" id="search-input" placeholder="Search products..." autocomplete="off" />
-                <i class="fa-regular fa-magnifying-glass search-icon" onclick="document.getElementById('search-form').submit();"></i>
-            </form>
-            <div id="suggestions" class="suggestions-box"></div>
-        </div>
+              <% if (currentUser) { %>
 
-        <div class="nav-right">
-            <div class="dropdown">
-                <button class="tooltip" id="profileButton">
-                    <div class="profile">
-                        <p style="margin: 0; padding: 0;">Hello</p>
-                        <p style="margin: 0; padding: 0;" id="username"><%= currentUser ? currentUser.username : "Login" %></p>
-                    </div>
-                    <% if (!currentUser) { %>
-                        <a href="/login" class="tooltiptext" id="tooltipText">Sign In</a>
-                    <% } %>
-                </button>
-                <div class="dropdown-content">
-                    <% if (!currentUser) { %>
-                        <a href="/login">
-                            <div class="top-section" id="topSection">Sign In</div>
-                        </a>
-                    <% } %>
-                    <div class="content">
-                        <div class="left"></div>
-                        <div class="right">
-                            <ul class="dropdown-list" id="dropdownList">
-                                <li><a href="#">Home</a></li>
-                                <li><a href="#">About</a></li>
-                                <li><a href="#">Services</a></li>
-                                <li><a href="#">Products</a></li>
-                                <% if (currentUser) { %>
-                                    <li id="signoutOption"><a href="/logout">Sign out</a></li>
-                                <% } %>
-                            </ul>
-                        </div>
-                    </div>
+                <div class="dropdown-item">
+                  <a href="/logout"> <i class="fa-regular fa-arrow-right-from-bracket icons"></i> Logout</a>
                 </div>
+                <% } %>
+              
             </div>
-
-            <div class="menu-list">
-                <div class="order-button">Your Order</div>
-                <a href="/cart/view">
-                <div class="cart-button"><i class="fa-thin fa-cart-shopping"></i>Cart</div></a>
-            </div>
+          </div>
+          <span class="menu-item"><a href="#" class="menu-link">Return <br /> & Order</a></span>
+          <span class="menu-item"><a href="#" class="menu-link"><i class="fa-light fa-cart-shopping s-icons"></i>
+            </a></span>
         </div>
-    </nav>
+      </div>
+    </div>
+    <div class="search">
+      <form class="search-form" action="/search" method="GET">
+        <input class="search-input" type="text" name="query" id="search-input" placeholder="Search"
+          oninput="fetchSuggestions()" />
+        <button type="submit" class="search-submit">
+          <i class="fa-light fa-magnifying-glass s-icons"></i>
+        </button>
+      </form>
+      <ul class="suggestions-dropdown" id="suggestions-dropdown"></ul>
+    </div>
 
-    <script>
-      document.addEventListener('DOMContentLoaded', () => {
-    const searchInput = document.getElementById('search-input');
-    const suggestionsBox = document.getElementById('suggestions');
-    const MIN_CHARACTERS = 3; // Minimum number of characters before showing suggestions
+    <div class="menu" id="menu">
+      <div class="menu-inner">
+        <div class="dropdown">
+          <strong>
+          <% if (!currentUser) { %>
+            <span class="menu-item" style="white-space: nowrap;">
+              <a href="/login" class="menu-link">
+                <i class="fa-light fa-user s-icons" style="margin: 3px;"></i>
+               Sign In
+                <i class="fa-regular fa-chevron-down s-icons"></i>
+              </a>
+            </span>
+            <% } %>
+              <% if (currentUser) { %>
+                <span class="menu-item" style="white-space: nowrap;">
+                  <a href="/" class="menu-link">
+                    <i class="fa-light fa-user s-icons"></i>
+                    <%= currentUser.username %>
+                      <i class="fa-regular fa-chevron-down s-icons"></i>
+                  </a>
+                </span>
 
-    searchInput.addEventListener('input', async () => {
-        const query = searchInput.value.trim();
-        console.log(`Search query: ${query}`); // Debugging: log the search query
+                <% } %>
+              </strong> 
+                  <div class="dropdown-menu">
+                    <div class="dropdown-item"><i class="fa-light fa-user icons"></i> Profile</div>
+                    <div class="dropdown-item"><i class="fa-light fa-cube icons"></i> Orders</div>
+                    <div class="dropdown-item"><i class="fa-light fa-heart icons"></i> Wishlist</div>
+                    <div class="dropdown-item"><i class="fa-thin fa-map-location-dot icons"></i> Addresses</div>
+                    <div class="dropdown-item"><i class="fa-sharp fa-light fa-tag icons"></i> Coupon</div>
+                    <% if (currentUser) { %>
 
-        if (query.length < MIN_CHARACTERS) {
-            suggestionsBox.innerHTML = '';
-            suggestionsBox.style.display = 'none';
-            return;
-        }
+                      <div class="dropdown-item">
+                        <a href="/logout"> <i class="fa-regular fa-arrow-right-from-bracket icons"></i> Logout</a>
+                      </div>
+                      <% } %>
+                  </div>
+        </div>
+        <span class="menu-item"><a href="#" class="menu-link">Return & Order</a></span>
 
-        try {
-            const response = await fetch(`/search?q=${encodeURIComponent(query)}&suggestions=true`);
-            const suggestions = await response.json();
-            console.log('Suggestions received:', suggestions); // Debugging: log the received suggestions
+        <span class="menu-item"><a href="/cart/view" class="menu-link">
+          <i class="fa-light fa-cart-shopping s-icons cart-total-item"></i>
+            Cart</a>
+            <span id="cart-quantity"><span id="cart-quantity-value"></span></span>
+          </span>
+           
+      </div>
+    </div>
+  </nav>
+</header>
+<nav class="secondary-nav">
+  <ul class="navigation-items">
+    <li><a href=""> <strong> Home</strong></li></a>
+    <li><a href=""> <strong> About</strong></li></a>
+    <li><a href=""> <strong> Reach</strong></li></a>
+    <li><a href=""> <strong> Electronic</strong></li></a>
+    <li><a href=""> <strong> Footwear</strong></li></a>
+    <li><a href=""> <strong> Item</strong></li></a>
+  </ul>
+  
+</nav>
 
-            if (suggestions.length === 0) {
-                suggestionsBox.innerHTML = '<p>No suggestions found.</p>';
-                suggestionsBox.style.display = 'block';
-                return;
-            }
+<script>
+  async function fetchSuggestions() {
+    const input = document.getElementById('search-input');
+    const dropdown = document.getElementById('suggestions-dropdown');
+    const query = input.value.trim();
 
-            suggestionsBox.innerHTML = suggestions.map(suggestion => `
-                <a href="/products/${suggestion._id}/${suggestion.slug}" class="suggestion-item">
-                    <div class="suggestion-content">
-                        <img src="${suggestion.images[0]}" alt="${suggestion.title}" class="suggestion-image">
-                        <div class="suggestion-details">
-                            <div class="suggestion-title">${suggestion.title}</div>
-                            <div class="suggestion-price">$${suggestion.sellingPrice.toFixed(2)}</div>
-                        </div>
-                    </div>
-                </a>
-            `).join('');
-            suggestionsBox.style.display = 'block';
-        } catch (error) {
-            console.error('Error fetching suggestions:', error);
-            // suggestionsBox.innerHTML = '<p>Error fetching suggestions.</p>';
-            // suggestionsBox.style.display = 'block';
-        }
-    });
+    if (query.length < 3) {
+      dropdown.innerHTML = '';
+      dropdown.style.display = 'none'; // Hide the dropdown if the query is less than 3 characters
+      return;
+    }
 
-    document.addEventListener('click', (event) => {
-        if (!event.target.closest('.search-bar')) {
-            suggestionsBox.style.display = 'none';
-        }
-    });
-});
+    try {
+      const response = await fetch(`/search?query=${query}&suggestions=true`);
+      const suggestions = await response.json();
 
-    </script>
+      if (suggestions.length > 0) {
+        dropdown.innerHTML = suggestions.map(suggestion => `
+        <li onclick="redirectToProduct('${suggestion._id}', '${suggestion.slug}')">
+          <img src="${suggestion.images[0]}" alt="${suggestion.title}" class="suggestion-image" />
+          <span>${suggestion.title}</span>
+        </li>
+      `).join('');
+        dropdown.style.display = 'block'; // Show the dropdown when there are results
+      } else {
+        dropdown.innerHTML = '';
+        dropdown.style.display = 'none'; // Hide the dropdown if there are no results
+      }
+    } catch (err) {
+      console.error('Error fetching suggestions:', err);
+      dropdown.innerHTML = '';
+      dropdown.style.display = 'none'; // Hide the dropdown in case of error
+    }
+  }
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const currentUser = <%= JSON.stringify(currentUser || null) %>;
-            const profileButton = document.getElementById('profileButton');
+  function redirectToProduct(id, slug) {
+    window.location.href = `/products/${id}/${slug}`;
+  }
 
-            if (!currentUser) {
-                const tooltipText = document.getElementById('tooltipText');
-                tooltipText.style.visibility = 'visible';
-                tooltipText.style.opacity = '1';
-                tooltipText.classList.add('shake'); // Add shake class to tooltip text
-                setTimeout(() => {
-                    tooltipText.classList.remove('shake'); // Remove shake class after 2 seconds
-                    tooltipText.style.visibility = 'hidden';
-                    tooltipText.style.opacity = '0';
-                }, 2000); // 2 seconds
-            }
-
-            const dropdown = document.querySelector('.navbar .dropdown');
-            const dropdownContent = dropdown.querySelector('.dropdown-content');
-
-            let timeout;
-
-            // Function to show the dropdown content
-            function showDropdown() {
-                clearTimeout(timeout);
-                dropdownContent.style.display = 'block';
-                dropdownContent.style.opacity = '1';
-                dropdownContent.style.visibility = 'visible';
-            }
-
-            // Function to hide the dropdown content with delay
-            function hideDropdown() {
-                timeout = setTimeout(() => {
-                    dropdownContent.style.opacity = '0';
-                    dropdownContent.style.visibility = 'hidden';
-                    // Hide content after the opacity transition completes
-                    dropdownContent.addEventListener('transitionend', () => {
-                        if (dropdownContent.style.opacity === '0') {
-                            dropdownContent.style.display = 'none'; // Corrected from 'hidden'
-                        }
-                    }, { once: true });
-                }, 300); // Delay in milliseconds (0.3 seconds)
-            }
-
-            dropdown.addEventListener('mouseenter', showDropdown);
-            dropdown.addEventListener('mouseleave', hideDropdown);
-
-            // Ensure the dropdown content remains visible while interacting with it
-            dropdownContent.addEventListener('mouseenter', () => {
-                clearTimeout(timeout);
-                dropdownContent.style.opacity = '1';
-                dropdownContent.style.visibility = 'visible';
-            });
-
-            dropdownContent.addEventListener('mouseleave', hideDropdown);
+  document.addEventListener('click', (event) => {
+    const suggestionsDropdown = document.getElementById('suggestions-dropdown');
+    if (!suggestionsDropdown.contains(event.target) && event.target.id !== 'search-input') {
+      suggestionsDropdown.innerHTML = '';
+      suggestionsDropdown.style.display = 'none'; // Hide the dropdown when clicking outside
+    }
+  });
+  async function fetchCartQuantity() {
+      try {
+        const response = await fetch('/cart/quantity', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+        
         });
-    </script>
+        const data = await response.json();
+        if (response.ok) {
+          document.getElementById('cart-quantity-value').textContent = data.totalQuantity;
+        } else {
+          console.error('Failed to fetch cart quantity:', data.error);
+        }
+      } catch (error) {
+        console.error('Error fetching cart quantity:', error);
+      }
+    }
+    fetchCartQuantity();
+
+</script>

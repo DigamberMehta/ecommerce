@@ -18,6 +18,145 @@
         display: flex;
         align-items: center;
     }
+
+
+    .review-section {
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    /* background-color: #f9f9f9; */
+    font-family: "Rubik", sans-serif;
+  }
+  
+  .write-review {
+    margin-bottom: 40px;
+    font-family: "Rubik", sans-serif;
+  }
+  
+  .write-review h2,
+  .reviews h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+  }
+  
+  .review-submit {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    background-color: #28a745;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .review-submit:hover {
+    background-color: #218838;
+  }
+  
+  .reviews .review {
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #fff;
+    margin-bottom: 20px;
+  }
+  
+  .review h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: #333;
+  }
+  
+  .review-rating {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #ff9900;
+  }
+  
+  .review p {
+    font-size: 16px;
+    margin-bottom: 10px;
+    color: #555;
+  }
+  
+  .review small {
+    font-size: 14px;
+    color: #999;
+  }
+  
+  .review-image {
+    margin-top: 10px;
+  }
+  
+  .modal {
+    display: none; 
+    position: fixed; 
+    z-index: 1; 
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    overflow: auto; 
+    background-color: rgb(0,0,0); 
+    background-color: rgba(0,0,0,0.4); 
+  }
+  
+  .modal.show {
+    display: block;
+  }
+  
+  .modal-content {
+    background-color: #fefefe;
+    margin: 5% auto; 
+    padding: 2rem;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 500px;
+  }
+  
+  .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+  
+  .close:hover,
+  .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  @media (max-width: 600px) {
+    .review-section {
+      padding: 10px;
+    }
+    .write-review {
+      margin-bottom: 20px;
+  }
+  }
 </style>
 
 <div class="show-page">
@@ -57,7 +196,7 @@
                 </div>
                 <!-- Add to Cart Button -->
                 <div class="btns">
-                    <button class="product-show-btn-add-to-cart" data-product-id="<%= product._id %>">Add to Cart</button>
+                    <button class="product-show-btn-add-to-cart" data-product-id="<%= product._id %>" onclick="reloadPage()">Add to Cart</button>
                     <button class="product-show-btn-buy-now">Buy Now</button>
                 </div>
                 <div class="product-show-highlight">
@@ -87,6 +226,59 @@
                 </div>
             </div>
         </div>
+        <div className="full-width-preview">
+           
+                <div class="review-section">
+                    <div class="write-review">
+                      <button id="openModal" class="review-submit">Write a Review</button>
+                    </div>
+                    
+                    <div id="reviewModal" class="modal">
+                      <div class="modal-content">
+                        <span class="close">&times;</span>
+                        <h2>Write a Review</h2>
+                        <form>
+                          <div class="form-group">
+                            <label for="review-title">Title</label>
+                            <input type="text" id="review-title" name="title" placeholder="Enter the title of your review">
+                          </div>
+                          <div class="form-group">
+                            <label for="review-body">Review</label>
+                            <textarea id="review-body" name="body" placeholder="Write your review here" rows="5"></textarea>
+                          </div>
+                          <div class="form-group">
+                            <label for="review-rating">Rating</label>
+                            <select id="review-rating" name="rating">
+                              <option value="5">5 Stars</option>
+                              <option value="4">4 Stars</option>
+                              <option value="3">3 Stars</option>
+                              <option value="2">2 Stars</option>
+                              <option value="1">1 Star</option>
+                            </select>
+                          </div>
+                          <div class="form-group">
+                            <label for="review-image">Upload Image</label>
+                            <input type="file" id="review-image" name="image">
+                          </div>
+                          <button type="submit" class="review-submit">Submit Review</button>
+                        </form>
+                      </div>
+                    </div>
+                
+                    <div class="reviews">
+                      <h2>Customer Reviews</h2>
+                      <div class="review">
+                        <h3>Review Title</h3>
+                        <div class="review-rating">Rating: ★★★★☆</div>
+                        <div class="review-image">
+                          <img src="path-to-image" alt="Review">
+                        </div>
+                        <p>This is a sample review. It provides an example of how customer reviews will be displayed.</p>
+                        <small>Reviewed by: Customer Name</small>
+                      </div>
+                      <!-- Additional reviews will be added here -->
+                    </div>
+                  </div>
     </div>
 </div>
 
@@ -136,6 +328,7 @@
 
                     if (data.success) {
                         button.textContent = 'Added to Cart';
+                        
                         setTimeout(() => {
                             button.textContent = 'Add to Cart';
                         }, 2000);
@@ -152,4 +345,16 @@
             }
         });
     });
+
+    document.getElementById('openModal').addEventListener('click', function() {
+      document.getElementById('reviewModal').classList.add('show');
+    });
+
+    document.querySelector('.close').addEventListener('click', function() {
+      document.getElementById('reviewModal').classList.remove('show');
+    });
+
+    function reloadPage() {
+location.reload();
+ }
 </script>

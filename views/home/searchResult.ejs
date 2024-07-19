@@ -2,20 +2,65 @@
 <div class="container">
     <div class="filter">
         <div class="filter-option">
-            <ul>
-                <li class="filter-item">a</li>
-                <li class="filter-item">b</li>
-                <li class="filter-item">c</li>
-                <li class="filter-item">d</li>
-                <li class="filter-item">e</li>
-            </ul>
+            <form>
+                <div class="filter-group">
+                    <label class="filter-title">Categories</label>
+                    <ul>
+                        <li class="filter-item">
+                            <input type="checkbox" id="category1" name="category1">
+                            <label for="category1">Category 1</label>
+                        </li>
+                        <li class="filter-item">
+                            <input type="checkbox" id="category2" name="category2">
+                            <label for="category2">Category 2</label>
+                        </li>
+                        <li class="filter-item">
+                            <input type="checkbox" id="category3" name="category3">
+                            <label for="category3">Category 3</label>
+                        </li>
+                        <!-- Add more categories as needed -->
+                    </ul>
+                </div>
+    
+                <div class="filter-group">
+                    <label class="filter-title" for="price-range">Price Range</label>
+                    <input type="range" id="price-range" name="price" min="0" max="1000" step="50">
+                    <div class="price-labels">
+                        <span>$0</span>
+                        <span>$1000</span>
+                    </div>
+                </div>
+    
+                <div class="filter-group">
+                    <label class="filter-title">Sort By</label>
+                    <ul>
+                        <li class="filter-item">
+                            <input type="radio" id="sort1" name="sort" value="price-asc">
+                            <label for="sort1">Price: Low to High</label>
+                        </li>
+                        <li class="filter-item">
+                            <input type="radio" id="sort2" name="sort" value="price-desc">
+                            <label for="sort2">Price: High to Low</label>
+                        </li>
+                        <li class="filter-item">
+                            <input type="radio" id="sort3" name="sort" value="popularity">
+                            <label for="sort3">Popularity</label>
+                        </li>
+                        <!-- Add more sort options as needed -->
+                    </ul>
+                </div>
+    
+                <button type="submit" class="apply-filters">Apply Filters</button>
+            </form>
         </div>
     </div>
+    
     <div class="main-content">
         <!-- <h1>Search Results for "<%= query %>"</h1> -->
         <div class="content-wrapper">
             <% if (products.length > 0) { %>
                 <% products.forEach(product => { %>
+                    <a href="/products/<%= product._id %>/<%= product.slug %>">
                     <div class="card">
                         <div class="card-image">
                             <img src="<%= product.images[0] %>" alt="<%= product.title %>">
@@ -24,17 +69,20 @@
                             <div class="card-title"><%= product.title %></div>
                             <div class="card-bought">5K+ bought in past month</div>
                             <div class="card-price">
-                                <span class="main-price">₹<%= product.price %></span>
-                                <span class="mrp">₹<%= (product.price * 1.1).toFixed(2) %></span>
+                                <span class="main-price">₹<%= product.mrpPrice %></span>
+                                <span class="mrp">₹<%= (product.sellingPrice) %></span>
                                 <span class="discount">(10% off)</span>
                             </div>
                             <div class="card-card-discount">Flat INR 1000 Off on ICICI Credit Cards</div>
                             <div class="card-delivery">FREE delivery</div>
                             <div class="card-button">
-                                <button class="add-to-cart-btn">Add to Cart</button>
+                                <button class="add-to-cart-btn" data-product-id="<%= product._id %>" onclick="reloadPage()" >
+                                    Add to Cart
+                                </button>
                             </div>
                         </div>
                     </div>
+                </a>
                 <% }); %>
             <% } else { %>
                 <p>No products found.</p>
@@ -42,3 +90,74 @@
         </div>
     </div>
 </div>
+<script>
+    // Add to Cart button click event
+document.querySelector('.add-to-cart-btn').addEventListener('click', async function () {
+            const button = this;
+            const productId = button.getAttribute('data-product-id');
+            console.log('Product ID:', productId);
+
+            try {
+                const response = await fetch('/cart/add', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ productId })
+                });
+
+                if (response.status === 401) {
+                    // Redirect to login page if not authenticated
+                    window.location.href = '/login';
+                    return;
+                }
+
+                // Check if response is JSON
+                const contentType = response.headers.get('content-type');
+                if (contentType && contentType.includes('application/json')) {
+                    const data = await response.json();
+                    console.log('Response:', data);
+
+                    if (data.success) {
+                        button.textContent = 'Added to Cart';
+                        setTimeout(() => {
+                            button.textContent = 'Add to Cart';
+                        }, 2000);
+                    } else {
+                        alert(data.message || 'Failed to add product to cart. Please try again.');
+                    }
+                } else {
+                    console.error('Unexpected response format:', contentType);
+                    alert('An unexpected error occurred. Please try again.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                
+            }
+        });
+        function reloadPage() {
+        // Optionally, you could add code here to handle the cart addition before reloading
+        location.reload();
+    }
+    document.addEventListener('DOMContentLoaded', function() {
+    const button = document.querySelector('.add-to-cart-btn');
+    if (button) {
+        button.addEventListener('click', function(event) {
+            // Prevent default behavior if needed
+            event.preventDefault();
+
+            // Perform your action here, e.g., reloadPage()
+            reloadPage();
+
+            // Propagate the event to the parent (if needed)
+            // You can also manually dispatch the event if required
+            const parentDiv = button.closest('.card-button');
+            if (parentDiv) {
+                parentDiv.dispatchEvent(new Event('click', { bubbles: true }));
+            }
+        });
+    }
+});
+
+
+</script>

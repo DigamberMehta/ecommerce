@@ -1,8 +1,3 @@
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    /* background-color: #f0f0f0; */
-}
 
 .container {
     display: flex;
@@ -12,11 +7,6 @@ body {
     /* background-color: white; */
 }
 
-.filter {
-    flex: 0 1 15%;
-    margin-top: 7px;
-    /* border-right: 10px solid #efefef; */
-}
 
 .main-content {
     flex: 1 0 60%;
@@ -130,18 +120,65 @@ ul {
     padding: 0;
     margin: 0;
 }
-
-.filter-item {
-    padding: 0.5rem 1rem;
-    margin-bottom: 0.5rem;
-    background-color: #fff;
-    border-bottom: 1px solid #e4e7ed;
-    cursor: pointer;
-    /* opacity: 0.5; */
-}
-
 .category-title {
     padding: 0.5rem 1rem;
     font-size: 18px;
     font-weight: 600;
 }
+
+.filter {
+    flex: 0 1 20%;
+    margin-top: 7px;
+    padding: 1rem;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    border: 1px solid #e4e7ed;
+}
+
+.filter-group {
+    margin-bottom: 1.5rem;
+}
+
+.filter-title {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.filter-item {
+    padding: 0.5rem 0;
+    margin-bottom: 0.5rem;
+    background-color: #fff;
+    border-bottom: 1px solid #e4e7ed;
+    cursor: pointer;
+}
+
+.filter-item input {
+    margin-right: 0.5rem;
+}
+
+.price-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.apply-filters {
+    display: block;
+    width: 100%;
+    padding: 0.75rem;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.apply-filters:hover {
+    background-color: #0056b3;
+}
+

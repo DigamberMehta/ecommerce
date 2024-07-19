@@ -1,0 +1,54 @@
+<div class="browsing-section">
+    <div class="browsing-section-heading">
+        <h2>Suggested From your Browsing</h2>
+    </div>
+    <button class="scroll-btn left" onclick="scrollLeft()"><i class="fas fa-chevron-left"></i></button>
+    <div class="browsing-container" id="browsingContainer">
+        <div class="browsing-cards">
+            <div class="browsing-card">
+                <img class="browsing-card-img" src="image1.jpg" alt="Image 1">
+                <p class="browsing-card-description">Description 1</p>
+            </div>
+            <div class="browsing-card">
+                <img class="browsing-card-img" src="image1.jpg" alt="Image 1">
+                <p class="browsing-card-description">Description 1</p>
+            </div>
+            <div class="browsing-card">
+                <img class="browsing-card-img" src="image1.jpg" alt="Image 1">
+                <p class="browsing-card-description">Description 1</p>
+            </div>
+            <div class="browsing-card">
+                <img class="browsing-card-img" src="image1.jpg" alt="Image 1">
+                <p class="browsing-card-description">Description 1</p>
+            </div>
+            <div class="browsing-card">
+                <img class="browsing-card-img" src="image1.jpg" alt="Image 1">
+                <p class="browsing-card-description">Description 1</p>
+            </div>
+            <div class="browsing-card">
+                <img class="browsing-card-img" src="image1.jpg" alt="Image 1">
+                <p class="browsing-card-description">Description 1</p>
+            </div>
+            <div class="browsing-card">
+                <img class="browsing-card-img" src="image1.jpg" alt="Image 1">
+                <p class="browsing-card-description">Description 1</p>
+            </div>
+        </div>
+    </div>
+    <button class="scroll-btn right" onclick="scrollRight()"><i class="fas fa-chevron-right"></i></button>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+    const browsingContainer = document.getElementById('browsingContainer');
+
+    window.scrollLeft = function() {
+        browsingContainer.scrollBy({ left: -200, behavior: 'smooth' });
+    };
+
+    window.scrollRight = function() {
+        browsingContainer.scrollBy({ left: 200, behavior: 'smooth' });
+    };
+});
+
+</script>

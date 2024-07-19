@@ -64,4 +64,65 @@ router.get('/view', isLoggedIn, async (req, res) => {
   }
 });
 
+
+router.post('/update', isLoggedIn, async (req, res) => {
+  const { cartItemId, newQuantity } = req.body;
+
+  try {
+      const cartItem = await CartItem.findById(cartItemId);
+
+      if (!cartItem) {
+          return res.json({ success: false, message: 'Cart item not found' });
+      }
+
+      cartItem.quantity = newQuantity;
+      await cartItem.save();
+
+      const userId = req.user._id;
+      const cartItems = await CartItem.find({ user: userId }).populate('product');
+      const newSubtotal = cartItems.reduce((sum, item) => sum + item.product.sellingPrice * item.quantity, 0);
+
+      res.json({ success: true, newSubtotal });
+  } catch (error) {
+      console.error('Error updating cart item quantity:', error);
+      res.json({ success: false, message: 'An error occurred. Please try again.' });
+  }
+});
+router.post('/remove', isLoggedIn, async (req, res) => {
+  const { cartItemId } = req.body;
+
+  try {
+      // Delete the cart item
+      const result = await CartItem.deleteOne({ _id: cartItemId });
+
+      if (result.deletedCount === 0) {
+          return res.json({ success: false, message: 'Cart item not found' });
+      }
+
+      // Remove the item from the user's cart array
+      const userId = req.user._id;
+      await User.updateOne({ _id: userId }, { $pull: { cart: cartItemId } });
+
+      // Calculate the new subtotal
+      const cartItems = await CartItem.find({ user: userId }).populate('product');
+      const newSubtotal = cartItems.reduce((sum, item) => sum + item.product.sellingPrice * item.quantity, 0);
+
+      res.json({ success: true, newSubtotal });
+  } catch (error) {
+      console.error('Error removing cart item:', error);
+      res.json({ success: false, message: 'An error occurred. Please try again.' });
+  }
+});
+
+router.get('/quantity',  async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const cartItems = await CartItem.find({ user: userId });
+    const totalQuantity = cartItems.reduce((total, item) => total + item.quantity, 0);
+    res.json({ totalQuantity });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to get cart quantity' });
+  }
+});
+
 module.exports = router;

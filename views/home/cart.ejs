@@ -1,13 +1,7 @@
 <% layout('layouts/boilerplate') %>
 
 <style>
-    body {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        background-color: #EAEDED !important;
-    }
-
+    /* Existing styles */
     .cart-page {
         margin: 0 auto;
         width: 98%;
@@ -123,6 +117,11 @@
         opacity: 0.6;
     }
 
+    .quantity-selector-container {
+        display: flex;
+        align-items: center;
+    }
+
     .quantity-selector {
         padding: 0.425rem 1.1rem;
         font-size: 1rem;
@@ -133,11 +132,36 @@
         border: 1px solid black;
         cursor: pointer;
         transition: background-color 0.3s ease;
+        margin-right: 0.5rem;
     }
 
     .quantity-selector:hover {
         opacity: 0.8;
     }
+
+    .quantity-buttons {
+        display: flex;
+        align-items: center;
+    }
+
+    .quantity-button {
+        padding: 0.425rem 0.75rem;
+        font-size: 1rem;
+        color: #000;
+        background-color: #ffffff;
+        border: 1px solid black;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        margin: 0 0.25rem;
+        border-radius: 4px;
+    }
+
+    .quantity-button:hover {
+        opacity: 0.8;
+    }
+
+
+    
 
     .summary-card {
         border: 0.0625rem solid #f3f2f2;
@@ -149,11 +173,23 @@
         font-size: 1.2rem;
         font-weight: bold;
         margin-bottom: 1rem;
+        border-bottom: 1px solid #f3f2f2;
+        padding-bottom: 0.5rem;
     }
 
     .summary-item {
+        display: flex;
+        justify-content: space-between;
         font-size: 1rem;
         margin-bottom: 0.5rem;
+    }
+
+    .summary-total {
+        font-size: 1.2rem;
+        font-weight: bold;
+        border-top: 1px solid #f3f2f2;
+        padding-top: 0.5rem;
+        margin-top: 0.5rem;
     }
 
     .checkout-button {
@@ -173,7 +209,8 @@
     .checkout-button:hover {
         opacity: 0.8;
     }
-    .shopping-heading h1{
+
+    .shopping-heading h1 {
         font-size: 1.8rem;
         font-weight: 400;
         margin-bottom: 1.2rem;
@@ -200,12 +237,55 @@
             padding-top: 1rem;
         }
     }
+.cart-option-container{
+    margin-left: 1rem;
+}
+    .cart-options{
+        display: flex;
+        justify-content: space-between;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+                                         
+    .remove-button{
+        color: #292840;
+        cursor: pointer;
+    }
+    .manual-quantity{
+        width: 5rem;
+           padding: 0.425rem 1.1rem;
+          font-size: 1rem;
+          color: #000;
+         background-color: #ffffff;
+         border: none;
+         border-radius: 100px;
+         border: 1px solid black;
+         cursor: pointer;
+        transition: background-color 0.3s ease;
+         margin-right: 0.5rem;
+    }
+    .update-button {
+        padding: 0.325rem 0.45rem;
+        font-size: 0.75rem;
+        color: #fff;
+        background-color: #ff9f00;
+        border: none;
+        border-radius: 100px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        display: none;
+        margin-left: 0.5rem;
+    }
+
+    .update-button:hover {
+        opacity: 0.8;
+    }
 </style>
 
 <div class="cart-page">
     <div class="cart-wrapper">
         <div class="cart-items">
-            
             <div class="items-container">
                 <div class="shopping-heading">
                     <h1>Shopping Cart</h1>
@@ -227,11 +307,27 @@
                                 <div class="card-discount">Flat INR 1000 Off on ICICI CreditCards</div>
                                 <div class="item-delivery">FREE delivery Tue, 9 Jul</div>
                                 <div class="quantity-selector-container">
-                                    <select class="quantity-selector">
-                                        <% for (let i = 1; i <= 10; i++) { %>
-                                            <option value="<%= i %>" <%= item.quantity === i ? 'selected' : '' %>> Quantity: <%= i %></option>
-                                          <% } %>
-                                    </select>
+
+                                    <div class="quantity-buttons">
+                                        <button class="quantity-button decrement">-</button>
+                                        <select class="quantity-selector">
+                                            <% for (let i = 1; i <= 10; i++) { %>
+                                                <option value="<%= i %>" <%= item.quantity === i ? 'selected' : '' %>> Quantity: <%= i %></option>
+                                            <% } %>
+                                            <option value="more">Add more</option>
+                                        </select>
+                                        <input type="text" class="manual-quantity" style="display: none;" min="1" value="<%= item.quantity %>">
+                                        <button class="quantity-button increment">+</button>
+                                    </div>
+                                    
+                                    <button class="update-button">Update</button>
+                                     <div class="cart-option-container">
+                                        <ul class="remove-item save-later cart-options">
+                                            <li class="remove-button"><i class="fa-light fa-trash"></i>Remove&nbsp;</li>
+                                            |
+                                            <li class="save-later"> &nbsp; Save it for later</li>
+                                        </ul>
+                                     </div>
                                 </div>
                             </div>
                         </div>
@@ -257,8 +353,15 @@
     document.querySelectorAll('.quantity-selector').forEach(select => {
         select.addEventListener('change', async (event) => {
             const cartItemId = event.target.closest('.cart-item').dataset.cartItemId;
-            const newQuantity = event.target.value;
+            const newQuantity = event.target.value === 'more' ? parseInt(event.target.nextElementSibling.value) : event.target.value;
             const productPrice = event.target.closest('.cart-item').dataset.productPrice;
+
+            if (event.target.value === 'more') {
+                event.target.style.display = 'none';
+                event.target.nextElementSibling.style.display = 'block';
+                event.target.nextElementSibling.focus();
+                return;
+            }
 
             try {
                 const response = await fetch('/cart/update', {
@@ -272,7 +375,7 @@
                 const data = await response.json();
 
                 if (data.success) {
-                    updateSubtotal();
+                    updateSubtotal(data.newSubtotal);
                 } else {
                     alert('Failed to update quantity. Please try again.');
                 }
@@ -282,13 +385,118 @@
         });
     });
 
-    function updateSubtotal() {
-        let subtotal = 0;
-        document.querySelectorAll('.cart-item').forEach(item => {
-            const quantity = parseInt(item.querySelector('.quantity-selector').value);
-            const price = parseFloat(item.dataset.productPrice);
-            subtotal += quantity * price;
+    document.querySelectorAll('.manual-quantity').forEach(input => {
+        input.addEventListener('input', (event) => {
+            const updateButton = event.target.closest('.quantity-selector-container').querySelector('.update-button');
+            updateButton.style.display = 'inline-block';
         });
-        document.getElementById('subtotal').textContent = subtotal.toFixed(2);
+
+        input.addEventListener('change', (event) => {
+            if (event.target.value !== '') {
+                const updateButton = event.target.closest('.quantity-selector-container').querySelector('.update-button');
+                updateButton.style.display = 'inline-block';
+            }
+        });
+    });
+
+    document.querySelectorAll('.update-button').forEach(button => {
+        button.addEventListener('click', async (event) => {
+            const cartItem = event.target.closest('.cart-item');
+            const cartItemId = cartItem.dataset.cartItemId;
+            const newQuantity = cartItem.querySelector('.manual-quantity').value;
+            const productPrice = cartItem.dataset.productPrice;
+
+            try {
+                const response = await fetch('/cart/update', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ cartItemId, newQuantity })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    updateSubtotal(data.newSubtotal);
+                    event.target.style.display = 'none';
+                } else {
+                    alert('Failed to update quantity. Please try again.');
+                }
+            } catch (error) {
+                alert('An error occurred. Please try again.');
+            }
+        });
+    });
+
+    document.querySelectorAll('.quantity-button.increment').forEach(button => {
+        button.addEventListener('click', async (event) => {
+            const select = event.target.closest('.quantity-buttons').querySelector('.quantity-selector');
+            if (select.style.display !== 'none') {
+                const currentQuantity = parseInt(select.value);
+                if (currentQuantity < 10) {
+                    select.value = currentQuantity + 1;
+                    select.dispatchEvent(new Event('change'));
+                } else {
+                    select.value = 'more';
+                    select.dispatchEvent(new Event('change'));
+                }
+            } else {
+                const input = event.target.closest('.quantity-buttons').querySelector('.manual-quantity');
+                input.value = parseInt(input.value) + 1;
+                input.dispatchEvent(new Event('change'));
+            }
+        });
+    });
+
+    document.querySelectorAll('.quantity-button.decrement').forEach(button => {
+        button.addEventListener('click', async (event) => {
+            const select = event.target.closest('.quantity-buttons').querySelector('.quantity-selector');
+            if (select.style.display !== 'none') {
+                const currentQuantity = parseInt(select.value);
+                if (currentQuantity > 1) {
+                    select.value = currentQuantity - 1;
+                    select.dispatchEvent(new Event('change'));
+                }
+            } else {
+                const input = event.target.closest('.quantity-buttons').querySelector('.manual-quantity');
+                if (parseInt(input.value) > 1) {
+                    input.value = parseInt(input.value) - 1;
+                    input.dispatchEvent(new Event('change'));
+                }
+            }
+        });
+    });
+
+    document.querySelectorAll('.remove-button').forEach(button => {
+        button.addEventListener('click', async (event) => {
+            const cartItemId = event.target.closest('.cart-item').dataset.cartItemId;
+
+            try {
+                const response = await fetch('/cart/remove', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ cartItemId })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    event.target.closest('.cart-item').remove();
+                    updateSubtotal(data.newSubtotal);
+                } else {
+                    alert('Failed to remove item. Please try again.');
+                }
+            } catch (error) {
+                alert('An error occurred. Please try again.');
+            }
+        });
+    });
+
+    function updateSubtotal(newSubtotal) {
+        document.getElementById('subtotal').textContent = newSubtotal.toFixed(2);
+        document.getElementById('item-count').textContent = document.querySelectorAll('.cart-item').length;
     }
 </script>
