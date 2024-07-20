@@ -4,6 +4,7 @@ const passLocalMongoose = require('passport-local-mongoose');
 const userSchema = new mongoose.Schema({
   username: { type: String, required: true },
   email: { type: String, required: true, unique: true },
+  phone: { type: String, unique: true },  // Ensure phone is unique
   name: String,
   address: [
     {
@@ -14,7 +15,6 @@ const userSchema = new mongoose.Schema({
       country: String
     }
   ],
-  phone: String,
   orders: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Order' }],
   wishlist: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Product' }],
   cart: [{ type: mongoose.Schema.Types.ObjectId, ref: 'CartItem' }],
@@ -35,6 +35,6 @@ const userSchema = new mongoose.Schema({
   ]
 });
 
-userSchema.plugin(passLocalMongoose);
+userSchema.plugin(passLocalMongoose, { usernameField: 'email' }); // Use email for passport-local-mongoose
 
 module.exports = mongoose.model('User', userSchema);

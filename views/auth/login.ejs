@@ -144,6 +144,7 @@
     </style>
 </head>
 <body>
+    <%- include('../flash/flash.ejs') %> 
     <div class="container">
         <h1 class="heading">Sign In</h1>
         <div class="third-party-login">
@@ -161,13 +162,18 @@
         </button>
     </div>
         <div class="divider"></div>
-        <form action="/login" class="details" method="POST">
-            <label for="username">Username</label>
-            <input type="text" id="username" name="username" placeholder="Enter your username">
-            <label for="password">Password</label>
-            <input type="password" id="password" name="password" placeholder="Enter your password">
-            <button type="submit" onclick="animateButton(this)">Sign In</button>
-        </form>
+      <!-- auth/login.ejs -->
+<form action="/login" class="details" method="POST">
+
+    <label for="emailOrPhone">Email or Phone:</label>
+    <input type="text" id="emailOrPhone" name="emailOrPhone" required>
+
+
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" required>
+
+  <button type="submit">Login</button>
+</form>
         <div class="other-options">
             <a href="/signup" class="create-account">Create an account</a>
             <!-- <a href="/forgot-password" class="forgot-password">Forgot password?</a> -->

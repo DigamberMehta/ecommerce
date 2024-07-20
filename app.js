@@ -16,6 +16,7 @@ const homeRoutes = require('./routes/home');
 const searchRoutes = require('./routes/search');
 const showRoutes = require('./routes/show');
 const browsingHistoryRoutes = require('./routes/browsingHistory');
+const CustomStrategy = require('passport-custom').Strategy;
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -50,7 +51,47 @@ app.use(flash());
 
 app.use(passport.initialize());
 app.use(passport.session());
-passport.use(new LocalStrategy(User.authenticate()));
+
+passport.use('custom', new CustomStrategy(
+  async function(req, done) {
+    try {
+      let { emailOrPhone, password } = req.body;
+
+      // Convert emailOrPhone to lowercase and trim extra spaces
+      emailOrPhone = emailOrPhone.toLowerCase().trim();
+
+      console.log(`Login attempt: emailOrPhone=${emailOrPhone}, password=${password}`);
+
+      // Find user by email or phone
+      const user = await User.findOne({
+        $or: [{ email: emailOrPhone }, { phone: emailOrPhone }]
+      });
+
+      if (!user) {
+        console.log('User not found');
+        return done(null, false, { message: 'Incorrect email or phone.' });
+      }
+
+      // Authenticate the user
+      user.authenticate(password, function(err, user, passwordError) {
+        if (err) {
+          console.log(`Authentication error: ${err}`);
+          return done(err);
+        }
+        if (passwordError) {
+          console.log(`Password error: ${passwordError.message}`);
+          return done(null, false, { message: passwordError.message });
+        }
+        console.log('Authentication successful');
+        return done(null, user);
+      });
+    } catch (err) {
+      console.log(`Error during authentication: ${err}`);
+      return done(err);
+      req.flash('error', 'Something went wrong');
+    }
+  }
+));
 
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
@@ -61,6 +102,7 @@ app.use((req, res, next) => {
   res.locals.currentUser = req.user;
   next();
 });
+
 app.get("/", (req, res) => {
   res.redirect("/home");
 });
@@ -69,13 +111,10 @@ app.use("/", userRouter);
 app.use('/cart', cartRoutes);
 app.use('/', homeRoutes);
 app.use('/', showRoutes);
-app.use('/', searchRoutes); 
-app.use('/' ,browsingHistoryRoutes)
-
+app.use('/', searchRoutes);
+app.use('/' ,browsingHistoryRoutes);
 
 const port = 3000;
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
-
- 
