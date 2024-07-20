@@ -1,8 +1,12 @@
 <% layout('layouts/boilerplate') %>
+<%- include('../flash/flash.ejs') %> 
+
+
+
 
     <div class="authentication-container">
     <div class="container-auth">
-      <h1 class="heading">Create Account</h1>
+      <h1 class="heading">Forgot Password</h1>
       <div class="box">
         <div class="main">
           <div class="third-party-login">
@@ -22,58 +26,24 @@
           </div>
           <div class="divider"></div>
 
-          <form action="/signup" class="details" method="POST">
-            <label for="name">Name:</label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              placeholder="Enter your name"
-              required
-            />
-
-            <label for="newUsername">Email:</label>
-            <input
-              type="email"
-              id="newUsername"
-              name="email"
-              placeholder="Enter your email"
-              required
-            />
-
-            <label for="phoneNumber">phone:</label>
-            <input
-              type="text"
-              id="phoneNumber"
-              name="phone"
-              placeholder="Enter your phone"
-              required
-            />
-
-            <label for="newPassword">Password:</label>
-            <input
-              type="password"
-              id="newPassword"
-              name="password"
-              placeholder="Enter your password"
-              required
-            />
+        
+          <form action="/forgot" class="details" method="POST">
+            <div>
+              <label for="email">Email:</label>
+              <input type="email" name="email" id="email" required style="width: 100%;">
+            </div>
+            <button type="submit" class="auth-submit">Submit</button>
+          </form>
             <!-- 
                     <label for="confirmPassword">Confirm Password:</label>
                     <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm your password"> -->
-
-            <button type="submit" onclick="animateButton(this)" class="auth-submit">
-              Create Account
-            </button>
           </form>
 
           <div class="other-options">
             <a href="/login" class="sign-in"
               >Already have an account? Sign in</a
             >
-            <a href="/forgot" class="forgot-password"
-            >Forgot password?</a
-          >
+          
           </div>
         </div>
       </div>
@@ -87,4 +57,38 @@
         }, 300); // Adjust the duration to match the transition duration
       }
     </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

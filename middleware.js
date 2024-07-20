@@ -13,7 +13,7 @@ module.exports.isLoggedIn = (req, res, next) => {
       req.flash("error", "You must be signed in first!");
       return res.redirect("/login");
     }
-    console.log('User is authenticated.');
+    // console.log('User is authenticated.');
     next();
   } catch (error) {
     console.error(`Error in isLoggedIn middleware: ${error.message}`);

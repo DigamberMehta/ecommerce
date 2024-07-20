@@ -10,7 +10,7 @@ function camelCaseToTitleCase(camelCase) {
       .replace(/^./, function(str) { return str.toUpperCase(); }); // Capitalize the first letter
   }
 
-router.get('/products/:id/:slug', isLoggedIn, async (req, res) => {
+router.get('/products/:id/:slug', async (req, res) => {
     try {
       const { id, slug } = req.params;
       const product = await Product.findOne({ _id: id, slug: slug });

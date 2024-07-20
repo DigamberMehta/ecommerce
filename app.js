@@ -6,7 +6,7 @@ const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
 const bodyParser = require("body-parser");
 const passport = require('passport');
-const LocalStrategy = require('passport-local');
+
 const User = require('./models/user');
 const session = require('express-session');
 const flash = require('connect-flash');
@@ -16,7 +16,11 @@ const homeRoutes = require('./routes/home');
 const searchRoutes = require('./routes/search');
 const showRoutes = require('./routes/show');
 const browsingHistoryRoutes = require('./routes/browsingHistory');
+const authGoogleRoutes = require('./routes/authGoogle');
+const nodemailerRoutes = require('./routes/nodemailer');
 const CustomStrategy = require('passport-custom').Strategy;
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
+require('dotenv').config();
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -92,6 +96,44 @@ passport.use('custom', new CustomStrategy(
     }
   }
 ));
+passport.use(new GoogleStrategy({
+  clientID: process.env.GOOGLE_CLIENT_ID,
+  clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+  callbackURL: "http://localhost:3000/auth/google/callback"
+},
+async (accessToken, refreshToken, profile, done) => {
+  console.log('Google Strategy Callback');
+  try {
+    // Check if a user with the same Google ID exists
+    const existingGoogleUser = await User.findOne({ googleId: profile.id });
+    if (existingGoogleUser) {
+      console.log('User Found');
+      return done(null, existingGoogleUser);
+    }
+    
+    // Check if a user with the same email exists
+    const email = profile.emails[0].value;
+    const existingEmailUser = await User.findOne({ email: email });
+    if (existingEmailUser) {
+      console.log('Email already registered:', email);
+      return done(null, false, { message: `Email ${email} is already registered` });
+    }
+
+    // If no user exists with the same email, create a new user
+    const newUser = await new User({
+      googleId: profile.id,
+      name: profile.displayName,
+      email: email
+    }).save();
+    console.log('New User Created');
+    done(null, newUser);
+  } catch (err) {
+    console.log('Error:', err);
+    done(err);
+  }
+}));
+
+
 
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
@@ -112,7 +154,10 @@ app.use('/cart', cartRoutes);
 app.use('/', homeRoutes);
 app.use('/', showRoutes);
 app.use('/', searchRoutes);
-app.use('/' ,browsingHistoryRoutes);
+app.use('/', browsingHistoryRoutes);
+app.use('/auth', authGoogleRoutes);
+app.use('/', nodemailerRoutes);
+
 
 const port = 3000;
 app.listen(port, () => {

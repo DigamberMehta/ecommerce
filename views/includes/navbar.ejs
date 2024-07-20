@@ -148,7 +148,7 @@ body.no-scroll {
             <span class="menu-item" style="white-space: nowrap;">
               <a href="/" class="menu-link">
                 <i class="fa-light fa-user s-icons"></i>
-                <%= currentUser.username %>
+                <%= currentUser.name %>
                 <i class="fa-regular fa-chevron-down s-icons"></i>
               </a>
             </span>
@@ -171,20 +171,32 @@ body.no-scroll {
         <span class="menu-item">
           <% if (currentUser) { %>
             <a href="/cart/view" class="menu-link">
-              <i class="fa-light fa-cart-shopping s-icons cart-total-item"></i>
+              <div class="cart-icon-wrapper">
+                <i class="fa-light fa-cart-shopping s-icons cart-total-item"></i>
+                <span id="cart-quantity">
+                  <span id="cart-quantity-value"></span>
+                </span>
+              </div>
               Cart
             </a>
           <% } %>
+        
           <% if(!currentUser) { %>
             <a href="/login" class="menu-link">
-              <i class="fa-light fa-cart-shopping s-icons cart-total-item"></i>
+              <div class="cart-icon-wrapper">
+                <i class="fa-light fa-cart-shopping s-icons cart-total-item"></i>
+                <% if (currentUser) { %>
+                  <span id="cart-quantity">
+                    <span id="cart-quantity-value"></span>
+                  </span>
+                <% } %>
+
+              </div>
               Cart
             </a>
           <% } %>
-          <% if (currentUser) { %>
-            <span id="cart-quantity"><span id="cart-quantity-value"></span></span>
-          <% } %>
         </span>
+        
       </div>
     </div>
   </nav>
@@ -208,7 +220,7 @@ body.no-scroll {
       <% if(currentUser) { %>
       <span class="side-menu-username">
         <i class="fa-light fa-user s-icons"></i>
-      Hello, <strong><%=currentUser.username.toUpperCase()%></strong>
+      Hello, <strong><%=currentUser.name.toUpperCase()%></strong>
       </span>
       <% } %>
       <% if(!currentUser) { %>
