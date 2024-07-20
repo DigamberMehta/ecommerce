@@ -44,7 +44,7 @@ router.post("/signup", wrapAsync(async (req, res, next) => {
       res.redirect("/home");
     });
   } catch (e) {
-    console.error("Signup error:", e);
+    req.flash("error", e.message);
     res.redirect("/signup");
   }
 }));

@@ -9,10 +9,11 @@ const userSchema = new mongoose.Schema({
   name: String,
   address: [
     {
+      houseNumber : String,
       street: String,
       city: String,
       state: String,
-      zip: String,
+      pincode: String,
       country: String
     }
   ],
