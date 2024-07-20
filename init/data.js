@@ -1,6 +1,6 @@
 const products = [
   {
-    title: "Oppo F19 Pro Plus 5G",
+    title: "Oppo F19 Pro",
     description: "Wireless headphones with noise cancellation and superior sound quality.",
     sellingPrice: 149.99,
     mrpPrice: 569.99,

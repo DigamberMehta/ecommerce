@@ -26,7 +26,13 @@ const userSchema = new mongoose.Schema({
     viewedCategories: [String],
     searchedCategories: [String],
     addedToCartCategories: [String]
-  }
+  },
+  browsingHistory: [
+    {
+      product: { type: mongoose.Schema.Types.ObjectId, ref: 'Product' },
+      viewedAt: { type: Date, default: Date.now }
+    }
+  ]
 });
 
 userSchema.plugin(passLocalMongoose);

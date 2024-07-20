@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Product = require('../models/product');
 const UserInteraction = require('../models/userInteraction');
+const { isLoggedIn } = require('../middleware');
 
 function camelCaseToTitleCase(camelCase) {
     return camelCase
@@ -9,7 +10,7 @@ function camelCaseToTitleCase(camelCase) {
       .replace(/^./, function(str) { return str.toUpperCase(); }); // Capitalize the first letter
   }
 
-router.get('/products/:id/:slug', async (req, res) => {
+router.get('/products/:id/:slug', isLoggedIn, async (req, res) => {
     try {
       const { id, slug } = req.params;
       const product = await Product.findOne({ _id: id, slug: slug });
@@ -55,7 +56,7 @@ router.get('/products/:id/:slug', async (req, res) => {
       res.render('home/show', { product, recommendedProducts, camelCaseToTitleCase });
     } catch (error) {
       console.error(error);
-      res.status(500).send('Server Error');
+     req.flash('error', 'An error occurred. Please try again.');
     }
   });
 

@@ -1,19 +1,98 @@
 <style>
- 
-</style>
+/* Overlay */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  z-index: 999;
+}
 
+.overlay.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Side Menu */
+.side-menu {
+  position: fixed;
+  top: 0;
+  left: -300px;
+  width: 300px;
+  height: 100%;
+  background: #fff;
+  color: #333;
+  overflow-y: auto;
+  transition: left 0.3s ease;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+}
+
+.side-menu.open {
+  left: 0;
+}
+
+.side-menu-header {
+  font-weight: 900;
+  font-size: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  color: #fff;
+  background: #293241;
+}
+.side-menu-username{
+  
+}
+.close-btn {
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.side-menu-options {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.side-menu-options li {
+  padding: 15px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.side-menu-options li a {
+  color: #333;
+  text-decoration: none;
+  display: block;
+  font-weight: 500;
+}
+
+.side-menu-options li a:hover {
+  background: #f9f9f9;
+}
+
+/* Disable body scroll when side menu is open */
+body.no-scroll {
+  overflow: hidden;
+}
+
+</style>
 <header class="header" id="header">
   <nav class="navbar">
     <div class="upper-container">
       <div class="mobile-left">
         <div class="burger" id="burger">
-          <i class="fa-sharp fa-solid fa-bars"></i>
+          <i class="fa-sharp fa-solid fa-bars" style="color: white;"></i>
         </div>
         <div class="logo-container">
           <a href="/">
-            <img
-              src="https://static-assets-web.flixcart.com/batman-returns/batman-returns/p/images/fkheaderlogo_plus-055f80.svg"
-              alt="Logo" />
+            <img src="https://static-assets-web.flixcart.com/batman-returns/batman-returns/p/images/fkheaderlogo_plus-055f80.svg" alt="Logo" />
           </a>
         </div>
       </div>
@@ -31,33 +110,27 @@
               <div class="dropdown-item"><i class="fa-light fa-heart icons"></i> Wishlist</div>
               <div class="dropdown-item"><i class="fa-thin fa-map-location-dot icons"></i> Addresses</div>
               <div class="dropdown-item"><i class="fa-sharp fa-light fa-tag icons"></i> Coupon</div>
-
               <% if (currentUser) { %>
-
                 <div class="dropdown-item">
                   <a href="/logout"> <i class="fa-regular fa-arrow-right-from-bracket icons"></i> Logout</a>
                 </div>
-                <% } %>
-              
+              <% } %>
             </div>
           </div>
           <span class="menu-item"><a href="#" class="menu-link">Return <br /> & Order</a></span>
-          <span class="menu-item"><a href="#" class="menu-link"><i class="fa-light fa-cart-shopping s-icons"></i>
-            </a></span>
+          <span class="menu-item"><a href="#" class="menu-link"><i class="fa-light fa-cart-shopping s-icons"></i></a></span>
         </div>
       </div>
     </div>
     <div class="search">
       <form class="search-form" action="/search" method="GET">
-        <input class="search-input" type="text" name="query" id="search-input" placeholder="Search"
-          oninput="fetchSuggestions()" />
+        <input class="search-input" type="text" name="query" id="search-input" placeholder="Search" oninput="fetchSuggestions()" />
         <button type="submit" class="search-submit">
           <i class="fa-light fa-magnifying-glass s-icons"></i>
         </button>
       </form>
       <ul class="suggestions-dropdown" id="suggestions-dropdown"></ul>
     </div>
-
     <div class="menu" id="menu">
       <div class="menu-inner">
         <div class="dropdown">
@@ -66,125 +139,98 @@
             <span class="menu-item" style="white-space: nowrap;">
               <a href="/login" class="menu-link">
                 <i class="fa-light fa-user s-icons" style="margin: 3px;"></i>
-               Sign In
+                Sign In
                 <i class="fa-regular fa-chevron-down s-icons"></i>
               </a>
             </span>
+          <% } %>
+          <% if (currentUser) { %>
+            <span class="menu-item" style="white-space: nowrap;">
+              <a href="/" class="menu-link">
+                <i class="fa-light fa-user s-icons"></i>
+                <%= currentUser.username %>
+                <i class="fa-regular fa-chevron-down s-icons"></i>
+              </a>
+            </span>
+          <% } %>
+          </strong> 
+          <div class="dropdown-menu">
+            <div class="dropdown-item"><i class="fa-light fa-user icons"></i> Profile</div>
+            <div class="dropdown-item"><i class="fa-light fa-cube icons"></i> Orders</div>
+            <div class="dropdown-item"><i class="fa-light fa-heart icons"></i> Wishlist</div>
+            <div class="dropdown-item"><i class="fa-thin fa-map-location-dot icons"></i> Addresses</div>
+            <div class="dropdown-item"><i class="fa-sharp fa-light fa-tag icons"></i> Coupon</div>
+            <% if (currentUser) { %>
+              <div class="dropdown-item">
+                <a href="/logout"> <i class="fa-regular fa-arrow-right-from-bracket icons"></i> Logout</a>
+              </div>
             <% } %>
-              <% if (currentUser) { %>
-                <span class="menu-item" style="white-space: nowrap;">
-                  <a href="/" class="menu-link">
-                    <i class="fa-light fa-user s-icons"></i>
-                    <%= currentUser.username %>
-                      <i class="fa-regular fa-chevron-down s-icons"></i>
-                  </a>
-                </span>
-
-                <% } %>
-              </strong> 
-                  <div class="dropdown-menu">
-                    <div class="dropdown-item"><i class="fa-light fa-user icons"></i> Profile</div>
-                    <div class="dropdown-item"><i class="fa-light fa-cube icons"></i> Orders</div>
-                    <div class="dropdown-item"><i class="fa-light fa-heart icons"></i> Wishlist</div>
-                    <div class="dropdown-item"><i class="fa-thin fa-map-location-dot icons"></i> Addresses</div>
-                    <div class="dropdown-item"><i class="fa-sharp fa-light fa-tag icons"></i> Coupon</div>
-                    <% if (currentUser) { %>
-
-                      <div class="dropdown-item">
-                        <a href="/logout"> <i class="fa-regular fa-arrow-right-from-bracket icons"></i> Logout</a>
-                      </div>
-                      <% } %>
-                  </div>
+          </div>
         </div>
         <span class="menu-item"><a href="#" class="menu-link">Return & Order</a></span>
-
-        <span class="menu-item"><a href="/cart/view" class="menu-link">
-          <i class="fa-light fa-cart-shopping s-icons cart-total-item"></i>
-            Cart</a>
+        <span class="menu-item">
+          <% if (currentUser) { %>
+            <a href="/cart/view" class="menu-link">
+              <i class="fa-light fa-cart-shopping s-icons cart-total-item"></i>
+              Cart
+            </a>
+          <% } %>
+          <% if(!currentUser) { %>
+            <a href="/login" class="menu-link">
+              <i class="fa-light fa-cart-shopping s-icons cart-total-item"></i>
+              Cart
+            </a>
+          <% } %>
+          <% if (currentUser) { %>
             <span id="cart-quantity"><span id="cart-quantity-value"></span></span>
-          </span>
-           
+          <% } %>
+        </span>
       </div>
     </div>
   </nav>
 </header>
+
 <nav class="secondary-nav">
   <ul class="navigation-items">
-    <li><a href=""> <strong> Home</strong></li></a>
-    <li><a href=""> <strong> About</strong></li></a>
-    <li><a href=""> <strong> Reach</strong></li></a>
-    <li><a href=""> <strong> Electronic</strong></li></a>
-    <li><a href=""> <strong> Footwear</strong></li></a>
-    <li><a href=""> <strong> Item</strong></li></a>
+    <li><a href=""><strong>Home</strong></a></li>
+    <li><a href=""><strong>About</strong></a></li>
+    <li><a href=""><strong>Reach</strong></a></li>
+    <li><a href=""><strong>Electronic</strong></a></li>
+    <li><a href=""><strong>Footwear</strong></a></li>
+    <li><a href=""><strong>Item</strong></a></li>
   </ul>
-  
 </nav>
 
-<script>
-  async function fetchSuggestions() {
-    const input = document.getElementById('search-input');
-    const dropdown = document.getElementById('suggestions-dropdown');
-    const query = input.value.trim();
-
-    if (query.length < 3) {
-      dropdown.innerHTML = '';
-      dropdown.style.display = 'none'; // Hide the dropdown if the query is less than 3 characters
-      return;
-    }
-
-    try {
-      const response = await fetch(`/search?query=${query}&suggestions=true`);
-      const suggestions = await response.json();
-
-      if (suggestions.length > 0) {
-        dropdown.innerHTML = suggestions.map(suggestion => `
-        <li onclick="redirectToProduct('${suggestion._id}', '${suggestion.slug}')">
-          <img src="${suggestion.images[0]}" alt="${suggestion.title}" class="suggestion-image" />
-          <span>${suggestion.title}</span>
-        </li>
-      `).join('');
-        dropdown.style.display = 'block'; // Show the dropdown when there are results
-      } else {
-        dropdown.innerHTML = '';
-        dropdown.style.display = 'none'; // Hide the dropdown if there are no results
-      }
-    } catch (err) {
-      console.error('Error fetching suggestions:', err);
-      dropdown.innerHTML = '';
-      dropdown.style.display = 'none'; // Hide the dropdown in case of error
-    }
-  }
-
-  function redirectToProduct(id, slug) {
-    window.location.href = `/products/${id}/${slug}`;
-  }
-
-  document.addEventListener('click', (event) => {
-    const suggestionsDropdown = document.getElementById('suggestions-dropdown');
-    if (!suggestionsDropdown.contains(event.target) && event.target.id !== 'search-input') {
-      suggestionsDropdown.innerHTML = '';
-      suggestionsDropdown.style.display = 'none'; // Hide the dropdown when clicking outside
-    }
-  });
-  async function fetchCartQuantity() {
-      try {
-        const response = await fetch('/cart/quantity', {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-        
-        });
-        const data = await response.json();
-        if (response.ok) {
-          document.getElementById('cart-quantity-value').textContent = data.totalQuantity;
-        } else {
-          console.error('Failed to fetch cart quantity:', data.error);
-        }
-      } catch (error) {
-        console.error('Error fetching cart quantity:', error);
-      }
-    }
-    fetchCartQuantity();
-
-</script>
+<!-- Side Menu -->
+<div class="side-menu" id="side-menu">
+  <div class="side-menu-header">
+    <div>
+      <% if(currentUser) { %>
+      <span class="side-menu-username">
+        <i class="fa-light fa-user s-icons"></i>
+      Hello, <strong><%=currentUser.username.toUpperCase()%></strong>
+      </span>
+      <% } %>
+      <% if(!currentUser) { %>
+      <span>
+      <a href="/login"> Sign</a>
+      </span>
+      <% } %>
+    </div>
+    <div class="side-menu-close">
+    <span class="close-btn" id="close-btn">&times;</span>
+  </div>
+  </div>
+  <ul class="side-menu-options">
+    <li><a href="#">Home</a></li>
+    <li><a href="#">About</a></li>
+    <li><a href="#">Contact</a></li>
+    <li><a href="#">Categories</a></li>
+    <li><a href="#">Cart</a></li>
+    <li><a href="#">Profile</a></li>
+    <li><a href="#">Orders</a></li>
+    <li><a href="#">Wishlist</a></li>
+    <li><a href="#">Addresses</a></li>
+    <li><a href="#">Coupons</a></li>
+  </ul>
+</div>

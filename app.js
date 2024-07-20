@@ -15,6 +15,7 @@ const cartRoutes = require('./routes/cart');
 const homeRoutes = require('./routes/home');
 const searchRoutes = require('./routes/search');
 const showRoutes = require('./routes/show');
+const browsingHistoryRoutes = require('./routes/browsingHistory');
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -69,8 +70,10 @@ app.use('/cart', cartRoutes);
 app.use('/', homeRoutes);
 app.use('/', showRoutes);
 app.use('/', searchRoutes); 
+app.use('/' ,browsingHistoryRoutes)
 
-const port = 4000;
+
+const port = 3000;
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });

@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Product = require('../models/product');
+const User = require('../models/user');
 const Fuse = require('fuse.js');
 
 router.get('/search', async (req, res) => {
@@ -9,7 +10,7 @@ router.get('/search', async (req, res) => {
     const suggestions = req.query.suggestions === 'true';
 
     if (suggestions) {
-      if (searchTerm.length < 3) {
+      if (searchTerm.length < 0) {
         return res.json([]);
       }
       const products = await Product.find({}, 'title slug images sellingPrice');
@@ -28,6 +29,27 @@ router.get('/search', async (req, res) => {
         threshold: 0.3
       });
       const results = fuse.search(searchTerm).map(result => result.item);
+
+      if (req.isAuthenticated()) {
+        const userId = req.user._id;
+        const user = await User.findById(userId);
+
+        results.forEach(async (product) => {
+          const productExists = user.browsingHistory.some(
+            history => history.product.toString() === product._id.toString()
+          );
+
+          if (!productExists) {
+            user.browsingHistory.push({
+              product: product._id,
+              viewedAt: new Date()
+            });
+          }
+        });
+
+        await user.save();
+      }
+
       return res.render('home/searchResult', { products: results, query: searchTerm });
     }
   } catch (err) {

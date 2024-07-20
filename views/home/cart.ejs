@@ -13,7 +13,6 @@
         display: flex;
         flex-wrap: wrap;
         margin: 0 auto;
-        width: 98%;
         box-sizing: border-box;
     }
 
@@ -163,80 +162,112 @@
 
     
 
-    .summary-card {
-        border: 0.0625rem solid #f3f2f2;
-        padding: 1rem;
-        background-color: #fff;
+    .order-summary {
+    max-width: 350px;
+    margin: 0;
+    border-radius: 8px;
+    overflow: hidden;
+    /* box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); */
+}
+
+.summary-card {
+    border: 1px solid #e0e0e0; /* Subtle border color for a clean look */
+    padding: 1.5rem; /* Increased padding for better spacing */
+    background-color: #ffffff; /* Clean white background */
+}
+
+.summary-title {
+    font-size: 1.4rem; /* Slightly larger font size for the title */
+    font-weight: 600; /* Slightly bolder text */
+    margin-bottom: 1rem;
+    border-bottom: 2px solid #e0e0e0; /* Thicker border for better separation */
+    padding-bottom: 0.75rem; /* More padding for separation */
+    color: #333; /* Darker text color for readability */
+}
+
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1rem;
+    color: #555; /* Slightly lighter text color for items */
+    margin-bottom: 0.75rem; /* Increased margin for spacing */
+}
+
+.summary-item span {
+    font-weight: 500; /* Medium weight for emphasis */
+}
+
+.summary-total {
+    font-size: 1.4rem; /* Larger font size for the total */
+    font-weight: 600; /* Bold text for importance */
+    border-top: 2px solid #e0e0e0; /* Consistent border thickness */
+    padding-top: 0.75rem; /* More padding for spacing */
+    margin-top: 1rem; /* Margin above total */
+    color: #333; /* Darker color for emphasis */
+}
+
+.checkout-button {
+    padding: 0.8rem 1.5rem; /* Increased padding for better button appearance */
+    font-size: 1.1rem; /* Slightly larger font size for readability */
+    color: #ffffff; /* White text for contrast */
+    background-color: #ff9f00; /* Bright orange color */
+    border: none; /* No border for a cleaner look */
+    border-radius: 30px; /* Rounded button corners */
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s; /* Smooth transitions */
+    display: block;
+    margin-top: 1.5rem; /* Increased margin for spacing */
+    text-align: center;
+    width: 100%; /* Full width for consistency */
+}
+
+.checkout-button:hover {
+    background-color: #e68a00; /* Slightly darker shade on hover */
+    transform: translateY(-2px); /* Small lift effect on hover */
+}
+
+.shopping-heading h1 {
+    font-size: 1.8rem;
+    font-weight: 400;
+    margin-bottom: 1.2rem;
+    color: #333; /* Darker color for better readability */
+}
+#item-count {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 0.75rem;
+}
+
+/* Media Query for screen width 1100px or less */
+@media (max-width: 1100px) {
+    .cart-wrapper {
+        flex-direction: column;
     }
 
-    .summary-title {
-        font-size: 1.2rem;
-        font-weight: bold;
-        margin-bottom: 1rem;
-        border-bottom: 1px solid #f3f2f2;
-        padding-bottom: 0.5rem;
+    .order-summary {
+        order: 1;
+        padding-top: 1.5rem; /* Increased padding for better spacing */
     }
 
-    .summary-item {
-        display: flex;
-        justify-content: space-between;
-        font-size: 1rem;
-        margin-bottom: 0.5rem;
+    .cart-items {
+        order: 2;
     }
 
-    .summary-total {
-        font-size: 1.2rem;
-        font-weight: bold;
-        border-top: 1px solid #f3f2f2;
-        padding-top: 0.5rem;
-        margin-top: 0.5rem;
+    .order-summary {
+       width: 100%;
+        padding: 1rem; /* Consistent padding on smaller screens */
     }
+    .order-summary {
+    max-width: 100%;
+    margin: auto;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+}
 
-    .checkout-button {
-        padding: 0.6rem 1.2rem;
-        font-size: 1rem;
-        color: #fff;
-        background-color: #ff9f00;
-        border: none;
-        border-radius: 100px;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-        display: block;
-        margin-top: 1rem;
-        text-align: center;
-    }
-
-    .checkout-button:hover {
-        opacity: 0.8;
-    }
-
-    .shopping-heading h1 {
-        font-size: 1.8rem;
-        font-weight: 400;
-        margin-bottom: 1.2rem;
-    }
-
-    /* Media Query for screen width 1100px or less */
-    @media (max-width: 1100px) {
-        .cart-wrapper {
-            flex-direction: column;
-        }
-
-        .order-summary {
-            order: 1;
-        }
-
-        .cart-items {
-            order: 2;
-        }
-
-        .order-summary {
-            flex: 0 1 25%;
-            padding: 0rem;
-            box-sizing: border-box;
-            padding-top: 1rem;
-        }
-    }
 .cart-option-container{
     margin-left: 1rem;
 }
@@ -280,6 +311,10 @@
 
     .update-button:hover {
         opacity: 0.8;
+    }
+    .cart-browsing-suggestion{
+        margin-top: 2rem;
+        
     }
 </style>
 
@@ -340,163 +375,17 @@
         <div class="order-summary">
             <div class="summary-card">
                 <div class="summary-title">Order Summary</div>
-                <div class="summary-item">Part of your order qualifies for FREE Delivery. Choose FREE Delivery option at checkout.</div>
-                <div class="summary-item">Subtotal (<span id="item-count"><%= cartItems.length %></span> items): ₹<span id="subtotal"><%= cartItems.reduce((sum, item) => sum + item.product.sellingPrice * item.quantity, 0) %></span></div>
-                <div class="summary-item">This order contains a gift</div>
+                <div id="item-count"> <div> Total Items:</div> <div><%= cartItems.length %></div></div>
+                <div class="summary-item">Subtotal<span id="subtotal">₹<%= cartItems.reduce((sum, item) => sum + item.product.sellingPrice * item.quantity, 0) %></span>
+                
+                </div>
+                
                 <button class="checkout-button">Proceed to Buy</button>
             </div>
         </div>
     </div>
+    <div class="cart-browsing-suggestion">
+        <%- include('../partials/browsingHistory.ejs') %>
+    </div>
 </div>
 
-<script>
-    document.querySelectorAll('.quantity-selector').forEach(select => {
-        select.addEventListener('change', async (event) => {
-            const cartItemId = event.target.closest('.cart-item').dataset.cartItemId;
-            const newQuantity = event.target.value === 'more' ? parseInt(event.target.nextElementSibling.value) : event.target.value;
-            const productPrice = event.target.closest('.cart-item').dataset.productPrice;
-
-            if (event.target.value === 'more') {
-                event.target.style.display = 'none';
-                event.target.nextElementSibling.style.display = 'block';
-                event.target.nextElementSibling.focus();
-                return;
-            }
-
-            try {
-                const response = await fetch('/cart/update', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ cartItemId, newQuantity })
-                });
-
-                const data = await response.json();
-
-                if (data.success) {
-                    updateSubtotal(data.newSubtotal);
-                } else {
-                    alert('Failed to update quantity. Please try again.');
-                }
-            } catch (error) {
-                alert('An error occurred. Please try again.');
-            }
-        });
-    });
-
-    document.querySelectorAll('.manual-quantity').forEach(input => {
-        input.addEventListener('input', (event) => {
-            const updateButton = event.target.closest('.quantity-selector-container').querySelector('.update-button');
-            updateButton.style.display = 'inline-block';
-        });
-
-        input.addEventListener('change', (event) => {
-            if (event.target.value !== '') {
-                const updateButton = event.target.closest('.quantity-selector-container').querySelector('.update-button');
-                updateButton.style.display = 'inline-block';
-            }
-        });
-    });
-
-    document.querySelectorAll('.update-button').forEach(button => {
-        button.addEventListener('click', async (event) => {
-            const cartItem = event.target.closest('.cart-item');
-            const cartItemId = cartItem.dataset.cartItemId;
-            const newQuantity = cartItem.querySelector('.manual-quantity').value;
-            const productPrice = cartItem.dataset.productPrice;
-
-            try {
-                const response = await fetch('/cart/update', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ cartItemId, newQuantity })
-                });
-
-                const data = await response.json();
-
-                if (data.success) {
-                    updateSubtotal(data.newSubtotal);
-                    event.target.style.display = 'none';
-                } else {
-                    alert('Failed to update quantity. Please try again.');
-                }
-            } catch (error) {
-                alert('An error occurred. Please try again.');
-            }
-        });
-    });
-
-    document.querySelectorAll('.quantity-button.increment').forEach(button => {
-        button.addEventListener('click', async (event) => {
-            const select = event.target.closest('.quantity-buttons').querySelector('.quantity-selector');
-            if (select.style.display !== 'none') {
-                const currentQuantity = parseInt(select.value);
-                if (currentQuantity < 10) {
-                    select.value = currentQuantity + 1;
-                    select.dispatchEvent(new Event('change'));
-                } else {
-                    select.value = 'more';
-                    select.dispatchEvent(new Event('change'));
-                }
-            } else {
-                const input = event.target.closest('.quantity-buttons').querySelector('.manual-quantity');
-                input.value = parseInt(input.value) + 1;
-                input.dispatchEvent(new Event('change'));
-            }
-        });
-    });
-
-    document.querySelectorAll('.quantity-button.decrement').forEach(button => {
-        button.addEventListener('click', async (event) => {
-            const select = event.target.closest('.quantity-buttons').querySelector('.quantity-selector');
-            if (select.style.display !== 'none') {
-                const currentQuantity = parseInt(select.value);
-                if (currentQuantity > 1) {
-                    select.value = currentQuantity - 1;
-                    select.dispatchEvent(new Event('change'));
-                }
-            } else {
-                const input = event.target.closest('.quantity-buttons').querySelector('.manual-quantity');
-                if (parseInt(input.value) > 1) {
-                    input.value = parseInt(input.value) - 1;
-                    input.dispatchEvent(new Event('change'));
-                }
-            }
-        });
-    });
-
-    document.querySelectorAll('.remove-button').forEach(button => {
-        button.addEventListener('click', async (event) => {
-            const cartItemId = event.target.closest('.cart-item').dataset.cartItemId;
-
-            try {
-                const response = await fetch('/cart/remove', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ cartItemId })
-                });
-
-                const data = await response.json();
-
-                if (data.success) {
-                    event.target.closest('.cart-item').remove();
-                    updateSubtotal(data.newSubtotal);
-                } else {
-                    alert('Failed to remove item. Please try again.');
-                }
-            } catch (error) {
-                alert('An error occurred. Please try again.');
-            }
-        });
-    });
-
-    function updateSubtotal(newSubtotal) {
-        document.getElementById('subtotal').textContent = newSubtotal.toFixed(2);
-        document.getElementById('item-count').textContent = document.querySelectorAll('.cart-item').length;
-    }
-</script>
