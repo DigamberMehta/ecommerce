@@ -6,43 +6,29 @@ const { isLoggedIn, isReviewAuthor } = require('../middleware');
 const Review = mongoose.model('Review');
 const Product = mongoose.model('Product');
 const User = mongoose.model('User');
-
-// TODO Set up multer for file uploads
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, 'uploads/'); // Destination folder
-    },
-    filename: function (req, file, cb) {
-        cb(null, Date.now() + '-' + file.originalname); // File name
-    }
-});
+const { cloudinary, storage } = require('../cloudinary');
 
 const upload = multer({ storage: storage });
 
 // Create a new review
-router.post('/products/:productId/:productSlug/reviews', isLoggedIn, upload.single('image'), async (req, res) => {
+router.post('/products/:productId/:productSlug/reviews', isLoggedIn, upload.array('images', 5), async (req, res) => {
     try {
-        // console.log('Request Body:', req.body);
-
         if (!req.body.review) {
-            console.error('Review data is missing from request body');
             return res.status(400).send('Review data is missing');
         }
-            
+
         const { productId } = req.params;
         const { title, rating, comment } = req.body.review;
-        console.log('Title:', title);
         const user = req.user._id;
 
         if (rating === undefined || comment === undefined) {
-            console.error('Rating or comment is missing');
             return res.status(400).send('Rating or comment is missing');
         }
 
         const review = new Review({ user, product: productId, title, rating, comment });
 
-        if (req.file) {
-            review.image = req.file.path;
+        if (req.files) {
+            review.image = req.files.map(file => file.path);
         }
 
         await review.save();
@@ -50,7 +36,6 @@ router.post('/products/:productId/:productSlug/reviews', isLoggedIn, upload.sing
         // Update the product with the new review
         const product = await Product.findById(productId);
         if (!product) {
-            console.error('Product not found');
             return res.status(404).send('Product not found');
         }
         product.reviews.push(review._id);
@@ -59,7 +44,6 @@ router.post('/products/:productId/:productSlug/reviews', isLoggedIn, upload.sing
         // Update the user's reviews array
         const userUpdate = await User.findByIdAndUpdate(user, { $push: { reviews: review._id } });
         if (!userUpdate) {
-            console.error('User not found');
             return res.status(404).send('User not found');
         }
 

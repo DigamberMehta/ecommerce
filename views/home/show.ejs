@@ -241,21 +241,22 @@
                             <div class="form-group">
                                 <label for="review-title">Title</label>
                                 <input type="text" id="review-title" name="review[title]" placeholder="Enter the title of your review">
-                              </div>
-                          <div class="form-group">
-                              <label for="review-body">Review</label>
-                              <textarea id="review-body" name="review[comment]" placeholder="Write your review here" rows="5"></textarea>
-                          </div>
-                          <div class="form-group">
-                              <label for="review-rating">Rating</label>
-                              <input type="range" min="1" max="5" id="review-rating" name="review[rating]">
-                          </div>
-                          <div class="form-group">
-                              <label for="review-image">Upload Image</label>
-                              <input type="file" id="review-image" name="image">
-                          </div>
-                          <button type="submit" class="review-submit">Submit Review</button>
-                      </form>
+                            </div>
+                            <div class="form-group">
+                                <label for="review-body">Review</label>
+                                <textarea id="review-body" name="review[comment]" placeholder="Write your review here" rows="5"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="review-rating">Rating</label>
+                                <input type="range" min="1" max="5" id="review-rating" name="review[rating]">
+                            </div>
+                            <div class="form-group">
+                                <label for="review-images">Upload Images</label>
+                                <input type="file" id="review-images" name="images" multiple>
+                            </div>
+                            <button type="submit" class="review-submit">Submit Review</button>
+                        </form>
+                        
                       
                       
                       
@@ -268,25 +269,26 @@
                     <div class="review">
                         <h3><%= review.title %></h3>
                         <div class="review-rating">Rating: ★<%= review.rating %></div>
-                        <div class="review-image">
-                            <% if (review.image) { %>
-                                <img src="<%= review.image %>" alt="Review">
+                        <div class="review-images">
+                            <% if (review.image && review.image.length > 0) { %>
+                                <% review.image.forEach(imageUrl => { %>
+                                    <img src="<%= imageUrl %>" alt="Review Image" class="review-image">
+                                <% }) %>
                             <% } %>
                         </div>
                         <p><%= review.comment %></p>
-                    
                         <small>Reviewed by: <%= review.user.name %></small>
                         <form action="/products/<%= product._id %>/<%= product.slug %>/reviews/<%= review._id %>?_method=DELETE" method="POST">
-                          <button type="submit">Delete</button>
-                      </form>
-                      
-                      
-                      <button class="review-submit edit-button" style="background-color: #007bff;" data-review-id="<%= review._id %>">Edit</button>
-
+                            <button type="submit">Delete</button>
+                        </form>
+                        <button class="review-submit edit-button" style="background-color: #007bff;" data-review-id="<%= review._id %>">Edit</button>
                     </div>
                     <% }) %>
                 </div>
+                
             </div>
+
+
         </div>
     </div>
 </div>
