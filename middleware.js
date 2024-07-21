@@ -1,3 +1,5 @@
+const Review = require('./models/review');
+
 module.exports.isLoggedIn = (req, res, next) => {
   try {
     console.log('Checking if user is authenticated...');
@@ -42,12 +44,22 @@ module.exports.savedRedirectUrl = (req, res, next) => {
 };
 
 
-  module.exports.isReviewAuthor = async (req, res, next) => {
-    let { id, reviewId } = req.params;
-    let review = await Review.findById(reviewId)
-  if (!review.author._id.equals(res.locals.currentUser._id)) {
-    req.flash("error", "You do not have permission to do that");
-    return res.redirect(`/home/download/${id}`);
+module.exports.isReviewAuthor = async (req, res, next) => {
+  const { reviewId } = req.params;
+  try {
+      const review = await Review.findById(reviewId);
+      if (!review) {
+          req.flash('error', 'Cannot find that review!');
+          return res.redirect('back');
+      }
+      if (review.user.equals(req.user._id)) {
+          return next();
+      } else {
+          req.flash('error', 'You do not have permission to do that.');
+          return res.redirect('back');
+      }
+  } catch (err) {
+      req.flash('error', 'Something went wrong.');
+      return res.redirect('back');
   }
-  next();
-  };
+};

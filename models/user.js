@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const passLocalMongoose = require('passport-local-mongoose');
 
+
 // Define the user schema
 const userSchema = new mongoose.Schema({
   googleId: String,
@@ -17,6 +18,7 @@ const userSchema = new mongoose.Schema({
       country: String
     }
   ],
+  reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Review' }],
   orders: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Order' }],
   wishlist: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Product' }],
   cart: [{ type: mongoose.Schema.Types.ObjectId, ref: 'CartItem' }],

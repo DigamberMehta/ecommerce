@@ -6,7 +6,6 @@ const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
 const bodyParser = require("body-parser");
 const passport = require('passport');
-
 const User = require('./models/user');
 const session = require('express-session');
 const flash = require('connect-flash');
@@ -20,8 +19,9 @@ const authGoogleRoutes = require('./routes/authGoogle');
 const nodemailerRoutes = require('./routes/nodemailer');
 const CustomStrategy = require('passport-custom').Strategy;
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const reviewRoutes = require('./routes/review');
 require('dotenv').config();
-
+app.use(express.json());
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.use(express.urlencoded({ extended: true }));
@@ -157,6 +157,10 @@ app.use('/', searchRoutes);
 app.use('/', browsingHistoryRoutes);
 app.use('/auth', authGoogleRoutes);
 app.use('/', nodemailerRoutes);
+app.use('/', reviewRoutes);
+// Review routes
+
+
 
 
 const port = 3000;

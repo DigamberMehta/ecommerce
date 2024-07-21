@@ -228,124 +228,165 @@
         </div>
         <div className="full-width-preview">
            
-                <div class="review-section">
-                    <div class="write-review">
-                      <button id="openModal" class="review-submit">Write a Review</button>
-                    </div>
-                    
-                    <div id="reviewModal" class="modal">
-                      <div class="modal-content">
+            <div class="review-section">
+                <div class="write-review">
+                    <button id="openModal" class="review-submit">Write a Review</button>
+                </div>
+                
+                <div id="reviewModal" class="modal">
+                    <div class="modal-content">
                         <span class="close">&times;</span>
                         <h2>Write a Review</h2>
-                        <form>
+                        <form action="/products/<%= product._id %>/<%= product.slug %>/reviews" method="POST" enctype="multipart/form-data">
                           <div class="form-group">
-                            <label for="review-title">Title</label>
-                            <input type="text" id="review-title" name="title" placeholder="Enter the title of your review">
+                              <label for="review-body">Review</label>
+                              <textarea id="review-body" name="review[comment]" placeholder="Write your review here" rows="5"></textarea>
                           </div>
                           <div class="form-group">
-                            <label for="review-body">Review</label>
-                            <textarea id="review-body" name="body" placeholder="Write your review here" rows="5"></textarea>
+                              <label for="review-rating">Rating</label>
+                              <input type="range" min="1" max="5" id="review-rating" name="review[rating]">
                           </div>
                           <div class="form-group">
-                            <label for="review-rating">Rating</label>
-                            <select id="review-rating" name="rating">
-                              <option value="5">5 Stars</option>
-                              <option value="4">4 Stars</option>
-                              <option value="3">3 Stars</option>
-                              <option value="2">2 Stars</option>
-                              <option value="1">1 Star</option>
-                            </select>
-                          </div>
-                          <div class="form-group">
-                            <label for="review-image">Upload Image</label>
-                            <input type="file" id="review-image" name="image">
+                              <label for="review-image">Upload Image</label>
+                              <input type="file" id="review-image" name="image">
                           </div>
                           <button type="submit" class="review-submit">Submit Review</button>
-                        </form>
-                      </div>
+                      </form>
+                      
+                      
+                      
                     </div>
-                
-                    <div class="reviews">
-                      <h2>Customer Reviews</h2>
-                      <div class="review">
+                </div>
+            
+                <div class="reviews">
+                    <h2>Customer Reviews</h2>
+                    <% product.reviews.forEach(review => { %>
+                    <div class="review">
                         <h3>Review Title</h3>
-                        <div class="review-rating">Rating: ★★★★☆</div>
+                        <div class="review-rating">Rating: ★<%= review.rating %></div>
                         <div class="review-image">
-                          <img src="path-to-image" alt="Review">
+                            <% if (review.image) { %>
+                                <img src="<%= review.image %>" alt="Review">
+                            <% } %>
                         </div>
-                        <p>This is a sample review. It provides an example of how customer reviews will be displayed.</p>
-                        <small>Reviewed by: Customer Name</small>
-                      </div>
-                      <!-- Additional reviews will be added here -->
+                        <p><%= review.comment %></p>
+                    
+                        <small>Reviewed by: <%= review.user.name %></small>
+                        <form action="/products/<%= product._id %>/<%= product.slug %>/reviews/<%= review._id %>?_method=DELETE" method="POST">
+                          <button type="submit">Delete</button>
+                      </form>
+                      
+                      
+                      <button class="review-submit edit-button" style="background-color: #007bff;" data-review-id="<%= review._id %>">Edit</button>
+
                     </div>
-                  </div>
+                    <% }) %>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+
 <script>
-  document.getElementById('openModal').addEventListener('click', function() {
-      document.getElementById('reviewModal').classList.add('show');
-  });
 
-  document.querySelector('.close').addEventListener('click', function() {
-      document.getElementById('reviewModal').classList.remove('show');
-  });
+  // Handle Edit Review button click
+document.querySelectorAll('.edit-button').forEach(button => {
+    button.addEventListener('click', function () {
+        const reviewId = this.getAttribute('data-review-id');
+        window.location.href = `/products/<%= product._id %>/reviews/${reviewId}/edit`;
+    });
+});
 
-  document.addEventListener("DOMContentLoaded", function () {
-      const sellingPrice = <%= product.sellingPrice %>;
-      const mrpPrice = <%= product.mrpPrice %>;
-      const discountElement = document.querySelector(".product-show-discount");
+    document.getElementById('openModal').addEventListener('click', function() {
+        document.getElementById('reviewModal').classList.add('show');
+    });
 
-      const discountAmount = mrpPrice - sellingPrice;
-      const discountPercentage = ((discountAmount / mrpPrice) * 100).toFixed(2);
+    document.querySelector('.close').addEventListener('click', function() {
+        document.getElementById('reviewModal').classList.remove('show');
+    });
 
-      discountElement.textContent = `${discountPercentage}% off`;
+    document.addEventListener("DOMContentLoaded", function () {
+        const sellingPrice = <%= product.sellingPrice %>;
+        const mrpPrice = <%= product.mrpPrice %>;
+        const discountElement = document.querySelector(".product-show-discount");
 
-      // Handle Add to Cart button click
-      document.querySelector('.product-show-btn-add-to-cart').addEventListener('click', async function () {
-          const button = this;
-          const productId = button.getAttribute('data-product-id');
-          console.log('Product ID:', productId);
+        const discountAmount = mrpPrice - sellingPrice;
+        const discountPercentage = ((discountAmount / mrpPrice) * 100).toFixed(2);
 
-          try {
-              const response = await fetch('/cart/add', {
-                  method: 'POST',
-                  headers: {
-                      'Content-Type': 'application/json'
-                  },
-                  body: JSON.stringify({ productId })
-              });
+        discountElement.textContent = `${discountPercentage}% off`;
 
-              // Check if response is JSON
-              const contentType = response.headers.get('content-type');
-              if (contentType && contentType.includes('application/json')) {
-                  const data = await response.json();
-                  console.log('Response:', data);
+        // Handle Add to Cart button click
+        document.querySelector('.product-show-btn-add-to-cart').addEventListener('click', async function () {
+            const button = this;
+            const productId = button.getAttribute('data-product-id');
+            console.log('Product ID:', productId);
 
-                  if (response.status === 401) {
-                      // Redirect to login page if not authenticated
-                      window.location.href = '/login';
-                      return;
-                  }
+            try {
+                const response = await fetch('/cart/add', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ productId })
+                });
 
-                  if (data.success) {
-                      button.textContent = 'Added to Cart';
-                      
-                      setTimeout(() => {
-                          button.textContent = 'Add to Cart';
-                          // Reload the page to fetch new data
-                          window.location.reload();
-                      }, 2000);
-                  } else {
-                      alert(data.message || 'Failed to add product to cart. Please try again.');
-                  }
-              } else {
-                  console.error('Unexpected response format:', contentType);
-                  alert('An unexpected error occurred. Please try again.');
-              }
-          } catch (error) {
-              // console.error('Error:', error);
-              // alert('An error occurred. Please try again.');
-          }
-      });
-  });
+                // Check if response is JSON
+                const contentType = response.headers.get('content-type');
+                if (contentType && contentType.includes('application/json')) {
+                    const data = await response.json();
+                    console.log('Response:', data);
+
+                    if (response.status === 401) {
+                        // Redirect to login page if not authenticated
+                        window.location.href = '/login';
+                        return;
+                    }
+
+                    if (data.success) {
+                        button.textContent = 'Added to Cart';
+                        
+                        setTimeout(() => {
+                            button.textContent = 'Add to Cart';
+                            // Reload the page to fetch new data
+                            window.location.reload();
+                        }, 2000);
+                    } else {
+                        alert(data.message || 'Failed to add product to cart. Please try again.');
+                    }
+                } else {
+                    console.error('Unexpected response format:', contentType);
+                    alert('An unexpected error occurred. Please try again.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again.');
+            }
+        });
+
+        // Handle Edit Review button click
+        document.querySelectorAll('.edit-button').forEach(button => {
+            button.addEventListener('click', function () {
+                const reviewId = this.getAttribute('data-review-id');
+                // Fetch review data and populate the modal form
+                fetch(`/products/<%= product._id %>/reviews/${reviewId}/edit`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            document.getElementById('review-body').value = data.review.comment;
+                            document.getElementById('review-rating').value = data.review.rating;
+                            // Set the form action to update the review
+                            document.querySelector('#reviewModal form').setAttribute('action', `/products/<%= product._id %>/reviews/${reviewId}?_method=PUT`);
+                            // Open the modal
+                            document.getElementById('reviewModal').classList.add('show');
+                        } else {
+                            alert('Failed to fetch review data. Please try again.');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('An error occurred. Please try again.');
+                    });
+            });
+        });
+    });
 </script>
