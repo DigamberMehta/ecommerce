@@ -6,7 +6,7 @@ const passLocalMongoose = require('passport-local-mongoose');
 const userSchema = new mongoose.Schema({
   googleId: String,
   email: { type: String, required: true, unique: true },
-  phone: { type: String, unique: true },
+  phone: { type: String },
   name: String,
   address: [
     {

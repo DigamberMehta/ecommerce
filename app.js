@@ -159,7 +159,9 @@ app.use('/', nodemailerRoutes);
 app.use('/', reviewRoutes);
 // Review routes
 
-
+app.get('*', (req, res) => {
+  res.send("404 Page Not Found");
+});
 
 
 const port = 3000;

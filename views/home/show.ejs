@@ -157,6 +157,44 @@
       margin-bottom: 20px;
   }
   }
+  .review-images{
+    display: flex;
+    flex-direction: row;
+  }
+  .review-images-show-container{
+    max-width: 200px;
+    min-height: 150px;
+    display: flex;
+  } 
+  .user-review-image{
+    max-width: 100px;
+    max-height: 100px;
+    margin-right: 10px;
+  }
+  .product-review-option {
+    margin-left: 1rem;
+    display: flex;
+    align-items: center; /* Center items vertically */
+}
+
+.product-review-option form {
+    display: flex; /* Ensure the form's content aligns properly */
+    margin: 0;
+}
+
+.product-review-option button {
+    padding: 0;
+    margin: 0 0.2rem;
+    outline: none;
+    border: none;
+    background: #ffffff;
+    cursor: pointer;
+}
+  .user-review-action{
+    display: flex;  
+    text-align: center;
+  
+  }
 </style>
 
 <div class="show-page">
@@ -269,19 +307,27 @@
                     <div class="review">
                         <h3><%= review.title %></h3>
                         <div class="review-rating">Rating: ★<%= review.rating %></div>
-                        <div class="review-images">
+
+                        <div class="review-images ">
                             <% if (review.image && review.image.length > 0) { %>
+                            <div class="review-images-show-container">
                                 <% review.image.forEach(imageUrl => { %>
-                                    <img src="<%= imageUrl %>" alt="Review Image" class="review-image">
+                                    <img src="<%= imageUrl %>" alt="Review Image" class="review-image user-review-image">
                                 <% }) %>
+                            </div>
                             <% } %>
                         </div>
+                        
                         <p><%= review.comment %></p>
-                        <small>Reviewed by: <%= review.user.name %></small>
+                        <div class="user-review-action">
+                        <small><i style="color: black;">Reviewed by </i>: <%= review.user.name %></small>
+                        <div class="product-review-option">
                         <form action="/products/<%= product._id %>/<%= product.slug %>/reviews/<%= review._id %>?_method=DELETE" method="POST">
-                            <button type="submit">Delete</button>
+                            <button type="submit">Delete |</button>
                         </form>
-                        <button class="review-submit edit-button" style="background-color: #007bff;" data-review-id="<%= review._id %>">Edit</button>
+                        <button class="edit-button" data-review-id="<%= review._id %>">Edit</button>
+                    </div>
+                     </div>
                     </div>
                     <% }) %>
                 </div>
@@ -369,20 +415,20 @@ document.querySelectorAll('.edit-button').forEach(button => {
             }
         });
 
-        // Handle Edit Review button click
         document.querySelectorAll('.edit-button').forEach(button => {
     button.addEventListener('click', function () {
         const reviewId = this.getAttribute('data-review-id');
         // Fetch review data and populate the modal form
-        fetch(`/products/<%= product._id %>/reviews/${reviewId}/edit`)
+        fetch(`/products/${product._id}/reviews/${reviewId}/edit`)
             .then(response => response.json())
             .then(data => {
+                console.log('Fetch Response:', data); // Log the response data
                 if (data.success) {
                     document.getElementById('review-title').value = data.review.title;
                     document.getElementById('review-body').value = data.review.comment;
                     document.getElementById('review-rating').value = data.review.rating;
                     // Set the form action to update the review
-                    document.querySelector('#reviewModal form').setAttribute('action', `/products/<%= product._id %>/reviews/${reviewId}?_method=PUT`);
+                    document.querySelector('#reviewModal form').setAttribute('action', `/products/${product._id}/reviews/${reviewId}?_method=PUT`);
                     // Open the modal
                     document.getElementById('reviewModal').classList.add('show');
                 } else {
@@ -395,6 +441,7 @@ document.querySelectorAll('.edit-button').forEach(button => {
             });
     });
 });
+
 
 
     });
