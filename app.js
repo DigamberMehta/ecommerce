@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
@@ -20,7 +21,6 @@ const nodemailerRoutes = require('./routes/nodemailer');
 const CustomStrategy = require('passport-custom').Strategy;
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const reviewRoutes = require('./routes/review');
-require('dotenv').config();
 app.use(express.json());
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -61,7 +61,7 @@ passport.use('custom', new CustomStrategy(
     try {
       let { emailOrPhone, password } = req.body;
 
-      // Convert emailOrPhone to lowercase and trim extra spaces
+      //* Convert emailOrPhone to lowercase and trim extra spaces
       emailOrPhone = emailOrPhone.toLowerCase().trim();
 
       console.log(`Login attempt: emailOrPhone=${emailOrPhone}, password=${password}`);
@@ -132,7 +132,6 @@ async (accessToken, refreshToken, profile, done) => {
     done(err);
   }
 }));
-
 
 
 passport.serializeUser(User.serializeUser());

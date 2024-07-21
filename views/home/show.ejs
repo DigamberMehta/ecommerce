@@ -238,6 +238,10 @@
                         <span class="close">&times;</span>
                         <h2>Write a Review</h2>
                         <form action="/products/<%= product._id %>/<%= product.slug %>/reviews" method="POST" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label for="review-title">Title</label>
+                                <input type="text" id="review-title" name="review[title]" placeholder="Enter the title of your review">
+                              </div>
                           <div class="form-group">
                               <label for="review-body">Review</label>
                               <textarea id="review-body" name="review[comment]" placeholder="Write your review here" rows="5"></textarea>
@@ -262,7 +266,7 @@
                     <h2>Customer Reviews</h2>
                     <% product.reviews.forEach(review => { %>
                     <div class="review">
-                        <h3>Review Title</h3>
+                        <h3><%= review.title %></h3>
                         <div class="review-rating">Rating: ★<%= review.rating %></div>
                         <div class="review-image">
                             <% if (review.image) { %>
@@ -365,28 +369,30 @@ document.querySelectorAll('.edit-button').forEach(button => {
 
         // Handle Edit Review button click
         document.querySelectorAll('.edit-button').forEach(button => {
-            button.addEventListener('click', function () {
-                const reviewId = this.getAttribute('data-review-id');
-                // Fetch review data and populate the modal form
-                fetch(`/products/<%= product._id %>/reviews/${reviewId}/edit`)
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            document.getElementById('review-body').value = data.review.comment;
-                            document.getElementById('review-rating').value = data.review.rating;
-                            // Set the form action to update the review
-                            document.querySelector('#reviewModal form').setAttribute('action', `/products/<%= product._id %>/reviews/${reviewId}?_method=PUT`);
-                            // Open the modal
-                            document.getElementById('reviewModal').classList.add('show');
-                        } else {
-                            alert('Failed to fetch review data. Please try again.');
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        alert('An error occurred. Please try again.');
-                    });
+    button.addEventListener('click', function () {
+        const reviewId = this.getAttribute('data-review-id');
+        // Fetch review data and populate the modal form
+        fetch(`/products/<%= product._id %>/reviews/${reviewId}/edit`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    document.getElementById('review-title').value = data.review.title;
+                    document.getElementById('review-body').value = data.review.comment;
+                    document.getElementById('review-rating').value = data.review.rating;
+                    // Set the form action to update the review
+                    document.querySelector('#reviewModal form').setAttribute('action', `/products/<%= product._id %>/reviews/${reviewId}?_method=PUT`);
+                    // Open the modal
+                    document.getElementById('reviewModal').classList.add('show');
+                } else {
+                    alert('Failed to fetch review data. Please try again.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again.');
             });
-        });
+    });
+});
+
     });
 </script>

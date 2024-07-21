@@ -7,7 +7,7 @@ const Review = mongoose.model('Review');
 const Product = mongoose.model('Product');
 const User = mongoose.model('User');
 
-// Set up multer for file uploads
+// TODO Set up multer for file uploads
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, 'uploads/'); // Destination folder
@@ -22,15 +22,16 @@ const upload = multer({ storage: storage });
 // Create a new review
 router.post('/products/:productId/:productSlug/reviews', isLoggedIn, upload.single('image'), async (req, res) => {
     try {
-        console.log('Request Body:', req.body);
+        // console.log('Request Body:', req.body);
 
         if (!req.body.review) {
             console.error('Review data is missing from request body');
             return res.status(400).send('Review data is missing');
         }
-
+            
         const { productId } = req.params;
-        const { rating, comment } = req.body.review;
+        const { title, rating, comment } = req.body.review;
+        console.log('Title:', title);
         const user = req.user._id;
 
         if (rating === undefined || comment === undefined) {
@@ -38,7 +39,7 @@ router.post('/products/:productId/:productSlug/reviews', isLoggedIn, upload.sing
             return res.status(400).send('Rating or comment is missing');
         }
 
-        const review = new Review({ user, product: productId, rating, comment });
+        const review = new Review({ user, product: productId, title, rating, comment });
 
         if (req.file) {
             review.image = req.file.path;
@@ -70,6 +71,7 @@ router.post('/products/:productId/:productSlug/reviews', isLoggedIn, upload.sing
 });
 
 
+
 // routes/reviews.js
 router.get('/products/:productId/reviews/:reviewId/edit', isLoggedIn, isReviewAuthor, async (req, res) => {
     try {
@@ -89,6 +91,7 @@ router.get('/products/:productId/reviews/:reviewId/edit', isLoggedIn, isReviewAu
     }
 });
 
+
 router.put('/products/:productId/reviews/:reviewId', isLoggedIn, isReviewAuthor, upload.single('image'), async (req, res) => {
     try {
         console.log('Request Body:', req.body); // Log the request body
@@ -99,14 +102,14 @@ router.put('/products/:productId/reviews/:reviewId', isLoggedIn, isReviewAuthor,
             return res.redirect(`/products/${req.params.productId}`);
         }
 
-        const { comment, rating } = req.body.review;
-        if (comment === undefined || rating === undefined) {
-            console.error('Comment or rating is missing');
+        const { title, comment, rating } = req.body.review;
+        if (title === undefined || comment === undefined || rating === undefined) {
+            console.error('Title, comment, or rating is missing');
             return res.redirect(`/products/${req.params.productId}`);
         }
 
         // Update the review
-        const review = await Review.findByIdAndUpdate(req.params.reviewId, { comment, rating });
+        const review = await Review.findByIdAndUpdate(req.params.reviewId, { title, comment, rating });
 
         if (!review) {
             console.error('Review not found');
@@ -127,6 +130,7 @@ router.put('/products/:productId/reviews/:reviewId', isLoggedIn, isReviewAuthor,
         res.status(500).send('Internal Server Error');
     }
 });
+
 
 
 // routes/reviews.js
