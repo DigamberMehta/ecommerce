@@ -76,10 +76,10 @@ router.get('/products/:productId/reviews/:reviewId/edit', isLoggedIn, isReviewAu
 });
 
 
-router.put('/products/:productId/reviews/:reviewId', isLoggedIn, isReviewAuthor, upload.single('image'), async (req, res) => {
+router.put('/products/:productId/reviews/:reviewId', isLoggedIn, isReviewAuthor, upload.array('images', 5), async (req, res) => {
     try {
         console.log('Request Body:', req.body); // Log the request body
-        console.log('Uploaded File:', req.file); // Log the uploaded file
+        console.log('Uploaded Files:', req.files); // Log the uploaded files
 
         if (!req.body.review) {
             console.error('Review data is missing');
@@ -92,13 +92,33 @@ router.put('/products/:productId/reviews/:reviewId', isLoggedIn, isReviewAuthor,
             return res.redirect(`/products/${req.params.productId}`);
         }
 
-        // Update the review
-        const review = await Review.findByIdAndUpdate(req.params.reviewId, { title, comment, rating });
-
+        // Fetch the review
+        const review = await Review.findById(req.params.reviewId);
         if (!review) {
             console.error('Review not found');
             return res.redirect(`/products/${req.params.productId}`);
         }
+
+        // Handle deleted images
+        if (req.body.deleteImages) {
+            for (let img of req.body.deleteImages) {
+                await cloudinary.uploader.destroy(img);
+                review.image = review.image.filter(image => image !== img);
+            }
+        }
+
+        // Add new images
+        if (req.files) {
+            const newImages = req.files.map(file => file.path);
+            review.image.push(...newImages);
+        }
+
+        // Update other review fields
+        review.title = title;
+        review.comment = comment;
+        review.rating = rating;
+
+        await review.save();
 
         // Fetch the product to get the slug
         const product = await Product.findById(req.params.productId);
@@ -114,7 +134,6 @@ router.put('/products/:productId/reviews/:reviewId', isLoggedIn, isReviewAuthor,
         res.status(500).send('Internal Server Error');
     }
 });
-
 
 
 // routes/reviews.js
