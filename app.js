@@ -21,6 +21,9 @@ const nodemailerRoutes = require('./routes/nodemailer');
 const CustomStrategy = require('passport-custom').Strategy;
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const reviewRoutes = require('./routes/review');
+const addressRoutes = require('./routes/address');
+const checkoutRoutes = require('./routes/checkout');
+
 app.use(express.json());
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -157,11 +160,13 @@ app.use('/', browsingHistoryRoutes);
 app.use('/auth', authGoogleRoutes);
 app.use('/', nodemailerRoutes);
 app.use('/', reviewRoutes);
+app.use('/', addressRoutes);
+app.use('/', checkoutRoutes);
 // Review routes
 
-app.get('*', (req, res) => {
-  res.send("404 Page Not Found");
-});
+// app.get('*', (req, res) => {
+//   res.send("404 Page Not Found");
+// });
 
 
 const port = 3000;

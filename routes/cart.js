@@ -127,4 +127,15 @@ router.get('/quantity', isLoggedIn, async (req, res) => {
   }
 });
 
+router.post('/cart-checkout', isLoggedIn, async (req, res) => {
+  try {
+      const cartItems = await CartItem.find({ user: req.user._id }).populate('product');
+      req.session.cart = cartItems;  // Save cart items to session
+      res.redirect('/checkout');
+  } catch (error) {
+      console.error(error);
+      res.status(500).send('An error occurred fetching cart items');
+  }
+});
+
 module.exports = router;

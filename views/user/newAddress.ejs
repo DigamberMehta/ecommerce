@@ -1,0 +1,120 @@
+<% layout('layouts/boilerplate') %>
+<style>
+  .form-body {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #ffffff;
+  }
+
+  .form-container {
+    background-color: #ffffff;
+    padding: 2rem;
+    border-radius: 8px;
+    /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
+    width: 100%;
+    max-width: 600px;
+  }
+
+  .form-container div {
+    margin-bottom: 1.2rem;
+  }
+
+  .form-container label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  .form-container input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+  }
+
+  .form-container button {
+    width: 25%;
+    padding: 0.75rem;
+    background-color: #e68a00;
+    border: none;
+    border-radius: 4px;
+    color: #ffffff;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .form-container button:hover {
+    background-color: #e68a00dc;
+  }
+  .street-row {
+    display: flex;
+    gap: 1rem;
+  }
+ 
+</style>
+<div class="form-body">
+  <div class="form-container">
+    <form action="/user/address" method="POST" id="addressForm">
+     
+      <div>
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" required>
+      </div>
+      <div>
+        <label for="phone">Phone Number</label>
+        <input type="text" id="phone" name="phone" required>
+      </div>
+    
+      <div>
+        <label for="houseNumber">House Number</label>
+        <input type="text" id="houseNumber" name="houseNumber" required>
+      </div>
+      <div class="street-row" style="margin: 0;">
+      <div style="width: 60%;">
+        <label for="street">Street</label>
+        <input type="text" id="street" name="street" required>
+      </div>
+      <div>
+        <label for="city">City</label>
+        <input type="text" id="city" name="city" required>
+      </div>
+      </div>
+
+      <div>
+        <label for="state">State</label>
+        <input type="text" id="state" name="state" required>
+      </div>
+      <div>
+        <label for="pincode">Pincode</label>
+        <input type="text" id="pincode" name="pincode" required>
+      </div>
+      <div>
+        <label for="country">Country</label>
+        <input type="text" id="country" name="country" required>
+      </div>
+      <button type="submit">Add Address</button>
+    </form>
+  </div>
+</div>
+<script>
+  document.getElementById('addressForm').addEventListener('submit', function(event) {
+    const inputs = document.querySelectorAll('#addressForm input[required]');
+    let allFilled = true;
+    
+    inputs.forEach(input => {
+      if (!input.value.trim()) {
+        allFilled = false;
+        input.style.borderColor = 'red';
+      } else {
+        input.style.borderColor = '#ced4da';
+      }
+    });
+
+    if (!allFilled) {
+      event.preventDefault();
+      alert('Please fill out all required fields.');
+    }
+  });
+</script>

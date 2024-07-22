@@ -1,11 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checkout Page</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
+<% layout('layouts/boilerplate') %>
 <style>
     body {
         font-family: Arial, sans-serif;
@@ -14,7 +7,7 @@
         box-sizing: border-box;
         background-color: #f4f4f4;
     }
-
+   
     .checkout-container {
         display: flex;
         width: 90%;
@@ -151,13 +144,50 @@
                     <button class="accordion-header active">Select a delivery address</button>
                     <div class="accordion-content show">
                         <h3 class="section-title">Your addresses</h3>
-                        <p class="address">Digamber<br>90k Bhajanpur, Banbasa, Chandani, Champawat, BANBASA, UTTARAKHAND, 262310, India<br><a href="#" class="link">Edit address</a> | <a href="#" class="link">Add delivery instructions</a></p>
-                        <p class="address">Digamber<br>Green City Lan 9, Gorakh Pur, DEHRADUN, UTTARAKHAND, 248001, India<br><a href="#" class="link">Edit address</a> | <a href="#" class="link">Add delivery instructions</a></p>
-                        <p class="address">Digamber Mehta<br>Siddhay Apartment, Phagwara, PUNJAB, 144411, India<br><a href="#" class="link">Edit address</a> | <a href="#" class="link">Add delivery instructions</a></p>
-                        <button class="btn">Add a new address</button>
-                        <button class="btn primary">Use this address</button>
+                        <form action="/checkout/confirm" method="POST">
+                            <% addresses.forEach(function(address, index) { %>
+                                <div class="address">
+                                    <input type="radio" name="selectedAddress" id="address-<%= index %>" value="<%= index %>" <%= index === 0 ? 'checked' : '' %>>
+                                    <label for="address-<%= index %>">
+                                        <%= address.name %><br>
+                                        <%= address.houseNumber %> <%= address.street %>, <%= address.city %>, <%= address.state %>, <%= address.pincode %>, <%= address.country %><br>
+                                        Phone: <%= address.phone %><br>
+                                        <a href="#" class="link">Edit address</a> 
+                                    </label>
+                                </div>
+                            <% }); %>
+                            <button type="submit" class="btn primary">Use this address</button>
+                        </form>
+                        <a href="/user/address/new"><button class="btn">Add a new address</button></a>
                     </div>
                 </div>
+                
+                <div class="accordion-item">
+                    <button class="accordion-header">Review items and delivery</button>
+                    <div class="accordion-content">
+                        <h3 class="section-title">Arriving 27 Jul 2024</h3>
+                        <p>If you order in the next 13 hours and 44 minutes (Details)</p>
+                        <% orderDetails.forEach(function(item) { %>
+                            <div class="product-item">
+                                <img src="<%= item.imageUrl %>" alt="<%= item.title %>" style="width:100px; height:auto;"> <!-- Display the image -->
+                                <h4 class="item-title">Items dispatched by <%= item.brand %></h4> <!-- Assuming brand is available -->
+                                <p class="item-details">
+                                    <%= item.title %> | Blue | 26<br>
+                                    MRP: ₹<%= item.mrp.toFixed(2) %><br>
+                                    Selling Price: ₹<%= item.price.toFixed(2) %><br>
+                                    Qty: <%= item.quantity %><br>
+                                    Subtotal: ₹<%= item.subtotal.toFixed(2) %><br>
+                                    Savings: ₹<%= item.savings.toFixed(2) %>
+                                </p>
+                            </div>
+                        <% }); %>
+                        <p>Choose a delivery option:</p>
+                        <p>Saturday 27 Jul<br>FREE Standard Delivery</p>
+                        <button class="btn primary">Place your order</button>
+                        <p class="terms">By placing your order, you agree to Amazon's privacy notice and conditions of use.</p>
+                    </div>
+                </div>
+                
                 <div class="accordion-item">
                     <button class="accordion-header">Payment Method</button>
                     <div class="accordion-content">
@@ -172,27 +202,15 @@
                         <button class="btn primary">Use this payment method</button>
                     </div>
                 </div>
-                <div class="accordion-item">
-                    <button class="accordion-header">Review items and delivery</button>
-                    <div class="accordion-content">
-                        <h3 class="section-title">Arriving 27 Jul 2024</h3>
-                        <p>If you order in the next 13 hours and 44 minutes (Details)</p>
-                        <h4 class="item-title">Items dispatched by NUCOUTHS</h4>
-                        <p class="item-details">NUCOUTHS Women & Girls Solid High Waist Denim Stretchable Relaxed Fit Jeans | Blue | 26<br>₹2,899.00 ₹899.10<br>Qty: 1<br>Sold by: NUCOUTHS</p>
-                        <p>Choose a delivery option:</p>
-                        <p>Saturday 27 Jul<br>FREE Standard Delivery</p>
-                        <button class="btn primary">Place your order</button>
-                        <p class="terms">By placing your order, you agree to Amazon's privacy notice and conditions of use.</p>
-                    </div>
-                </div>
             </div>
         </div>
+        
         <div class="checkout-right">
             <h2 class="order-summary-title">Order Summary</h2>
-            <p class="order-summary-item">Items: ₹899.10</p>
+            <p class="order-summary-item">Items Total: ₹<%= totalCost.toFixed(2) %></p>
             <p class="order-summary-item">Delivery: ₹0.00</p>
-            <h3 class="order-total">Order Total: ₹899.10</h3>
-            <p class="savings">Your Savings: ₹1,999.90 (69%)</p>
+            <h3 class="order-total">Order Total: ₹<%= totalCost.toFixed(2) %></h3>
+            <p class="savings">Your Savings: ₹<%= totalSavings.toFixed(2) %> (69%)</p> <!-- Update the percentage calculation if needed -->
             <p class="discount">Item discount</p>
         </div>
     </div>
@@ -215,5 +233,4 @@
             });
         });
     </script>
-</body>
-</html>
+

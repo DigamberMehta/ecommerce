@@ -1,15 +1,11 @@
 const mongoose = require('mongoose');
 
+const addressSchema = require('./address'); // Import the address schema
+
 const shippingSchema = new mongoose.Schema({
   order: { type: mongoose.Schema.Types.ObjectId, ref: 'Order', required: true },
   user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-  address: {
-    street: String,
-    city: String,
-    state: String,
-    zip: String,
-    country: String
-  },
+  address: addressSchema, // Use the address schema
   carrier: String,
   trackingNumber: String,
   status: { type: String, default: 'pending' },

@@ -70,5 +70,24 @@ router.get('/products/:id/:slug', async (req, res) => {
     }
 });
 
+router.post('/buy-now', isLoggedIn, async (req, res) => {
+    const { productId, quantity } = req.body;
+    try {
+        const product = await Product.findById(productId);
+        if (!product) {
+            return res.status(404).send('Product not found');
+        }
+
+        // Redirect to checkout page with product details
+        res.redirect(`/checkout?productId=${productId}&quantity=${quantity}`);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('An error occurred');
+    }
+});
+
+
+
+
 
 module.exports = router;

@@ -10,6 +10,8 @@ const userSchema = new mongoose.Schema({
   name: String,
   address: [
     {
+      name: String,
+      phone: String,
       houseNumber : String,
       street: String,
       city: String,
