@@ -222,25 +222,29 @@ button.primary:hover {
             <div class="accordion-item">
                 <button class="accordion-header active">Select a delivery address</button>
                 <div class="accordion-content show">
-                    <h3 class="section-title">Your addresses</h3>
-                    <form action="/checkout/confirm" method="POST">
-                        <% addresses.forEach(function(address, index) { %>
-                            <div class="address">
-                                <div class="address-checkout">
-                                <input type="radio" name="selectedAddress" id="address-<%= index %>" value="<%= index %>" <%= index === 0 ? 'checked' : '' %>>
-                                <label for="address-<%= index %>">
-                                    <%= address.name %><br>
-                                    <%= address.houseNumber %> <%= address.street %>, <%= address.city %>, <%= address.state %>, <%= address.pincode %>, <%= address.country %><br>
-                                    Phone: <%= address.phone %><br>
-                                </div>
-                                   <div> <a href="#" class="link edit-address" data-index="<%= index %>">Edit address</a> | <a href="/user/address/new">Add a new address</a></div>
-                                </label>
-                            </div>
-                        <% }); %>
-                        <button type="submit" class="btn primary">Use this address</button>
-                    </form>
+                  <h3 class="section-title">Your addresses</h3>
+                  <form action="/checkout/confirm" method="POST">
+                    <% addresses.forEach(function(address, index) { %>
+                      <div class="address">
+                        <div class="address-checkout">
+                          <input type="radio" name="selectedAddress" id="address-<%= index %>" value="<%= index %>" <%= index === 0 ? 'checked' : '' %>>
+                          <label for="address-<%= index %>">
+                            <%= address.name %><br>
+                            <%= address.houseNumber %> <%= address.street %>, <%= address.city %>, <%= address.state %>, <%= address.pincode %>, <%= address.country %><br>
+                            Phone: <%= address.phone %><br>
+                          </div>
+                          <div>
+                            <a href="#" class="link edit-address" data-index="<%= index %>">Edit address</a> | 
+                            <a href="/user/address/new?backUrl=<%= encodeURIComponent(backUrl) %>">Add a new address</a>
+                          </div>
+                          </label>
+                        </div>
+                    <% }); %>
+                    <button type="submit" class="btn primary">Use this address</button>
+                  </form>
                 </div>
-            </div>
+              </div>
+              
 
             <div class="accordion-item">
                 <button class="accordion-header">Review items and delivery</button>

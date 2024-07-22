@@ -67,25 +67,24 @@
   <main class="addresses-container">
     <h1 class="addresses-title">Addresses</h1>
     <ul class="addresses-list" >
-      <% if (addresses.length > 0) { %>
-        <% addresses.forEach(function(address) { %>
-          <li class="address-item" style="display: flex; justify-content: space-between;">
-            <div>
-            <h2 class="address-name"><%= address.name %></h2>
-            <p class="address-details"><%= address.houseNumber %>, <%= address.street %></p>
-            <p class="address-details"><%= address.city %>, <%= address.state %> - <%= address.pincode %></p>
-            <p class="address-details"><%= address.country %></p>
-            <p class="address-phone">Phone: <%= address.phone %></p>
-        </div>
-            <div style="display: flex; align-items: center;">
-                <p>Edit address </p>&nbsp; | &nbsp;  <a href=""><p> Add address</p></a>
-              </div>
-          </li>
-         
-        <% }); %>
-      <% } else { %>
-        <p class="no-addresses-message">No addresses found.</p>
-      <% } %>
+        <% if (addresses.length > 0) { %>
+            <% addresses.forEach(function(address) { %>
+                <li class="address-item" style="display: flex; justify-content: space-between;">
+                    <div>
+                        <h2 class="address-name"><%= address.name %></h2>
+                        <p class="address-details"><%= address.houseNumber %>, <%= address.street %></p>
+                        <p class="address-details"><%= address.city %>, <%= address.state %> - <%= address.pincode %></p>
+                        <p class="address-details"><%= address.country %></p>
+                        <p class="address-phone">Phone: <%= address.phone %></p>
+                    </div>
+                    <div style="display: flex; align-items: center;">
+                        <p>Edit address </p>&nbsp; | &nbsp;  <a href="/user/address/new?backUrl=<%= encodeURIComponent(backUrl) %>">Add Address</a>
+                    </div>
+                </li>
+            <% }); %>
+        <% } else { %>
+            <p class="no-addresses-message">No addresses found.</p>
+        <% } %>
     </ul>
-  </main>
+</main>
   

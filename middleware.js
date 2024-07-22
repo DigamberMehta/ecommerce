@@ -43,6 +43,11 @@ module.exports.savedRedirectUrl = (req, res, next) => {
   }
 };
 
+module.exports.setBackUrl = (req, res, next) => {
+  res.locals.backUrl= req.originalUrl;
+  next();
+};
+
 
 module.exports.isReviewAuthor = async (req, res, next) => {
   const { reviewId } = req.params;

@@ -3,33 +3,27 @@ const router = express.Router();
 const User = require('../models/user');
 const { isLoggedIn } = require('../middleware');
 
-
-
 // Route to display all addresses of the user
-router.get('/user/view-addresses', async (req, res) => {
+router.get('/user/view-addresses', isLoggedIn, async (req, res) => {
   try {
-    if (!req.isAuthenticated()) {
-      return res.redirect('/login'); // Redirect if user is not authenticated
-    }
-
     const user = await User.findById(req.user.id).populate('address').exec();
-    res.render('user/allAddress', { addresses: user.address });
+    const backUrl = req.originalUrl; // Capture the current URL
+    res.render('user/allAddress', { addresses: user.address, backUrl });
   } catch (err) {
     console.error(err);
     res.status(500).send('Internal Server Error');
   }
 });
 
-
-
-
+// Route to display the form for adding a new address
 router.get('/user/address/new', isLoggedIn, (req, res) => {
-  res.render('user/newAddress');
+  const backUrl = req.query.backUrl || '/home'; // Default to home if no backUrl is provided
+  res.render('user/newAddress', { backUrl });
 });
 
 // Handle adding new address
 router.post('/user/address', isLoggedIn, async (req, res) => {
-  const { name, phone, houseNumber, street, city, state, pincode, country } = req.body;
+  const { name, phone, houseNumber, street, city, state, pincode, country, backUrl } = req.body;
 
   try {
     const user = await User.findById(req.user._id);
@@ -48,7 +42,7 @@ router.post('/user/address', isLoggedIn, async (req, res) => {
     await user.save();
 
     req.flash('success', 'New address added successfully!');
-    res.redirect('/home'); // Redirect to user profile or any other page
+    res.redirect(backUrl); // Redirect to the original page
   } catch (error) {
     console.error('Error adding address:', error);
     req.flash('error', 'An error occurred. Please try again.');
@@ -58,7 +52,7 @@ router.post('/user/address', isLoggedIn, async (req, res) => {
 
 // Handle updating an existing address
 router.post('/user/address/update', isLoggedIn, async (req, res) => {
-  const { index, name, phone, houseNumber, street, city, state, pincode, country } = req.body;
+  const { index, name, phone, houseNumber, street, city, state, pincode, country, backUrl } = req.body;
 
   try {
     const user = await User.findById(req.user._id);
@@ -66,15 +60,15 @@ router.post('/user/address/update', isLoggedIn, async (req, res) => {
       user.address[index] = { name, phone, houseNumber, street, city, state, pincode, country };
       await user.save();
       req.flash('success', 'Address updated successfully!');
-      res.redirect('/checkout'); // Redirect to the checkout page or any other page
+      res.redirect(backUrl || '/checkout'); // Redirect to the backUrl or checkout page
     } else {
       req.flash('error', 'Address not found.');
-      res.redirect('/checkout');
+      res.redirect(backUrl || '/checkout');
     }
   } catch (error) {
     console.error('Error updating address:', error);
     req.flash('error', 'An error occurred. Please try again.');
-    res.redirect('/checkout');
+    res.redirect(backUrl || '/checkout');
   }
 });
 

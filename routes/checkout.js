@@ -62,8 +62,11 @@ router.get('/checkout', isLoggedIn, async (req, res) => {
     const user = await User.findById(req.user._id);
     const addresses = user.address || [];
 
-    // Render the checkout page with order details, total cost, total savings, and images
-    res.render('checkout', { orderDetails, totalCost, totalSavings, addresses });
+    // Capture the current URL to use as the backUrl
+    const backUrl = req.originalUrl;
+
+    // Render the checkout page with order details, total cost, total savings, addresses, and backUrl
+    res.render('checkout', { orderDetails, totalCost, totalSavings, addresses, backUrl });
 });
 
 module.exports = router;
