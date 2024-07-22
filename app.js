@@ -94,8 +94,8 @@ passport.use('custom', new CustomStrategy(
       });
     } catch (err) {
       console.log(`Error during authentication: ${err}`);
-      return done(err);
       req.flash('error', 'Something went wrong');
+      return done(err);
     }
   }
 ));

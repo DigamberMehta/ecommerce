@@ -1,5 +1,11 @@
 <% layout('layouts/boilerplate') %>
-
+<style>
+    .show-item-count{
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+    }
+</style>
 
 <div class="cart-page">
     <div class="cart-wrapper">
@@ -27,18 +33,28 @@
                                 <div class="quantity-selector-container">
 
                                     <div class="quantity-buttons">
+                                        <% if (item.quantity <= 10) { %>
+                                            <select class="quantity-selector">
+                                                <% for (let i = 1; i <= 10; i++) { %>
+                                                    <option value="<%= i %>" <%= item.quantity === i ? 'selected' : '' %>> Quantity: <%= i %></option>
+                                                <% } %>
+                                                <option value="more">Add more</option>
+                                            </select>
+                                            <input type="text" class="manual-quantity" style="display: none;" min="1" value="<%= item.quantity %>">
+                                        <% } else { %>
+                                            <select class="quantity-selector" style="display: none;">
+                                                <% for (let i = 1; i <= 10; i++) { %>
+                                                    <option value="<%= i %>"> Quantity: <%= i %></option>
+                                                <% } %>
+                                                <option value="more">Add more</option>
+                                            </select>
+                                            <input type="text" class="manual-quantity" min="1" value="<%= item.quantity %>">
+                                        <% } %>
                                         <button class="quantity-button decrement">-</button>
-                                        <select class="quantity-selector">
-                                            <% for (let i = 1; i <= 10; i++) { %>
-                                                <option value="<%= i %>" <%= item.quantity === i ? 'selected' : '' %>> Quantity: <%= i %></option>
-                                            <% } %>
-                                            <option value="more">Add more</option>
-                                        </select>
-                                        <input type="text" class="manual-quantity" style="display: none;" min="1" value="<%= item.quantity %>">
                                         <button class="quantity-button increment">+</button>
                                     </div>
-                                    
                                     <button class="update-button">Update</button>
+    
                                      <div class="cart-option-container">
                                         <ul class="remove-item save-later cart-options">
                                             <li class="remove-button"><i class="fa-light fa-trash"></i>Remove&nbsp;</li>
@@ -58,13 +74,17 @@
         <div class="order-summary">
             <div class="summary-card">
                 <div class="summary-title">Order Summary</div>
-                <div id="item-count"> <div> Total Items:</div> <div><%= cartItems.length %></div></div>
+                <div class="show-item-count">
+                <span> Total Items:</span><span id="item-count">
+                <div><%= cartItems.length %></div>
+                </span>
+                </div>
                 <div class="summary-item">Subtotal<span id="subtotal">₹<%= cartItems.reduce((sum, item) => sum + item.product.sellingPrice * item.quantity, 0) %></span>
                 
                 </div>
                 
                 <form action="/cart/cart-checkout" method="POST">
-                    <button type="submit" class="btn">Proceed to Checkout</button>
+                    <button type="submit" class="checkout-button" >Proceed to Checkout</button>
                 </form>
                 
 

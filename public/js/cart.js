@@ -1,14 +1,16 @@
 document.querySelectorAll('.quantity-selector').forEach(select => {
     select.addEventListener('change', async (event) => {
         const cartItemId = event.target.closest('.cart-item').dataset.cartItemId;
-        const newQuantity = event.target.value === 'more' ? parseInt(event.target.nextElementSibling.value) : event.target.value;
-        const productPrice = event.target.closest('.cart-item').dataset.productPrice;
+        let newQuantity = event.target.value;
 
-        if (event.target.value === 'more') {
+        if (newQuantity === 'more') {
+            const manualInput = event.target.nextElementSibling;
             event.target.style.display = 'none';
-            event.target.nextElementSibling.style.display = 'block';
-            event.target.nextElementSibling.focus();
+            manualInput.style.display = 'block';
+            manualInput.focus();
             return;
+        } else {
+            newQuantity = parseInt(newQuantity);
         }
 
         try {
@@ -51,8 +53,7 @@ document.querySelectorAll('.update-button').forEach(button => {
     button.addEventListener('click', async (event) => {
         const cartItem = event.target.closest('.cart-item');
         const cartItemId = cartItem.dataset.cartItemId;
-        const newQuantity = cartItem.querySelector('.manual-quantity').value;
-        const productPrice = cartItem.dataset.productPrice;
+        const newQuantity = parseInt(cartItem.querySelector('.manual-quantity').value);
 
         try {
             const response = await fetch('/cart/update', {
@@ -80,17 +81,20 @@ document.querySelectorAll('.update-button').forEach(button => {
 document.querySelectorAll('.quantity-button.increment').forEach(button => {
     button.addEventListener('click', async (event) => {
         const select = event.target.closest('.quantity-buttons').querySelector('.quantity-selector');
+        const input = event.target.closest('.quantity-buttons').querySelector('.manual-quantity');
+
         if (select.style.display !== 'none') {
-            const currentQuantity = parseInt(select.value);
+            let currentQuantity = parseInt(select.value);
             if (currentQuantity < 10) {
                 select.value = currentQuantity + 1;
                 select.dispatchEvent(new Event('change'));
             } else {
-                select.value = 'more';
-                select.dispatchEvent(new Event('change'));
+                input.value = currentQuantity + 1; // Set input value to 11
+                select.style.display = 'none';
+                input.style.display = 'block';
+                input.dispatchEvent(new Event('change'));
             }
         } else {
-            const input = event.target.closest('.quantity-buttons').querySelector('.manual-quantity');
             input.value = parseInt(input.value) + 1;
             input.dispatchEvent(new Event('change'));
         }
@@ -100,6 +104,8 @@ document.querySelectorAll('.quantity-button.increment').forEach(button => {
 document.querySelectorAll('.quantity-button.decrement').forEach(button => {
     button.addEventListener('click', async (event) => {
         const select = event.target.closest('.quantity-buttons').querySelector('.quantity-selector');
+        const input = event.target.closest('.quantity-buttons').querySelector('.manual-quantity');
+
         if (select.style.display !== 'none') {
             const currentQuantity = parseInt(select.value);
             if (currentQuantity > 1) {
@@ -107,7 +113,6 @@ document.querySelectorAll('.quantity-button.decrement').forEach(button => {
                 select.dispatchEvent(new Event('change'));
             }
         } else {
-            const input = event.target.closest('.quantity-buttons').querySelector('.manual-quantity');
             if (parseInt(input.value) > 1) {
                 input.value = parseInt(input.value) - 1;
                 input.dispatchEvent(new Event('change'));
@@ -144,6 +149,6 @@ document.querySelectorAll('.remove-button').forEach(button => {
 });
 
 function updateSubtotal(newSubtotal) {
-    document.getElementById('subtotal').textContent = newSubtotal.toFixed(2);
+    document.getElementById('subtotal').textContent = `₹${newSubtotal.toFixed(2)}`;
     document.getElementById('item-count').textContent = document.querySelectorAll('.cart-item').length;
 }

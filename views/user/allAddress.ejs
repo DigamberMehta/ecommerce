@@ -1,0 +1,91 @@
+<% layout('layouts/boilerplate') %>
+<style>
+    .addresses-container {
+      max-width: 75%;
+      margin: 30px;
+      padding: 20px;
+      background: #fafafa;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      font-family: 'Arial', sans-serif;
+    }
+  
+    .addresses-title {
+      text-align: center;
+      color: #222;
+      font-size: 24px;
+      margin-bottom: 25px;
+    }
+  
+    .addresses-list {
+      list-style: none;
+      padding: 0;
+    }
+  
+    .address-item {
+    width: 100%;
+    /* background: #fff; */
+    border-bottom: 1px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 15px;
+    /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08); */
+    transition: transform 0.2s;
+}
+  
+    .address-item:hover {
+      transform: scale(1.02);
+    }
+  
+    .address-name {
+      margin: 0;
+      color: #444;
+      font-size: 18px;
+      font-weight: 600;
+    }
+  
+    .address-details {
+      margin: 10px 0;
+      color: #666;
+      font-size: 15px;
+    }
+  
+    .address-phone {
+      margin: 0;
+      color: #222;
+      font-size: 16px;
+      font-weight: 500;
+    }
+  
+    .no-addresses-message {
+      text-align: center;
+      color: #888;
+      font-size: 16px;
+    }
+  </style>
+  
+  <main class="addresses-container">
+    <h1 class="addresses-title">Addresses</h1>
+    <ul class="addresses-list" >
+      <% if (addresses.length > 0) { %>
+        <% addresses.forEach(function(address) { %>
+          <li class="address-item" style="display: flex; justify-content: space-between;">
+            <div>
+            <h2 class="address-name"><%= address.name %></h2>
+            <p class="address-details"><%= address.houseNumber %>, <%= address.street %></p>
+            <p class="address-details"><%= address.city %>, <%= address.state %> - <%= address.pincode %></p>
+            <p class="address-details"><%= address.country %></p>
+            <p class="address-phone">Phone: <%= address.phone %></p>
+        </div>
+            <div style="display: flex; align-items: center;">
+                <p>Edit address </p>&nbsp; | &nbsp;  <a href=""><p> Add address</p></a>
+              </div>
+          </li>
+         
+        <% }); %>
+      <% } else { %>
+        <p class="no-addresses-message">No addresses found.</p>
+      <% } %>
+    </ul>
+  </main>
+  

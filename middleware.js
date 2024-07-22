@@ -2,7 +2,7 @@ const Review = require('./models/review');
 
 module.exports.isLoggedIn = (req, res, next) => {
   try {
-    console.log('Checking if user is authenticated...');
+    // console.log('Checking if user is authenticated...');
     if (!req.isAuthenticated()) {
       // Check if the URL is not /cart/quantity before storing it
       if (req.originalUrl !== '/cart/quantity') {
