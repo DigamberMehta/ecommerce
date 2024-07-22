@@ -13,7 +13,11 @@ const upload = multer({ storage: storage });
 // Create a new review
 router.post('/products/:productId/:productSlug/reviews', isLoggedIn, upload.array('images', 5), async (req, res) => {
     try {
+        console.log('Incoming Review Data:', req.body.review);
+        console.log('Uploaded Files:', req.files);
+
         if (!req.body.review) {
+            console.error('Review data is missing');
             return res.status(400).send('Review data is missing');
         }
 
@@ -22,6 +26,7 @@ router.post('/products/:productId/:productSlug/reviews', isLoggedIn, upload.arra
         const user = req.user._id;
 
         if (rating === undefined || comment === undefined) {
+            console.error('Rating or comment is missing');
             return res.status(400).send('Rating or comment is missing');
         }
 
@@ -33,17 +38,17 @@ router.post('/products/:productId/:productSlug/reviews', isLoggedIn, upload.arra
 
         await review.save();
 
-        // Update the product with the new review
         const product = await Product.findById(productId);
         if (!product) {
+            console.error('Product not found');
             return res.status(404).send('Product not found');
         }
         product.reviews.push(review._id);
         await product.save();
 
-        // Update the user's reviews array
         const userUpdate = await User.findByIdAndUpdate(user, { $push: { reviews: review._id } });
         if (!userUpdate) {
+            console.error('User not found');
             return res.status(404).send('User not found');
         }
 
@@ -78,8 +83,8 @@ router.get('/products/:productId/reviews/:reviewId/edit', isLoggedIn, isReviewAu
 
 router.put('/products/:productId/reviews/:reviewId', isLoggedIn, isReviewAuthor, upload.array('images', 5), async (req, res) => {
     try {
-        console.log('Request Body:', req.body); // Log the request body
-        console.log('Uploaded Files:', req.files); // Log the uploaded files
+        console.log('Request Body:', req.body);
+        console.log('Uploaded Files:', req.files);
 
         if (!req.body.review) {
             console.error('Review data is missing');
@@ -92,42 +97,40 @@ router.put('/products/:productId/reviews/:reviewId', isLoggedIn, isReviewAuthor,
             return res.redirect(`/products/${req.params.productId}`);
         }
 
-        // Fetch the review
         const review = await Review.findById(req.params.reviewId);
         if (!review) {
             console.error('Review not found');
             return res.redirect(`/products/${req.params.productId}`);
         }
 
-        // Handle deleted images
         if (req.body.deleteImages) {
             for (let img of req.body.deleteImages) {
-                await cloudinary.uploader.destroy(img);
-                review.image = review.image.filter(image => image !== img);
+                try {
+                    await cloudinary.uploader.destroy(img);
+                    review.image = review.image.filter(image => image !== img);
+                } catch (deleteErr) {
+                    console.error('Error deleting image from Cloudinary:', deleteErr);
+                }
             }
         }
 
-        // Add new images
         if (req.files) {
             const newImages = req.files.map(file => file.path);
             review.image.push(...newImages);
         }
 
-        // Update other review fields
         review.title = title;
         review.comment = comment;
         review.rating = rating;
 
         await review.save();
 
-        // Fetch the product to get the slug
         const product = await Product.findById(req.params.productId);
         if (!product) {
             console.error('Product not found');
             return res.redirect(`/products/${req.params.productId}`);
         }
 
-        // Redirect to the product page with the slug
         res.redirect(`/products/${product._id}/${product.slug}`);
     } catch (err) {
         console.error('Error updating review:', err);
@@ -147,7 +150,6 @@ router.delete('/products/:productId/:productSlug/reviews/:reviewId', isLoggedIn,
             return res.status(404).send('Review not found');
         }
 
-        // Update product to remove reference to deleted review
         const product = await Product.findById(productId);
         if (!product) {
             console.error('Product not found');
@@ -162,6 +164,7 @@ router.delete('/products/:productId/:productSlug/reviews/:reviewId', isLoggedIn,
         res.status(500).send('Internal Server Error');
     }
 });
+
 
 
 module.exports = router;

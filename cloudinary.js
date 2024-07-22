@@ -11,7 +11,7 @@ const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
     folder: 'reviews',
-    allowedFormats: ['jpg', 'jpeg', 'png']
+    allowedFormats: ['jpg', 'jpeg', 'png' , 'dng']
   }
 });
 
