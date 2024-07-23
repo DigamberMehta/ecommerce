@@ -72,11 +72,12 @@ exports.editAddressForm = async (req, res) => {
   try {
     const user = await User.findById(req.user._id);
     const address = user.address.id(req.params.id);
-    res.render('edit-address', { address });
+    res.render('edit-address', { address, backUrl: res.locals.backUrl });
   } catch (error) {
     res.status(500).send(error);
   }
 };
+
 
 // Handle editing an existing address
 exports.editAddress = async (req, res) => {

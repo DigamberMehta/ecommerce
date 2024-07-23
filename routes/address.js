@@ -16,7 +16,7 @@ router.post('/user/address', isLoggedIn, addressController.addAddress);
 router.post('/user/address/update', isLoggedIn, addressController.updateAddress);
 
 // Display form for editing an existing address
-router.get('/user/address/edit/:id', isLoggedIn, addressController.editAddressForm);
+router.get('/user/address/edit/:id', isLoggedIn, setBackUrl, addressController.editAddressForm);
 
 // Handle editing an existing address
 router.post('/user/address/edit/:id', isLoggedIn, addressController.editAddress);

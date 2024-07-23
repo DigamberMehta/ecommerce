@@ -44,10 +44,9 @@ module.exports.savedRedirectUrl = (req, res, next) => {
 };
 
 module.exports.setBackUrl = (req, res, next) => {
-  if (!req.query.backUrl) {
-    res.locals.backUrl = req.originalUrl;
-  } else {
-    res.locals.backUrl = req.query.backUrl;
+  if (!res.locals.backUrl) {
+    res.locals.backUrl = req.query.backUrl || req.originalUrl;
+    console.log(`Back URL set to: ${res.locals.backUrl}`);
   }
   next();
 };
