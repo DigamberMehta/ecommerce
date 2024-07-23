@@ -4,7 +4,7 @@ const User = require("../models/user");
 const wrapAsync = require("../utils/wrapAsync");
 const passport = require("passport");
 const { savedRedirectUrl } = require("../middleware");
-
+const bcrypt = require('bcrypt');
 
 
 router.get("/signup", (req, res) => {
@@ -75,6 +75,97 @@ router.post(
 );
 
 
+router.get('/profile', wrapAsync(async (req, res) => {
+  try {
+    if (!req.isAuthenticated()) {
+      req.flash('error', 'You need to be logged in to view this page.');
+      return res.redirect('/login');
+    }
+
+    const user = await User.findById(req.user._id);
+    res.render('profile', { user });
+  } catch (err) {
+    req.flash('error', 'Unable to retrieve user profile.');
+    res.redirect('/');
+  }
+}));
+
+// Update user profile
+// Update user profile
+router.post('/profile', wrapAsync(async (req, res) => {
+  try {
+    if (!req.isAuthenticated()) {
+      req.flash('error', 'You need to be logged in to perform this action.');
+      return res.redirect('/login');
+    }
+
+    const { name, phone, email, password } = req.body; // Ensure password is being retrieved correctly
+    const user = await User.findById(req.user._id);
+
+    if (!password) {
+      req.flash('error', 'Password is required to update profile.');
+      return res.redirect('/profile');
+    }
+
+    // Verify password before updating user details
+    user.authenticate(password, async (err, authenticatedUser, passwordErr) => {
+      if (passwordErr || !authenticatedUser) {
+        req.flash('error', 'Incorrect password.');
+        return res.redirect('/profile');
+      }
+
+      // Update user details
+      if (name) user.name = name;
+      if (phone) user.phone = phone;
+      if (email) user.email = email;
+
+      await user.save();
+      req.flash('success', 'Profile updated successfully.');
+      res.redirect('/profile');
+    });
+  } catch (err) {
+    req.flash('error', 'Error updating profile.');
+    res.redirect('/profile');
+  }
+}));
+
+
+
+// Reset password
+router.post('/profile/reset-password', wrapAsync(async (req, res) => {
+  try {
+    if (!req.isAuthenticated()) {
+      req.flash('error', 'You need to be logged in to perform this action.');
+      return res.redirect('/login');
+    }
+
+    const { oldPassword, newPassword } = req.body;
+    const user = await User.findById(req.user._id);
+
+    // Check if the old password is correct
+    user.authenticate(oldPassword, async (err, thisModel, passwordErr) => {
+      if (passwordErr) {
+        req.flash('error', 'Incorrect old password.');
+        return res.redirect('/profile');
+      }
+
+      // Set new password
+      user.setPassword(newPassword, async (err) => {
+        if (err) {
+          req.flash('error', 'Error resetting password.');
+          return res.redirect('/profile');
+        }
+
+        await user.save();
+        req.flash('success', 'Password reset successfully.');
+        res.redirect('/profile');
+      });
+    });
+  } catch (err) {
+    req.flash('error', 'Error resetting password.');
+    res.redirect('/profile');
+  }
+}));
 
 
 router.get("/logout", (req, res, next) => {

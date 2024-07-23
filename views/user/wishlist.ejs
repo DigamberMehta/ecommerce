@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Wishlist</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .wishlist-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .wishlist-title {
+            text-align: center;
+            color: #333;
+        }
+
+        .wishlist-empty {
+            text-align: center;
+            color: #999;
+        }
+
+        .wishlist-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .wishlist-item {
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #ddd;
+            padding: 10px 0;
+        }
+
+        .wishlist-item:last-child {
+            border-bottom: none;
+        }
+
+        .wishlist-image {
+            width: 100px;
+            margin-right: 20px;
+        }
+
+        .wishlist-info {
+            flex: 1;
+        }
+
+        .wishlist-product-title {
+            font-size: 1.2em;
+            margin: 0 0 5px;
+            color: #333;
+        }
+
+        .wishlist-product-description {
+            margin: 0 0 10px;
+            color: #666;
+        }
+
+        .wishlist-prices {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .wishlist-selling-price {
+            color: #e91e63;
+            font-size: 1.2em;
+        }
+
+        .wishlist-mrp-price {
+            color: #999;
+            text-decoration: line-through;
+        }
+
+        .wishlist-discount {
+            background-color: #e91e63;
+            color: #fff;
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wishlist-container">
+        <h1 class="wishlist-title">My Wishlist</h1>
+        <% if (products.length === 0) { %>
+            <p class="wishlist-empty">Your wishlist is empty.</p>
+        <% } else { %>
+            <ul class="wishlist-list">
+                <% products.forEach(product => { 
+                    const discountPercentage = Math.round(((product.mrpPrice - product.sellingPrice) / product.mrpPrice) * 100);
+                %>
+                    <li class="wishlist-item">
+                        <img src="<%= product.images[0] %>" alt="<%= product.title %> image" class="wishlist-image">
+                        <div class="wishlist-info">
+                            <h2 class="wishlist-product-title"><%= product.title %></h2>
+                            <p class="wishlist-product-description"><%= product.description %></p>
+                            <div class="wishlist-prices">
+                                <span class="wishlist-selling-price">$<%= product.sellingPrice %></span>
+                                <span class="wishlist-mrp-price">$<%= product.mrpPrice %></span>
+                                <span class="wishlist-discount"><%= discountPercentage %>% off</span>
+                            </div>
+                        </div>
+                    </li>
+                <% }); %>
+            </ul>
+        <% } %>
+    </div>
+</body>
+
+</html>

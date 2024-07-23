@@ -23,6 +23,7 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const reviewRoutes = require('./routes/review');
 const addressRoutes = require('./routes/address');
 const checkoutRoutes = require('./routes/checkout');
+const whishlistRoutes = require('./routes/wishlist');
 
 app.use(express.json());
 app.set("view engine", "ejs");
@@ -162,6 +163,8 @@ app.use('/', nodemailerRoutes);
 app.use('/', reviewRoutes);
 app.use('/', addressRoutes);
 app.use('/', checkoutRoutes);
+app.use('/', whishlistRoutes);
+
 app.get('/terms', (req, res) => {
   res.render('about/terms');
 });

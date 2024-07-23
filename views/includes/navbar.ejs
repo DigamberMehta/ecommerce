@@ -155,15 +155,17 @@ body.no-scroll {
           <% } %>
           </strong> 
           <div class="dropdown-menu">
-            <div class="dropdown-item"><i class="fa-light fa-user icons"></i> Profile</div>
+            <a href="/profile"><div class="dropdown-item"><i class="fa-light fa-user icons"></i> Profile</div></a>
             <div class="dropdown-item"><i class="fa-light fa-cube icons"></i> Orders</div>
-            <div class="dropdown-item"><i class="fa-light fa-heart icons"></i> Wishlist</div>
-            <div class="dropdown-item"><a href="/user/view-addresses"><i class="fa-thin fa-map-location-dot icons"></i> Addresses</a></div>
+           <a href="/wishlist"> <div class="dropdown-item"><i class="fa-light fa-heart icons"></i> Wishlist</div></a>
+            <a href="/user/view-addresses"><div class="dropdown-item"><i class="fa-thin fa-map-location-dot icons"></i> Addresses</div></a>
             <div class="dropdown-item"><i class="fa-sharp fa-light fa-tag icons"></i> Coupon</div>
             <% if (currentUser) { %>
+              <a href="/logout">
               <div class="dropdown-item">
-                <a href="/logout"> <i class="fa-regular fa-arrow-right-from-bracket icons"></i> Logout</a>
+                <i class="fa-regular fa-arrow-right-from-bracket icons"></i> Logout
               </div>
+            </a>
             <% } %>
           </div>
         </div>

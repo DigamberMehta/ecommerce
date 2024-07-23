@@ -1,456 +1,546 @@
 <% layout('layouts/boilerplate') %>
-<style>
-    table {
-        width: 100%;
-        border-collapse: collapse;
-    }
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
 
-    th, td {
-        border: 1px solid #ddd;
-        padding: 8px;
-    }
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
 
-    th {
-        background-color: #f2f2f2;
-    }
+        th {
+            background-color: #f2f2f2;
+        }
 
-    .btns {
-        display: flex;
-        align-items: center;
-    }
+        .btns {
+            display: flex;
+            align-items: center;
+        }
 
 
-    .review-section {
-    margin: 0 auto;
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    /* background-color: #f9f9f9; */
-    font-family: "Rubik", sans-serif;
-  }
-  
-  .write-review {
-    margin-bottom: 40px;
-    font-family: "Rubik", sans-serif;
-  }
-  
-  .write-review h2,
-  .reviews h2 {
-    font-size: 24px;
-    margin-bottom: 20px;
-    color: #333;
-  }
-  
-  .form-group {
-    margin-bottom: 20px;
-  }
-  
-  .form-group label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 5px;
-  }
-  
-  .form-group input,
-  .form-group textarea,
-  .form-group select {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 16px;
-  }
-  
-  .review-submit {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    background-color: #28a745;
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
-  }
-  
-  .review-submit:hover {
-    background-color: #218838;
-  }
-  
-  .reviews .review {
-    padding: 15px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    background-color: #fff;
-    margin-bottom: 20px;
-  }
-  
-  .review h3 {
-    font-size: 20px;
-    margin-bottom: 10px;
-    color: #333;
-  }
-  
-  .review-rating {
-    font-size: 18px;
-    margin-bottom: 10px;
-    color: #ff9900;
-  }
-  
-  .review p {
-    font-size: 16px;
-    margin-bottom: 10px;
-    color: #555;
-  }
-  
-  .review small {
-    font-size: 14px;
-    color: #999;
-  }
-  
-  .review-image {
-    margin-top: 10px;
-  }
-  
-  .modal {
-    display: none; 
-    position: fixed; 
-    z-index: 1; 
-    left: 0;
-    top: 0;
-    width: 100%; 
-    height: 100%; 
-    overflow: auto; 
-    background-color: rgb(0,0,0); 
-    background-color: rgba(0,0,0,0.4); 
-  }
-  
-  .modal.show {
-    display: block;
-  }
-  
-  .modal-content {
-    background-color: #fefefe;
-    margin: 5% auto; 
-    padding: 2rem;
-    border: 1px solid #888;
-    width: 80%;
-    max-width: 500px;
-  }
-  
-  .close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-  }
-  
-  .close:hover,
-  .close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
-  }
-  @media (max-width: 600px) {
-    .review-section {
-      padding: 10px;
-    }
-    .write-review {
-      margin-bottom: 20px;
-  }
-  }
-  .review-images{
-    display: flex;
-    flex-direction: row;
-  }
-  .review-images-show-container {
-    max-width: 215px;
-    height: 180px;
-    display: flex;
-}
-  .user-review-image{
-    max-width: 100%;
-    max-height: 100%;
-    margin-right: 10px;
-    margin-bottom: 1rem;
-  }
-  .product-review-option {
-    margin-left: 1rem;
-    display: flex;
-    align-items: center; /* Center items vertically */
-}
+        .review-section {
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            /* background-color: #f9f9f9; */
+            font-family: "Rubik", sans-serif;
+        }
 
-.product-review-option form {
-    display: flex; /* Ensure the form's content aligns properly */
-    margin: 0;
-}
+        .write-review {
+            margin-bottom: 40px;
+            font-family: "Rubik", sans-serif;
+        }
 
-.product-review-option button {
-    padding: 0;
-    margin: 0 0.2rem;
-    outline: none;
-    border: none;
-    background: #ffffff;
-    cursor: pointer;
-}
-  .user-review-action{
-    display: flex;  
-    text-align: center;
-  
-  }
-</style>
+        .write-review h2,
+        .reviews h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #333;
+        }
 
-<div class="show-page">
-    <div class="product-show-container">
-        <div class="product-show-content">
-            <div class="product-show-image">
-                <div class="product-image">
-                    <img src="<%= product.images[0] %>" alt="<%= product.title %>" />
-                </div>
-            </div>
-            <div class="product-show-details">
-                <h1 class="product-show-title"><%= product.title %></h1>
-                <p class="product-show-ratings"><%= product.rating %>★ <%= product.reviews.length %> Ratings & <%= product.reviews.length %> Reviews</p>
-                <div class="product-show-price">
-                    <span class="product-show-current-price">₹<%= product.sellingPrice %></span>
-                    <span class="product-show-original-price">₹<%= product.mrpPrice %></span>
-                    <span class="product-show-discount"></span>
-                </div>
-                <div class="product-show-available-offers">
-                    <div class="product-show-available-offers-title">Available Offers</div>
-                    <div class="carousel-container">
-                        <div class="arrow-button arrow-button-left" onclick="scrollCarousel(-1)">&#9664;</div>
-                        <div class="offer-card">
-                            <div class="offer-card-title">Offer 1</div>
-                            <div class="offer-card-details">Extra ₹1000 Off on ICICI Credit Cards</div>
-                        </div>
-                        <div class="offer-card">
-                            <div class="offer-card-title">Offer 2</div>
-                            <div class="offer-card-details">Partner Offer: Buy this and get additional 10% off on Rakhi gifts</div>
-                        </div>
-                        <div class="offer-card">
-                            <div class="offer-card-title">Offer 3</div>
-                            <div class="offer-card-details">Bank Offer: 5% Cashback on HDFC Credit Card</div>
-                        </div>
-                        <div class="arrow-button arrow-button-right" onclick="scrollCarousel(1)">&#9654;</div>
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        .review-submit {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            background-color: #28a745;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .review-submit:hover {
+            background-color: #218838;
+        }
+
+        .reviews .review {
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #fff;
+            margin-bottom: 20px;
+        }
+
+        .review h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .review-rating {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #ff9900;
+        }
+
+        .review p {
+            font-size: 16px;
+            margin-bottom: 10px;
+            color: #555;
+        }
+
+        .review small {
+            font-size: 14px;
+            color: #999;
+        }
+
+        .review-image {
+            margin-top: 10px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0, 0, 0);
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal.show {
+            display: block;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 2rem;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        @media (max-width: 600px) {
+            .review-section {
+                padding: 10px;
+            }
+
+            .write-review {
+                margin-bottom: 20px;
+            }
+        }
+
+        .review-images {
+            display: flex;
+            flex-direction: row;
+        }
+
+        .review-images-show-container {
+            max-width: 215px;
+            height: 180px;
+            display: flex;
+        }
+
+        .user-review-image {
+            max-width: 100%;
+            max-height: 100%;
+            margin-right: 10px;
+            margin-bottom: 1rem;
+        }
+
+        .product-review-option {
+            margin-left: 1rem;
+            display: flex;
+            align-items: center;
+            /* Center items vertically */
+        }
+
+        .product-review-option form {
+            display: flex;
+            /* Ensure the form's content aligns properly */
+            margin: 0;
+        }
+
+        .product-review-option button {
+            padding: 0;
+            margin: 0 0.2rem;
+            outline: none;
+            border: none;
+            background: #ffffff;
+            cursor: pointer;
+        }
+
+        .user-review-action {
+            display: flex;
+            text-align: center;
+
+        }
+        .wishlist-btn-show button{
+            margin: 0;
+            padding: 0;
+            background-color: white;
+            border: none;
+           
+            
+        }
+        .top-show-section-heading{
+            display: flex;
+            justify-content: space-between;
+        }
+        .heart-icon{
+            font-size: 1.5rem;
+        }
+    </style>
+
+    <div class="show-page">
+        <div class="product-show-container">
+            <div class="product-show-content">
+                <div class="product-show-image">
+                    <div class="product-image">
+                        <img src="<%= product.images[0] %>" alt="<%= product.title %>" />
                     </div>
                 </div>
-                <!-- Add to Cart Button -->
-                <div class="btns">
-                    <button class="product-show-btn-add-to-cart" data-product-id="<%= product._id %>">Add to Cart</button>
-                    <form action="/buy-now" method="POST">
-                        <input type="hidden" name="productId" value="<%= product._id %>">
-                        <input type="hidden" name="quantity" value="1" min="1"> <!-- Adjust based on dynamic needs -->
-                        <button type="submit" class="product-show-btn-buy-now">Buy Now</button>
-                    </form>
-                    
-                    
+                <div class="product-show-details">
+                  <div class="top-show-section-heading">
+                    <div>
+                    <h1 class="product-show-title">
+                        <%= product.title %>
+                    </h1>
                 </div>
-                <div class="product-show-highlight">
-                    <div class="product-show-highlight-title">Specifications</div>
-                    <table>
-                        <tr>
-                            <th>Category</th>
-                            <th>Details</th>
-                        </tr>
-                        <% for (let key in product.specifications) { %>
+               
+                    <div class="wishlist-btn-show">
+                        <button class="product-show-btn-wishlist <%= isInWishlist ? 'wishlist-active' : '' %>"
+                            data-product-id="<%= product._id %>">
+                            <span class="heart-icon">
+                                <%= isInWishlist ? '❤️' : '🤍' %>
+                            </span>
+                        </button>
+                    </div>
+                </div>
+                    <p class="product-show-ratings">
+                        <%= product.rating %>★ <%= product.reviews.length %> Ratings & <%= product.reviews.length %>
+                                    Reviews
+                    </p>
+                    
+                    <div class="product-show-price">
+                        <span class="product-show-current-price">₹<%= product.sellingPrice %></span>
+                        <span class="product-show-original-price">₹<%= product.mrpPrice %></span>
+                        <span class="product-show-discount"></span>
+                    </div>
+                    <div class="product-show-available-offers">
+                        <div class="product-show-available-offers-title">Available Offers</div>
+                        <div class="carousel-container">
+                            <div class="arrow-button arrow-button-left" onclick="scrollCarousel(-1)">&#9664;</div>
+                            <div class="offer-card">
+                                <div class="offer-card-title">Offer 1</div>
+                                <div class="offer-card-details">Extra ₹1000 Off on ICICI Credit Cards</div>
+                            </div>
+                            <div class="offer-card">
+                                <div class="offer-card-title">Offer 2</div>
+                                <div class="offer-card-details">Partner Offer: Buy this and get additional 10% off on
+                                    Rakhi gifts</div>
+                            </div>
+                            <div class="offer-card">
+                                <div class="offer-card-title">Offer 3</div>
+                                <div class="offer-card-details">Bank Offer: 5% Cashback on HDFC Credit Card</div>
+                            </div>
+                            <div class="arrow-button arrow-button-right" onclick="scrollCarousel(1)">&#9654;</div>
+                        </div>
+                    </div>
+                    <!-- Add to Cart Button -->
+                    <div class="btns">
+                        <button class="product-show-btn-add-to-cart" data-product-id="<%= product._id %>">Add to
+                            Cart</button>
+                        <form action="/buy-now" method="POST">
+                            <input type="hidden" name="productId" value="<%= product._id %>">
+                            <input type="hidden" name="quantity" value="1" min="1">
+                            <!-- Adjust based on dynamic needs -->
+                            <button type="submit" class="product-show-btn-buy-now">Buy Now</button>
+                        </form>
+                        <!-- Heart Button for Wishlist -->
+                        
+                    </div>
+                    <div class="product-show-highlight">
+                        <div class="product-show-highlight-title">Specifications</div>
+                        <table>
                             <tr>
-                                <td><strong><%= camelCaseToTitleCase(key) %></strong></td>
-                                <td>
-                                    <% if (typeof product.specifications[key] === 'object') { %>
-                                        <ul>
-                                            <% for (let subKey in product.specifications[key]) { %>
-                                                <li><strong><%= camelCaseToTitleCase(subKey) %>:</strong> <%= product.specifications[key][subKey] %></li>
-                                            <% } %>
-                                        </ul>
-                                    <% } else { %>
-                                        <%= product.specifications[key] %>
-                                    <% } %>
-                                </td>
+                                <th>Category</th>
+                                <th>Details</th>
                             </tr>
-                        <% } %>
-                    </table>
+                            <% for (let key in product.specifications) { %>
+                                <tr>
+                                    <td><strong>
+                                            <%= camelCaseToTitleCase(key) %>
+                                        </strong></td>
+                                    <td>
+                                        <% if (typeof product.specifications[key]==='object' ) { %>
+                                            <ul>
+                                                <% for (let subKey in product.specifications[key]) { %>
+                                                    <li><strong>
+                                                            <%= camelCaseToTitleCase(subKey) %>:
+                                                        </strong>
+                                                        <%= product.specifications[key][subKey] %>
+                                                    </li>
+                                                    <% } %>
+                                            </ul>
+                                            <% } else { %>
+                                                <%= product.specifications[key] %>
+                                                    <% } %>
+                                    </td>
+                                </tr>
+                                <% } %>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
-        <div className="full-width-preview">
-           
-            <div class="review-section">
-                <div class="write-review">
-                    <button id="openModal" class="review-submit">Write a Review</button>
+    </div>
+    <div className="full-width-preview">
+
+        <div class="review-section">
+            <div class="write-review">
+                <button id="openModal" class="review-submit">Write a Review</button>
+            </div>
+
+            <div id="reviewModal" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <h2>Write a Review</h2>
+                    <form action="/products/<%= product._id %>/<%= product.slug %>/reviews" method="POST"
+                        enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label for="review-title">Title</label>
+                            <input type="text" id="review-title" name="review[title]"
+                                placeholder="Enter the title of your review">
+                        </div>
+                        <div class="form-group">
+                            <label for="review-body">Review</label>
+                            <textarea id="review-body" name="review[comment]" placeholder="Write your review here"
+                                rows="5"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="review-rating">Rating</label>
+                            <input type="range" min="1" max="5" id="review-rating" name="review[rating]">
+                        </div>
+                        <div class="form-group">
+                            <label for="review-images">Upload Images</label>
+                            <input type="file" id="review-images" name="images" multiple>
+                        </div>
+                        <button type="submit" class="review-submit">Submit Review</button>
+                    </form>
+
+
+
+
                 </div>
-                
-                <div id="reviewModal" class="modal">
-                    <div class="modal-content">
-                        <span class="close">&times;</span>
-                        <h2>Write a Review</h2>
-                        <form action="/products/<%= product._id %>/<%= product.slug %>/reviews" method="POST" enctype="multipart/form-data">
-                            <div class="form-group">
-                                <label for="review-title">Title</label>
-                                <input type="text" id="review-title" name="review[title]" placeholder="Enter the title of your review">
-                            </div>
-                            <div class="form-group">
-                                <label for="review-body">Review</label>
-                                <textarea id="review-body" name="review[comment]" placeholder="Write your review here" rows="5"></textarea>
-                            </div>
-                            <div class="form-group">
-                                <label for="review-rating">Rating</label>
-                                <input type="range" min="1" max="5" id="review-rating" name="review[rating]">
-                            </div>
-                            <div class="form-group">
-                                <label for="review-images">Upload Images</label>
-                                <input type="file" id="review-images" name="images" multiple>
-                            </div>
-                            <button type="submit" class="review-submit">Submit Review</button>
-                        </form>
-                        
-                      
-                      
-                      
-                    </div>
-                </div>
-            
-                <div class="reviews">
-                    <h2>Customer Reviews</h2>
-                    <% product.reviews.forEach(review => { %>
+            </div>
+
+            <div class="reviews">
+                <h2>Customer Reviews</h2>
+                <% product.reviews.forEach(review=> { %>
                     <div class="review">
-                        <h3><%= review.title %></h3>
-                        <div class="review-rating">Rating: ★<%= review.rating %></div>
+                        <h3>
+                            <%= review.title %>
+                        </h3>
+                        <div class="review-rating">Rating: ★<%= review.rating %>
+                        </div>
 
                         <div class="review-images ">
-                            <% if (review.image && review.image.length > 0) { %>
-                            <div class="review-images-show-container">
-                                <% review.image.forEach(imageUrl => { %>
-                                    <img src="<%= imageUrl %>" alt="Review Image" class="review-image user-review-image">
-                                <% }) %>
-                            </div>
-                            <% } %>
+                            <% if (review.image && review.image.length> 0) { %>
+                                <div class="review-images-show-container">
+                                    <% review.image.forEach(imageUrl=> { %>
+                                        <img src="<%= imageUrl %>" alt="Review Image"
+                                            class="review-image user-review-image">
+                                        <% }) %>
+                                </div>
+                                <% } %>
                         </div>
-                        
-                        <p><%= review.comment %></p>
+
+                        <p>
+                            <%= review.comment %>
+                        </p>
                         <div class="user-review-action">
-                        <small><i style="color: black;">Reviewed by </i>: <%= review.user.name %></small>
-                        <div class="product-review-option">
-                        <form action="/products/<%= product._id %>/<%= product.slug %>/reviews/<%= review._id %>?_method=DELETE" method="POST">
-                            <button type="submit">Delete |</button>
-                        </form>
-                        <button class="edit-button" data-review-id="<%= review._id %>">Edit</button>
-                    </div>
-                     </div>
+                            <small><i style="color: black;">Reviewed by </i>: <%= review.user.name %></small>
+                            <div class="product-review-option">
+                                <form
+                                    action="/products/<%= product._id %>/<%= product.slug %>/reviews/<%= review._id %>?_method=DELETE"
+                                    method="POST">
+                                    <button type="submit">Delete |</button>
+                                </form>
+                                <button class="edit-button" data-review-id="<%= review._id %>">Edit</button>
+                            </div>
+                        </div>
                     </div>
                     <% }) %>
-                </div>
-                
             </div>
 
-
         </div>
-        <%- include('../partials/browsingHistory.ejs') %>
+
+
     </div>
-</div>
+    <%- include('../partials/browsingHistory.ejs') %>
+        </div>
+        </div>
 
-<script>
+        <script>
 
-  // Handle Edit Review button click
-document.querySelectorAll('.edit-button').forEach(button => {
-    button.addEventListener('click', function () {
-        const reviewId = this.getAttribute('data-review-id');
-        window.location.href = `/products/<%= product._id %>/reviews/${reviewId}/edit`;
-    });
-});
+            // Handle Edit Review button click
+            document.querySelectorAll('.edit-button').forEach(button => {
+                button.addEventListener('click', function () {
+                    const reviewId = this.getAttribute('data-review-id');
+                    window.location.href = `/products/<%= product._id %>/reviews/${reviewId}/edit`;
+                });
+            });
 
-    document.getElementById('openModal').addEventListener('click', function() {
-        document.getElementById('reviewModal').classList.add('show');
-    });
+            document.getElementById('openModal').addEventListener('click', function () {
+                document.getElementById('reviewModal').classList.add('show');
+            });
 
-    document.querySelector('.close').addEventListener('click', function() {
-        document.getElementById('reviewModal').classList.remove('show');
-    });
+            document.querySelector('.close').addEventListener('click', function () {
+                document.getElementById('reviewModal').classList.remove('show');
+            });
 
-    document.addEventListener("DOMContentLoaded", function () {
-        const sellingPrice = <%= product.sellingPrice %>;
-        const mrpPrice = <%= product.mrpPrice %>;
-        const discountElement = document.querySelector(".product-show-discount");
+            document.addEventListener("DOMContentLoaded", function () {
+                const sellingPrice = <%= product.sellingPrice %>;
+                const mrpPrice = <%= product.mrpPrice %>;
+                const discountElement = document.querySelector(".product-show-discount");
 
-        const discountAmount = mrpPrice - sellingPrice;
-        const discountPercentage = ((discountAmount / mrpPrice) * 100).toFixed(2);
+                const discountAmount = mrpPrice - sellingPrice;
+                const discountPercentage = ((discountAmount / mrpPrice) * 100).toFixed(2);
 
-        discountElement.textContent = `${discountPercentage}% off`;
+                discountElement.textContent = `${discountPercentage}% off`;
 
-        // Handle Add to Cart button click
-        document.querySelector('.product-show-btn-add-to-cart').addEventListener('click', async function () {
-            const button = this;
-            const productId = button.getAttribute('data-product-id');
-            console.log('Product ID:', productId);
+                // Handle Add to Cart button click
+                document.querySelector('.product-show-btn-add-to-cart').addEventListener('click', async function () {
+                    const button = this;
+                    const productId = button.getAttribute('data-product-id');
+                    console.log('Product ID:', productId);
 
-            try {
-                const response = await fetch('/cart/add', {
+                    try {
+                        const response = await fetch('/cart/add', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ productId })
+                        });
+
+                        // Check if response is JSON
+                        const contentType = response.headers.get('content-type');
+                        if (contentType && contentType.includes('application/json')) {
+                            const data = await response.json();
+                            console.log('Response:', data);
+
+                            if (response.status === 401) {
+                                // Redirect to login page if not authenticated
+                                window.location.href = '/login';
+                                return;
+                            }
+
+                            if (data.success) {
+                                button.textContent = 'Added to Cart';
+
+                                setTimeout(() => {
+                                    button.textContent = 'Add to Cart';
+                                    // Reload the page to fetch new data
+                                    window.location.reload();
+                                }, 2000);
+                            } else {
+                                alert(data.message || 'Failed to add product to cart. Please try again.');
+                            }
+                        } else {
+                            console.error('Unexpected response format:', contentType);
+                            alert('An unexpected error occurred. Please try again.');
+                        }
+                    } catch (error) {
+                        console.error('Error:', error);
+                        alert('An error occurred. Please try again.');
+                    }
+                });
+
+                document.querySelectorAll('.edit-button').forEach(button => {
+                    button.addEventListener('click', function () {
+                        const reviewId = this.getAttribute('data-review-id');
+                        // Fetch review data and populate the modal form
+                        fetch(`/products/${product._id}/reviews/${reviewId}/edit`)
+                            .then(response => response.json())
+                            .then(data => {
+                                console.log('Fetch Response:', data); // Log the response data
+                                if (data.success) {
+                                    document.getElementById('review-title').value = data.review.title;
+                                    document.getElementById('review-body').value = data.review.comment;
+                                    document.getElementById('review-rating').value = data.review.rating;
+                                    // Set the form action to update the review
+                                    document.querySelector('#reviewModal form').setAttribute('action', `/products/${product._id}/reviews/${reviewId}?_method=PUT`);
+                                    // Open the modal
+                                    document.getElementById('reviewModal').classList.add('show');
+                                } else {
+                                    alert('Failed to fetch review data. Please try again.');
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                                alert('An error occurred. Please try again.');
+                            });
+                    });
+                });
+
+
+
+            });
+
+            // Handle Wishlist button click
+            document.querySelector('.product-show-btn-wishlist').addEventListener('click', function () {
+                const productId = this.getAttribute('data-product-id');
+                const isInWishlist = this.classList.contains('wishlist-active');
+
+                fetch(`/wishlist/${isInWishlist ? 'remove' : 'add'}`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({ productId })
-                });
-
-                // Check if response is JSON
-                const contentType = response.headers.get('content-type');
-                if (contentType && contentType.includes('application/json')) {
-                    const data = await response.json();
-                    console.log('Response:', data);
-
-                    if (response.status === 401) {
-                        // Redirect to login page if not authenticated
-                        window.location.href = '/login';
-                        return;
-                    }
-
-                    if (data.success) {
-                        button.textContent = 'Added to Cart';
-                        
-                        setTimeout(() => {
-                            button.textContent = 'Add to Cart';
-                            // Reload the page to fetch new data
-                            window.location.reload();
-                        }, 2000);
-                    } else {
-                        alert(data.message || 'Failed to add product to cart. Please try again.');
-                    }
-                } else {
-                    console.error('Unexpected response format:', contentType);
-                    alert('An unexpected error occurred. Please try again.');
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                alert('An error occurred. Please try again.');
-            }
-        });
-
-        document.querySelectorAll('.edit-button').forEach(button => {
-    button.addEventListener('click', function () {
-        const reviewId = this.getAttribute('data-review-id');
-        // Fetch review data and populate the modal form
-        fetch(`/products/${product._id}/reviews/${reviewId}/edit`)
-            .then(response => response.json())
-            .then(data => {
-                console.log('Fetch Response:', data); // Log the response data
-                if (data.success) {
-                    document.getElementById('review-title').value = data.review.title;
-                    document.getElementById('review-body').value = data.review.comment;
-                    document.getElementById('review-rating').value = data.review.rating;
-                    // Set the form action to update the review
-                    document.querySelector('#reviewModal form').setAttribute('action', `/products/${product._id}/reviews/${reviewId}?_method=PUT`);
-                    // Open the modal
-                    document.getElementById('reviewModal').classList.add('show');
-                } else {
-                    alert('Failed to fetch review data. Please try again.');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('An error occurred. Please try again.');
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            this.classList.toggle('wishlist-active');
+                            this.querySelector('.heart-icon').textContent = isInWishlist ? '🤍' : '❤️';
+                        } else {
+                            alert('Something went wrong. Please try again.');
+                        }
+                    });
             });
-    });
-});
 
-
-
-    });
-</script>
+        </script>

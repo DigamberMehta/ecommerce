@@ -4,6 +4,7 @@ const Product = require('../models/product');
 const Review = require('../models/review'); // Import the Review model
 const UserInteraction = require('../models/userInteraction');
 const { isLoggedIn } = require('../middleware');
+const Wishlist = require('../models/wishlist');
 
 function camelCaseToTitleCase(camelCase) {
     return camelCase
@@ -38,6 +39,15 @@ router.get('/products/:id/:slug', async (req, res) => {
             });
         }
 
+        // Check if the product is in the user's wishlist
+        let isInWishlist = false;
+        if (req.isAuthenticated()) {
+            const wishlist = await Wishlist.findOne({ user: req.user._id });
+            if (wishlist && wishlist.products.includes(product._id)) {
+                isInWishlist = true;
+            }
+        }
+
         let recommendedProducts = [];
 
         if (req.isAuthenticated()) {
@@ -62,7 +72,7 @@ router.get('/products/:id/:slug', async (req, res) => {
             recommendedProducts = await Product.find({ categories: { $in: uniqueCategories } });
         }
 
-        res.render('home/show', { product, recommendedProducts, camelCaseToTitleCase });
+        res.render('home/show', { product, recommendedProducts, camelCaseToTitleCase, isInWishlist });
     } catch (error) {
         console.error(error);
         req.flash('error', 'An error occurred. Please try again.');
