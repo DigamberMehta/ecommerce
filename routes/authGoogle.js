@@ -1,34 +1,21 @@
 const express = require('express');
 const router = express.Router();
 const passport = require('passport');
+const authController = require('../controllers/authController');
 
 // Route to initiate Google authentication
-router.get('/google', (req, res, next) => {
-  console.log('Initiating Google Authentication');
-  next();
-}, passport.authenticate('google', {
+router.get('/google', authController.initiateGoogleAuth, passport.authenticate('google', {
   scope: ['profile', 'email']
 }));
 
 // Callback route after Google authentication
 router.get('/google/callback', 
-  (req, res, next) => {
-    console.log('Google Authentication Callback');
-    next();
-  },
+  authController.googleAuthCallback,
   passport.authenticate('google', { 
     failureRedirect: '/login', 
     failureFlash: true 
   }),
-  (req, res) => {
-    if (req.flash('error').length > 0) {
-      console.log('Authentication Failed:', req.flash('error'));
-      res.redirect('/login');
-    } else {
-      console.log('Authentication Successful');
-      res.redirect('/home');
-    }
-  }
+  authController.handleAuthResult
 );
 
 module.exports = router;

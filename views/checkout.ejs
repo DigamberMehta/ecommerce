@@ -235,9 +235,8 @@ button.primary:hover {
                                     </label>
                                 </div>
                                 <div>
-                                    <a href="/user/address/edit/<%= index %>" class="link edit-address">Edit address</a> | 
+                                    <a href="#" data-index="<%= index %>" class="link edit-address">Edit address</a> | 
                                     <a href="/user/address/new?backUrl=<%= encodeURIComponent(backUrl) %>">Add Address</a>
-
                                 </div>
                             </div>
                         <% }); %>
@@ -346,57 +345,56 @@ button.primary:hover {
 </div>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-    const accordionHeaders = document.querySelectorAll(".accordion-header");
+        const accordionHeaders = document.querySelectorAll(".accordion-header");
 
-    accordionHeaders.forEach(header => {
-        header.addEventListener("click", function() {
-            const currentlyActiveHeader = document.querySelector(".accordion-header.active");
-            if (currentlyActiveHeader && currentlyActiveHeader !== header) {
-                currentlyActiveHeader.classList.remove("active");
-                currentlyActiveHeader.nextElementSibling.classList.remove("show");
-            }
+        accordionHeaders.forEach(header => {
+            header.addEventListener("click", function() {
+                const currentlyActiveHeader = document.querySelector(".accordion-header.active");
+                if (currentlyActiveHeader && currentlyActiveHeader !== header) {
+                    currentlyActiveHeader.classList.remove("active");
+                    currentlyActiveHeader.nextElementSibling.classList.remove("show");
+                }
 
-            header.classList.toggle("active");
-            header.nextElementSibling.classList.toggle("show");
+                header.classList.toggle("active");
+                header.nextElementSibling.classList.toggle("show");
+            });
         });
-    });
 
-    // Handle edit address link click
-    const editLinks = document.querySelectorAll(".edit-address");
-    const modal = document.getElementById("editAddressModal");
-    const span = document.querySelector(".modal .close");
-    const form = document.getElementById("editAddressForm");
+        // Handle edit address link click
+        const editLinks = document.querySelectorAll(".edit-address");
+        const modal = document.getElementById("editAddressModal");
+        const span = document.querySelector(".modal .close");
+        const form = document.getElementById("editAddressForm");
 
-    editLinks.forEach(link => {
-        link.addEventListener("click", function(event) {
-            event.preventDefault();
-            const index = this.dataset.index;
-            const addresses = JSON.parse('<%- JSON.stringify(addresses) %>');
-            const address = addresses[index];
+        editLinks.forEach(link => {
+            link.addEventListener("click", function(event) {
+                event.preventDefault();
+                const index = this.getAttribute('data-index');
+                const addresses = JSON.parse('<%- JSON.stringify(addresses) %>');
+                const address = addresses[index];
 
-            document.getElementById("addressIndex").value = index;
-            document.getElementById("name").value = address.name;
-            document.getElementById("phone").value = address.phone;
-            document.getElementById("houseNumber").value = address.houseNumber;
-            document.getElementById("street").value = address.street;
-            document.getElementById("city").value = address.city;
-            document.getElementById("state").value = address.state;
-            document.getElementById("pincode").value = address.pincode;
-            document.getElementById("country").value = address.country;
+                document.getElementById("addressIndex").value = index;
+                document.getElementById("name").value = address.name;
+                document.getElementById("phone").value = address.phone;
+                document.getElementById("houseNumber").value = address.houseNumber;
+                document.getElementById("street").value = address.street;
+                document.getElementById("city").value = address.city;
+                document.getElementById("state").value = address.state;
+                document.getElementById("pincode").value = address.pincode;
+                document.getElementById("country").value = address.country;
 
-            modal.style.display = "block";
+                modal.style.display = "block";
+            });
         });
-    });
 
-    span.onclick = function() {
-        modal.style.display = "none";
-    }
-
-    window.onclick = function(event) {
-        if (event.target == modal) {
+        span.onclick = function() {
             modal.style.display = "none";
         }
-    }
-});
 
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    });
 </script>
