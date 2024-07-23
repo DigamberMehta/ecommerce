@@ -1,0 +1,40 @@
+<% layout('layouts/boilerplate') %> <!-- Using your layout, adjust as needed -->
+
+<div class="container">
+    <h2>Edit Address</h2>
+    <form action="/user/address/edit/<%= address._id %>" method="post">
+        <div class="mb-3">
+            <label for="name" class="form-label">Name</label>
+            <input type="text" class="form-control" id="name" name="name" value="<%= address.name %>" required>
+        </div>
+        <div class="mb-3">
+            <label for="phone" class="form-label">Phone</label>
+            <input type="text" class="form-control" id="phone" name="phone" value="<%= address.phone %>" required>
+        </div>
+        <div class="mb-3">
+            <label for="houseNumber" class="form-label">House Number</label>
+            <input type="text" class="form-control" id="houseNumber" name="houseNumber" value="<%= address.houseNumber %>" required>
+        </div>
+        <div class="mb-3">
+            <label for="street" class="form-label">Street</label>
+            <input type="text" class="form-control" id="street" name="street" value="<%= address.street %>" required>
+        </div>
+        <div class="mb-3">
+            <label for="city" class="form-label">City</label>
+            <input type="text" class="form-control" id="city" name="city" value="<%= address.city %>" required>
+        </div>
+        <div class="mb-3">
+            <label for="state" class="form-label">State</label>
+            <input type="text" class="form-control" id="state" name="state" value="<%= address.state %>" required>
+        </div>
+        <div class="mb-3">
+            <label for="pincode" class="form-label">Pincode</label>
+            <input type="text" class="form-control" id="pincode" name="pincode" value="<%= address.pincode %>" required>
+        </div>
+        <div class="mb-3">
+            <label for="country" class="form-label">Country</label>
+            <input type="text" class="form-control" id="country" name="country" value="<%= address.country %>" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Update Address</button>
+    </form>
+</div>

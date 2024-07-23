@@ -75,7 +75,7 @@
   width: 100%; /* Ensure the width matches the search input */
   background-color: white;
   border: 1px solid #ccc;
-  max-height: 200px;
+  max-height: 350px;
   overflow-y: auto;
   z-index: 1000;
   border-radius: 0 0 4px 4px;

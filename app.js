@@ -162,6 +162,9 @@ app.use('/', nodemailerRoutes);
 app.use('/', reviewRoutes);
 app.use('/', addressRoutes);
 app.use('/', checkoutRoutes);
+app.get('/terms', (req, res) => {
+  res.render('about/terms');
+});
 // Review routes
 
 // app.get('*', (req, res) => {

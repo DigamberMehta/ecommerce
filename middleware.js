@@ -44,9 +44,14 @@ module.exports.savedRedirectUrl = (req, res, next) => {
 };
 
 module.exports.setBackUrl = (req, res, next) => {
-  res.locals.backUrl= req.originalUrl;
+  if (!req.query.backUrl) {
+    res.locals.backUrl = req.originalUrl;
+  } else {
+    res.locals.backUrl = req.query.backUrl;
+  }
   next();
 };
+
 
 
 module.exports.isReviewAuthor = async (req, res, next) => {

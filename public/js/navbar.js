@@ -3,7 +3,7 @@ async function fetchSuggestions() {
     const dropdown = document.getElementById('suggestions-dropdown');
     const query = input.value.trim();
 
-    if (query.length < 3) {
+    if (query.length < 1) {
       dropdown.innerHTML = '';
       dropdown.style.display = 'none'; // Hide the dropdown if the query is less than 3 characters
       return;

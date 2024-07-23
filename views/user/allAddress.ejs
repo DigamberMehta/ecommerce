@@ -1,90 +1,150 @@
 <% layout('layouts/boilerplate') %>
 <style>
-    .addresses-container {
-      max-width: 75%;
-      margin: 30px;
-      padding: 20px;
-      background: #fafafa;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-      font-family: 'Arial', sans-serif;
-    }
-  
-    .addresses-title {
-      text-align: center;
-      color: #222;
-      font-size: 24px;
-      margin-bottom: 25px;
-    }
-  
-    .addresses-list {
-      list-style: none;
-      padding: 0;
-    }
-  
-    .address-item {
-    width: 100%;
-    /* background: #fff; */
-    border-bottom: 1px solid #e0e0e0;
+  .addresses-container {
+    max-width: 90%;
+    margin: 30px auto;
+    padding: 20px;
+    background: #fafafa;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-family: 'Arial', sans-serif;
+  }
+
+  .addresses-title {
+    text-align: center;
+    color: #222;
+    font-size: 24px;
+    margin-bottom: 25px;
+  }
+
+  .addresses-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .address-card, .add-address-card {
+    background: #fff;
+    border: 1px solid #e0e0e0;
     border-radius: 10px;
     padding: 20px;
-    margin-bottom: 15px;
-    /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08); */
+    margin: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
     transition: transform 0.2s;
-}
-  
-    .address-item:hover {
-      transform: scale(1.02);
+    width: calc(25% - 40px);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .address-card:hover {
+    transform: scale(1.02);
+  }
+
+  .add-address-card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px dashed #007bff;
+    color: #007bff;
+    font-size: 24px;
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  .address-name {
+    margin: 0;
+    color: #444;
+    font-size: 18px;
+    font-weight: 600;
+  }
+
+  .address-details {
+    margin: 10px 0;
+    color: #666;
+    font-size: 15px;
+  }
+
+  .address-phone {
+    margin: 0;
+    color: #222;
+    font-size: 16px;
+    font-weight: 500;
+  }
+
+  .no-addresses-message {
+    text-align: center;
+    color: #888;
+    font-size: 16px;
+  }
+
+  .edit-address-link, .delete-address-link {
+    background-color: white;
+    border: none;
+    font: 1rem 'Arial', sans-serif;
+    cursor: pointer;
+    color: #007bff;
+    text-decoration: none;
+  }
+
+  .edit-address-link:hover, .delete-address-link:hover {
+    text-decoration: underline;
+  }
+
+  .address-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  @media (max-width: 1024px) {
+    .address-card, .add-address-card {
+      width: calc(33.33% - 40px);
     }
-  
-    .address-name {
-      margin: 0;
-      color: #444;
-      font-size: 18px;
-      font-weight: 600;
+  }
+
+  @media (max-width: 768px) {
+    .address-card, .add-address-card {
+      width: calc(50% - 40px);
     }
-  
-    .address-details {
-      margin: 10px 0;
-      color: #666;
-      font-size: 15px;
+  }
+
+  @media (max-width: 480px) {
+    .address-card, .add-address-card {
+      width: calc(100% - 40px);
     }
-  
-    .address-phone {
-      margin: 0;
-      color: #222;
-      font-size: 16px;
-      font-weight: 500;
-    }
-  
-    .no-addresses-message {
-      text-align: center;
-      color: #888;
-      font-size: 16px;
-    }
-  </style>
-  
-  <main class="addresses-container">
-    <h1 class="addresses-title">Addresses</h1>
-    <ul class="addresses-list" >
-        <% if (addresses.length > 0) { %>
-            <% addresses.forEach(function(address) { %>
-                <li class="address-item" style="display: flex; justify-content: space-between;">
-                    <div>
-                        <h2 class="address-name"><%= address.name %></h2>
-                        <p class="address-details"><%= address.houseNumber %>, <%= address.street %></p>
-                        <p class="address-details"><%= address.city %>, <%= address.state %> - <%= address.pincode %></p>
-                        <p class="address-details"><%= address.country %></p>
-                        <p class="address-phone">Phone: <%= address.phone %></p>
-                    </div>
-                    <div style="display: flex; align-items: center;">
-                        <p>Edit address </p>&nbsp; | &nbsp;  <a href="/user/address/new?backUrl=<%= encodeURIComponent(backUrl) %>">Add Address</a>
-                    </div>
-                </li>
-            <% }); %>
-        <% } else { %>
-            <p class="no-addresses-message">No addresses found.</p>
-        <% } %>
-    </ul>
+  }
+</style>
+
+<main class="addresses-container">
+  <h1 class="addresses-title">Addresses</h1>
+  <ul class="addresses-list">
+    <a href="/user/address/new?backUrl=<%= encodeURIComponent(backUrl) %>" class="add-address-card">
+      <span>+</span>
+    </a>
+    <% if (addresses.length > 0) { %>
+      <% addresses.forEach(function(address) { %>
+        <li class="address-card">
+          <div>
+            <h2 class="address-name"><%= address.name %></h2>
+            <p class="address-details"><%= address.houseNumber %>, <%= address.street %></p>
+            <p class="address-details"><%= address.city %>, <%= address.state %> - <%= address.pincode %></p>
+            <p class="address-details"><%= address.country %></p>
+            <p class="address-phone">Phone: <%= address.phone %></p>
+          </div>
+          <div class="address-actions">
+            <a href="/user/address/edit/<%= address._id %>" class="edit-address-link">Edit</a>
+            <form action="/user/address/delete/<%= address._id %>" method="post" style="display:inline;">
+              <button type="submit" class="delete-address-link" onclick="return confirm('Are you sure you want to delete this address?');">Delete</button>
+            </form>
+          </div>
+        </li>
+      <% }); %>
+    <% } else { %>
+      <p class="no-addresses-message">No addresses found.</p>
+    <% } %>
+  </ul>
 </main>
-  

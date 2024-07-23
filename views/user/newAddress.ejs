@@ -57,51 +57,47 @@
 <div class="form-body">
   <div class="form-container">
     <form action="/user/address" method="POST" id="addressForm">
+      <!-- Include the backUrl as a hidden input -->
       <input type="hidden" name="backUrl" value="<%= backUrl %>">
-      
+    
       <div>
-          <label for="name">Name</label>
-          <input type="text" id="name" name="name" required>
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" required>
       </div>
-      
       <div>
-          <label for="phone">Phone Number</label>
-          <input type="text" id="phone" name="phone" required>
+        <label for="phone">Phone Number</label>
+        <input type="text" id="phone" name="phone" required>
       </div>
-      
       <div>
-          <label for="houseNumber">House Number</label>
-          <input type="text" id="houseNumber" name="houseNumber" required>
+        <label for="houseNumber">House Number</label>
+        <input type="text" id="houseNumber" name="houseNumber" required>
       </div>
-      
       <div class="street-row" style="margin: 0;">
-          <div style="width: 60%;">
-              <label for="street">Street</label>
-              <input type="text" id="street" name="street" required>
-          </div>
-          <div>
-              <label for="city">City</label>
-              <input type="text" id="city" name="city" required>
-          </div>
+        <div style="width: 60%;">
+          <label for="street">Street</label>
+          <input type="text" id="street" name="street" required>
+        </div>
+        <div>
+          <label for="city">City</label>
+          <input type="text" id="city" name="city" required>
+        </div>
       </div>
-  
       <div>
-          <label for="state">State</label>
-          <input type="text" id="state" name="state" required>
+        <label for="state">State</label>
+        <input type="text" id="state" name="state" required>
       </div>
-      
       <div>
-          <label for="pincode">Pincode</label>
-          <input type="text" id="pincode" name="pincode" required>
+        <label for="pincode">Pincode</label>
+        <input type="text" id="pincode" name="pincode" required>
       </div>
-      
       <div>
-          <label for="country">Country</label>
-          <input type="text" id="country" name="country" required>
+        <label for="country">Country</label>
+        <input type="text" id="country" name="country" required>
       </div>
-      
       <button type="submit">Add Address</button>
-  </form>
+    </form>
+    
+    
   
   
   </div>
