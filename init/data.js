@@ -437,7 +437,7 @@ const products = [
     slug: "acer-aspirer-laptop"
   },
   {
-    title: "Dell Inspiron 15 5000",
+    title: "Dell Inspiron 15",
     description: "Laptop with 15.6-inch Full HD display and up to 14 hours battery life.",
     sellingPrice: 449.99,
     mrpPrice: 799.99,
