@@ -121,6 +121,9 @@
 
 <main class="addresses-container">
   <h1 class="addresses-title">Addresses</h1>
+  <% if (addresses.length === 0) { %>
+    <p class="no-addresses-message">You have not added any addresses yet.</p>
+  <% } %>
   <ul class="addresses-list">
     <a href="/user/address/new?backUrl=<%= encodeURIComponent(backUrl) %>" class="add-address-card">
       <span>+</span>
@@ -144,7 +147,7 @@
         </li>
       <% }); %>
     <% } else { %>
-      <p class="no-addresses-message">No addresses found.</p>
+      <p class="no-addresses-message" style="text-align: center;"></p>
     <% } %>
   </ul>
 </main>
