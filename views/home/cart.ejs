@@ -1,98 +1,115 @@
 <% layout('layouts/boilerplate') %>
-<style>
-    .show-item-count{
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 10px;
-    }
-</style>
+    <style>
+        .show-item-count {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+    </style>
 
-<div class="cart-page">
-    <div class="cart-wrapper">
-        <div class="cart-items">
-            <div class="items-container">
-                <div class="shopping-heading">
-                    <h1>Shopping Cart</h1>
-                </div>
-                <% if (cartItems.length > 0) { %>
-                    <% cartItems.forEach(item => { %>
-                        <div class="cart-item" data-cart-item-id="<%= item._id %>" data-product-price="<%= item.product.sellingPrice %>">
-                            <div class="item-image">
-                                <img src="<%= item.product.images[0] %>" alt="Product Image">
-                            </div>
-                            <div class="item-details">
-                                <div class="item-title"><%= item.product.title %></div>
-                                <div class="item-purchased">5K+ bought in past month</div>
-                                <div class="item-price">
-                                    <span class="current-price">₹<%= item.product.sellingPrice %></span>
-                                    <span class="original-price">₹<%= item.product.mrpPrice %></span>
-                                    <span class="price-discount">(5% off)</span>
+    <div class="cart-page">
+        <div class="cart-wrapper">
+            <div class="cart-items">
+                <div class="items-container">
+                    <div class="shopping-heading">
+                        <h1>Shopping Cart</h1>
+                    </div>
+                    <% if (cartItems.length> 0) { %>
+                        <% cartItems.forEach(item=> { %>
+                            <div class="cart-item" data-cart-item-id="<%= item._id %>"
+                                data-product-price="<%= item.product.sellingPrice %>">
+                                <div class="item-image">
+                                    <img src="<%= item.product.images[0] %>" alt="Product Image">
                                 </div>
-                                <div class="card-discount">Flat INR 1000 Off on ICICI CreditCards</div>
-                                <div class="item-delivery">FREE delivery Tue, 9 Jul</div>
-                                <div class="quantity-selector-container">
-
-                                    <div class="quantity-buttons">
-                                        <% if (item.quantity <= 10) { %>
-                                            <select class="quantity-selector">
-                                                <% for (let i = 1; i <= 10; i++) { %>
-                                                    <option value="<%= i %>" <%= item.quantity === i ? 'selected' : '' %>> Quantity: <%= i %></option>
-                                                <% } %>
-                                                <option value="more">Add more</option>
-                                            </select>
-                                            <input type="text" class="manual-quantity" style="display: none;" min="1" value="<%= item.quantity %>">
-                                        <% } else { %>
-                                            <select class="quantity-selector" style="display: none;">
-                                                <% for (let i = 1; i <= 10; i++) { %>
-                                                    <option value="<%= i %>"> Quantity: <%= i %></option>
-                                                <% } %>
-                                                <option value="more">Add more</option>
-                                            </select>
-                                            <input type="text" class="manual-quantity" min="1" value="<%= item.quantity %>">
-                                        <% } %>
-                                        <button class="quantity-button decrement">-</button>
-                                        <button class="quantity-button increment">+</button>
+                                <div class="item-details">
+                                    <div class="item-title">
+                                        <%= item.product.title %>
                                     </div>
-                                    <button class="update-button">Update</button>
-    
-                                     <div class="cart-option-container">
-                                        <ul class="remove-item save-later cart-options">
-                                            <li class="remove-button"><i class="fa-light fa-trash"></i>Remove&nbsp;</li>
-                                            |
-                                            <li class="save-later"> &nbsp; Save it for later</li>
-                                        </ul>
-                                     </div>
+                                    <div class="item-purchased">5K+ bought in past month</div>
+                                    <div class="item-price">
+                                        <span class="current-price">₹<%= item.product.sellingPrice %></span>
+                                        <span class="original-price">₹<%= item.product.mrpPrice %></span>
+                                        <span class="price-discount">(5% off)</span>
+                                    </div>
+                                    <div class="card-discount">Flat INR 1000 Off on ICICI CreditCards</div>
+                                    <div class="item-delivery">FREE delivery Tue, 9 Jul</div>
+                                    <div class="quantity-selector-container">
+
+                                        <div class="quantity-buttons">
+                                            <% if (item.quantity <=10) { %>
+                                                <select class="quantity-selector">
+                                                    <% for (let i=1; i <=10; i++) { %>
+                                                        <option value="<%= i %>" <%=item.quantity===i ? 'selected' : ''
+                                                            %>> Quantity: <%= i %>
+                                                        </option>
+                                                        <% } %>
+                                                            <option value="more">Add more</option>
+                                                </select>
+                                                <input type="text" class="manual-quantity" style="display: none;"
+                                                    min="1" value="<%= item.quantity %>">
+                                                <% } else { %>
+                                                    <select class="quantity-selector" style="display: none;">
+                                                        <% for (let i=1; i <=10; i++) { %>
+                                                            <option value="<%= i %>"> Quantity: <%= i %>
+                                                            </option>
+                                                            <% } %>
+                                                                <option value="more">Add more</option>
+                                                    </select>
+                                                    <input type="text" class="manual-quantity" min="1"
+                                                        value="<%= item.quantity %>">
+                                                    <% } %>
+                                                        <button class="quantity-button decrement">-</button>
+                                                        <button class="quantity-button increment">+</button>
+                                        </div>
+                                        <button class="update-button">Update</button>
+
+                                        <!-- Inside the cart-item block in your EJS template -->
+                                        <div class="cart-option-container">
+                                            <ul class="remove-item save-later cart-options">
+                                                <li class="remove-button"><i class="fa-light fa-trash"></i>Remove&nbsp;
+                                                </li>
+                                                |
+                                                <li class="save-later">
+                                                    <form action="/cart/save-for-later/<%= item._id %>" method="POST">
+                                                        <button type="submit">Save it for later</button>
+                                                    </form>
+                                                </li>
+                                            </ul>
+                                        </div>
+
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    <% }); %>
-                <% } else { %>
-                    <p>Your cart is empty.</p>
-                <% } %>
+                            <% }); %>
+                                <% } else { %>
+                                    <p>Your cart is empty.</p>
+                                    <% } %>
+                </div>
+            </div>
+            <div class="order-summary">
+                <div class="summary-card">
+                    <div class="summary-title">Order Summary</div>
+                    <div class="show-item-count">
+                        <span> Total Items:</span><span id="item-count">
+                            <div>
+                                <%= cartItems.length %>
+                            </div>
+                        </span>
+                    </div>
+                    <div class="summary-item">Subtotal<span id="subtotal">₹<%= cartItems.reduce((sum, item)=> sum +
+                                item.product.sellingPrice * item.quantity, 0) %></span>
+
+                    </div>
+
+                    <form action="/cart/cart-checkout" method="POST">
+                        <button type="submit" class="checkout-button">Proceed to Checkout</button>
+                    </form>
+
+
+                </div>
             </div>
         </div>
-        <div class="order-summary">
-            <div class="summary-card">
-                <div class="summary-title">Order Summary</div>
-                <div class="show-item-count">
-                <span> Total Items:</span><span id="item-count">
-                <div><%= cartItems.length %></div>
-                </span>
-                </div>
-                <div class="summary-item">Subtotal<span id="subtotal">₹<%= cartItems.reduce((sum, item) => sum + item.product.sellingPrice * item.quantity, 0) %></span>
-                
-                </div>
-                
-                <form action="/cart/cart-checkout" method="POST">
-                    <button type="submit" class="checkout-button" >Proceed to Checkout</button>
-                </form>
-                
-
-            </div>
+        <div class="cart-browsing-suggestion">
+            <%- include('../partials/browsingHistory.ejs') %>
         </div>
     </div>
-    <div class="cart-browsing-suggestion">
-        <%- include('../partials/browsingHistory.ejs') %>
-    </div>
-</div>
-

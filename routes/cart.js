@@ -5,6 +5,7 @@ const CartItem = require('../models/cartItem');
 const Product = require('../models/product');
 const User = require('../models/user');
 const { isLoggedIn } = require('../middleware');
+const Wishlist = require('../models/wishlist');
 
 router.post('/add', isLoggedIn, async (req, res) => {
   const { productId } = req.body;
@@ -135,6 +136,40 @@ router.post('/cart-checkout', isLoggedIn, async (req, res) => {
   } catch (error) {
       console.error(error);
       res.status(500).send('An error occurred fetching cart items');
+  }
+});
+router.post('/save-for-later/:itemId', async (req, res) => {
+  try {
+      const { itemId } = req.params;
+      const userId = req.user._id;  // Assuming you're using some form of user authentication
+
+      // Find and then remove the cart item
+      const cartItem = await CartItem.findById(itemId);
+      if (cartItem) {
+          // Remove the cart item
+          await CartItem.findByIdAndDelete(itemId);
+
+          // Add to Wishlist
+          const wishlist = await Wishlist.findOne({ user: userId });
+          if (wishlist) {
+              wishlist.products.push(cartItem.product);  // Assuming you want to save product ID to the wishlist
+              await wishlist.save();
+          } else {
+              // If no wishlist exists, create a new one
+              const newWishlist = new Wishlist({
+                  user: userId,
+                  products: [cartItem.product]
+              });
+              await newWishlist.save();
+          }
+
+          res.redirect('/cart/view');  // Redirect back to the cart page or wherever appropriate
+      } else {
+          res.status(404).send('Item not found');
+      }
+  } catch (err) {
+      console.error(err);
+      res.status(500).send('An error occurred');
   }
 });
 

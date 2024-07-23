@@ -42,6 +42,7 @@
             align-items: center;
             border-bottom: 1px solid #ddd;
             padding: 10px 0;
+            position: relative;
         }
 
         .wishlist-item:last-child {
@@ -91,6 +92,20 @@
             border-radius: 4px;
             font-size: 0.9em;
         }
+
+        .wishlist-remove-btn, .wishlist-move-to-cart-btn {
+            background-color: #e91e63;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        .wishlist-remove-btn:hover, .wishlist-move-to-cart-btn:hover {
+            background-color: #c2185b;
+        }
     </style>
 </head>
 
@@ -104,7 +119,7 @@
                 <% products.forEach(product => { 
                     const discountPercentage = Math.round(((product.mrpPrice - product.sellingPrice) / product.mrpPrice) * 100);
                 %>
-                    <li class="wishlist-item">
+                    <li class="wishlist-item" data-product-id="<%= product._id %>">
                         <img src="<%= product.images[0] %>" alt="<%= product.title %> image" class="wishlist-image">
                         <div class="wishlist-info">
                             <h2 class="wishlist-product-title"><%= product.title %></h2>
@@ -115,11 +130,53 @@
                                 <span class="wishlist-discount"><%= discountPercentage %>% off</span>
                             </div>
                         </div>
+                        <button class="wishlist-remove-btn">Remove</button>
+                        <button class="wishlist-move-to-cart-btn">Move to Cart</button>
                     </li>
                 <% }); %>
             </ul>
         <% } %>
     </div>
+
+    <script>
+        document.querySelectorAll('.wishlist-remove-btn').forEach(button => {
+            button.addEventListener('click', async (e) => {
+                const productId = e.target.closest('.wishlist-item').getAttribute('data-product-id');
+                const response = await fetch('/wishlist/remove', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ productId })
+                });
+                const result = await response.json();
+                if (result.success) {
+                    e.target.closest('.wishlist-item').remove();
+                } else {
+                    alert('Failed to remove item from wishlist');
+                }
+            });
+        });
+
+        document.querySelectorAll('.wishlist-move-to-cart-btn').forEach(button => {
+            button.addEventListener('click', async (e) => {
+                const productId = e.target.closest('.wishlist-item').getAttribute('data-product-id');
+                const response = await fetch('/wishlist/move-to-cart', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ productId })
+                });
+                const result = await response.json();
+                if (result.success) {
+                    e.target.closest('.wishlist-item').remove();
+                } else {
+                    alert('Failed to move item to cart');
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>
