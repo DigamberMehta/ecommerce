@@ -1,21 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Wishlist</title>
+<% layout('layouts/boilerplate') %>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f9f9f9;
-            margin: 0;
-            padding: 20px;
-        }
-
         .wishlist-container {
-            max-width: 800px;
-            margin: 0 auto;
+            max-width: 94%;
+            margin: 2rem auto;
             background-color: #fff;
             padding: 20px;
             border-radius: 8px;
@@ -38,11 +25,12 @@
         }
 
         .wishlist-item {
-            display: flex;
-            align-items: center;
-            border-bottom: 1px solid #ddd;
             padding: 10px 0;
             position: relative;
+        }
+
+        .wishlist-item-container {
+            border-bottom: 1px solid #ddd;
         }
 
         .wishlist-item:last-child {
@@ -93,8 +81,18 @@
             font-size: 0.9em;
         }
 
-        .wishlist-remove-btn, .wishlist-move-to-cart-btn {
-            background-color: #e91e63;
+        .wishlist-remove-btn {
+            background-color: #ed2828;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        .wishlist-move-to-cart-btn {
+            background-color: #f16e3e;
             color: #fff;
             border: none;
             padding: 5px 10px;
@@ -106,10 +104,12 @@
         .wishlist-remove-btn:hover, .wishlist-move-to-cart-btn:hover {
             background-color: #c2185b;
         }
+        .wish-info-container{
+            display: flex;
+            align-items: center;
+        }
     </style>
-</head>
 
-<body>
     <div class="wishlist-container">
         <h1 class="wishlist-title">My Wishlist</h1>
         <% if (products.length === 0) { %>
@@ -119,7 +119,9 @@
                 <% products.forEach(product => { 
                     const discountPercentage = Math.round(((product.mrpPrice - product.sellingPrice) / product.mrpPrice) * 100);
                 %>
+                <div class="wishlist-item-container">
                     <li class="wishlist-item" data-product-id="<%= product._id %>">
+                        <div class="wish-info-container">
                         <img src="<%= product.images[0] %>" alt="<%= product.title %> image" class="wishlist-image">
                         <div class="wishlist-info">
                             <h2 class="wishlist-product-title"><%= product.title %></h2>
@@ -130,9 +132,13 @@
                                 <span class="wishlist-discount"><%= discountPercentage %>% off</span>
                             </div>
                         </div>
-                        <button class="wishlist-remove-btn">Remove</button>
-                        <button class="wishlist-move-to-cart-btn">Move to Cart</button>
+                        </div>
+                        <div style="margin: 1rem 0;">
+                            <button class="wishlist-remove-btn">Remove</button>
+                            <button class="wishlist-move-to-cart-btn">Move to Cart</button>
+                        </div>
                     </li>
+                </div>
                 <% }); %>
             </ul>
         <% } %>
@@ -177,6 +183,3 @@
             });
         });
     </script>
-</body>
-
-</html>
