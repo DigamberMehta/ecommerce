@@ -2,87 +2,104 @@
 <div class="container">
     <div class="filter">
         <div class="filter-option">
-            <form>
+            <form id="filter-form" action="/search" method="GET">
+                <input type="hidden" name="query" value="<%= query %>">
+                
                 <div class="filter-group">
                     <label class="filter-title">Categories</label>
                     <ul>
-                        <li class="filter-item">
-                            <input type="checkbox" id="category1" name="category1">
-                            <label for="category1">Category 1</label>
-                        </li>
-                        <li class="filter-item">
-                            <input type="checkbox" id="category2" name="category2">
-                            <label for="category2">Category 2</label>
-                        </li>
-                        <li class="filter-item">
-                            <input type="checkbox" id="category3" name="category3">
-                            <label for="category3">Category 3</label>
-                        </li>
-                        <!-- Add more categories as needed -->
+                        <% ['Mobile', 'Electronics', 'Laptops'].forEach((category, index) => { %>
+                            <li class="filter-item">
+                                <input type="checkbox" id="category<%= index + 1 %>" name="category" value="<%= category %>" <%= (categoryFilters.includes(category)) ? 'checked' : '' %> onchange="submitFilterForm()">
+                                <label for="category<%= index + 1 %>"><%= category %></label>
+                            </li>
+                        <% }); %>
                     </ul>
                 </div>
-    
+
                 <div class="filter-group">
                     <label class="filter-title" for="price-range">Price Range</label>
-                    <input type="range" id="price-range" name="price" min="0" max="1000" step="50">
-                    <div class="price-labels">
-                        <span>$0</span>
-                        <span>$1000</span>
+                    <div class="price-range">
+                        <input type="range" id="minPrice" name="minPrice" min="0" max="1000" value="<%= minPrice %>" oninput="updatePriceLabel(this.value, 'minPriceLabel')" onchange="submitFilterForm()">
+                        <span id="minPriceLabel">₹<%= minPrice %></span>
+                        <span>to</span>
+                        <input type="range" id="maxPrice" name="maxPrice" min="0" max="1000" value="<%= maxPrice %>" oninput="updatePriceLabel(this.value, 'maxPriceLabel')" onchange="submitFilterForm()">
+                        <span id="maxPriceLabel">₹<%= maxPrice %></span>
                     </div>
                 </div>
-    
+
+                <div class="filter-group">
+                    <label class="filter-title">Ratings</label>
+                    <ul>
+                        <% [1, 2, 3, 4, 5].forEach(rating => { %>
+                            <li class="filter-item">
+                                <input type="checkbox" id="rating<%= rating %>" name="rating" value="<%= rating %>" <%= (ratingFilters.includes(String(rating))) ? 'checked' : '' %> onchange="submitFilterForm()">
+                                <label for="rating<%= rating %>"><%= rating %> Star</label>
+                            </li>
+                        <% }); %>
+                    </ul>
+                </div>
+
+                <div class="filter-group">
+                    <label class="filter-title">Brands</label>
+                    <ul>
+                        <% ['BrandZ', 'BrandA', 'BrandB', 'BrandX', 'BrandY', 'Acer', 'Dell', 'HP'].forEach((brand, index) => { %>
+                            <li class="filter-item">
+                                <input type="checkbox" id="brand<%= index + 1 %>" name="brand" value="<%= brand %>" <%= (brandFilters.includes(brand)) ? 'checked' : '' %> onchange="submitFilterForm()">
+                                <label for="brand<%= index + 1 %>"><%= brand %></label>
+                            </li>
+                        <% }); %>
+                    </ul>
+                </div>
+
                 <div class="filter-group">
                     <label class="filter-title">Sort By</label>
                     <ul>
                         <li class="filter-item">
-                            <input type="radio" id="sort1" name="sort" value="price-asc">
+                            <input type="radio" id="sort1" name="sort" value="price-asc" <%= sortBy === 'price-asc' ? 'checked' : '' %> onchange="submitFilterForm()">
                             <label for="sort1">Price: Low to High</label>
                         </li>
                         <li class="filter-item">
-                            <input type="radio" id="sort2" name="sort" value="price-desc">
+                            <input type="radio" id="sort2" name="sort" value="price-desc" <%= sortBy === 'price-desc' ? 'checked' : '' %> onchange="submitFilterForm()">
                             <label for="sort2">Price: High to Low</label>
                         </li>
                         <li class="filter-item">
-                            <input type="radio" id="sort3" name="sort" value="popularity">
+                            <input type="radio" id="sort3" name="sort" value="popularity" <%= sortBy === 'popularity' ? 'checked' : '' %> onchange="submitFilterForm()">
                             <label for="sort3">Popularity</label>
                         </li>
-                        <!-- Add more sort options as needed -->
                     </ul>
                 </div>
-    
-                <button type="submit" class="apply-filters">Apply Filters</button>
             </form>
         </div>
     </div>
     
     <div class="main-content">
-        <!-- <h1>Search Results for "<%= query %>"</h1> -->
-        <div class="content-wrapper">
+        <div class="content-wrapper" id="product-list">
             <% if (products.length > 0) { %>
                 <% products.forEach(product => { %>
                     <a href="/products/<%= product._id %>/<%= product.slug %>">
-                    <div class="card">
-                        <div class="card-image">
-                            <img src="<%= product.images[0] %>" alt="<%= product.title %>">
-                        </div>
-                        <div class="card-content">
-                            <div class="card-title"><%= product.title %></div>
-                            <div class="card-bought">5K+ bought in past month</div>
-                            <div class="card-price">
-                                <span class="main-price">₹<%= product.mrpPrice %></span>
-                                <span class="mrp">₹<%= (product.sellingPrice) %></span>
-                                <span class="discount">(10% off)</span>
+                        <div class="card">
+                            <div class="card-image">
+                                <img src="<%= product.images[0] %>" alt="<%= product.title %>">
                             </div>
-                            <div class="card-card-discount">Flat INR 1000 Off on ICICI Credit Cards</div>
-                            <div class="card-delivery">FREE delivery</div>
-                            <div class="card-button">
-                                <button class="add-to-cart-btn" data-product-id="<%= product._id %>" onclick="reloadPage()" >
-                                    Add to Cart
-                                </button>
+                            <div class="card-content">
+                                <div class="card-title"><%= product.title %></div>
+                                <div class="card-bought">5K+ bought in past month</div>
+                                <div class="card-price">
+                                    <span class="main-price">₹<%= product.mrpPrice %></span>
+                                    <span class="mrp">₹<%= product.sellingPrice %></span>
+                                    <span class="discount">(10% off)</span>
+                                </div>
+                                <div class="card-card-discount">Flat INR 1000 Off on ICICI Credit Cards</div>
+                                <div class="card-delivery">FREE delivery</div>
+                                <div class="card-button">
+                                    <button class="add-to-cart-btn" data-product-id="<%= product._id %>" onclick="reloadPage()">
+                                        Add to Cart
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </a>
+                    </a>
                 <% }); %>
             <% } else { %>
                 <p>No products found.</p>
@@ -90,3 +107,30 @@
         </div>
     </div>
 </div>
+
+<script>
+function submitFilterForm() {
+    const form = document.getElementById('filter-form');
+    const xhr = new XMLHttpRequest();
+    const formData = new FormData(form);
+    const queryString = new URLSearchParams(formData).toString();
+    
+    xhr.open('GET', `/search?${queryString}`, true);
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(xhr.responseText, 'text/html');
+            const productList = doc.getElementById('product-list');
+            document.getElementById('product-list').innerHTML = productList.innerHTML;
+        }
+    };
+
+    xhr.send();
+}
+
+function updatePriceLabel(value, labelId) {
+    document.getElementById(labelId).textContent = `₹${value}`;
+}
+</script>
