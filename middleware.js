@@ -2,20 +2,19 @@ const Review = require('./models/review');
 
 module.exports.isLoggedIn = (req, res, next) => {
   try {
-    // console.log('Checking if user is authenticated...');
+    const excludeUrls = ['/buy-now', '/cart/quantity'];
+
+    // Check if user is not authenticated
     if (!req.isAuthenticated()) {
-      // Check if the URL is not /cart/quantity before storing it
-      if (req.originalUrl !== '/cart/quantity') {
+      // Store the full URL with query parameters in session, except excluded URLs
+      if (!excludeUrls.includes(req.originalUrl)) {
         req.session.redirectUrl = req.originalUrl;
         console.log(`Redirect URL stored: ${req.session.redirectUrl}`);
-      } else {
-        console.log('Redirect URL /cart/quantity is not stored.');
       }
 
       req.flash("error", "You must be signed in first!");
       return res.redirect("/login");
     }
-    // console.log('User is authenticated.');
     next();
   } catch (error) {
     console.error(`Error in isLoggedIn middleware: ${error.message}`);
@@ -24,12 +23,10 @@ module.exports.isLoggedIn = (req, res, next) => {
   }
 };
 
-
 module.exports.savedRedirectUrl = (req, res, next) => {
   try {
     console.log('Retrieving redirect URL...');
     if (typeof req.session.redirectUrl === 'string') {
-      // Store the URL they are requesting
       res.locals.redirectUrl = req.session.redirectUrl;
       console.log(`Redirect URL retrieved: ${res.locals.redirectUrl}`);
     } else {
@@ -42,6 +39,9 @@ module.exports.savedRedirectUrl = (req, res, next) => {
     next();
   }
 };
+
+
+
 
 module.exports.setBackUrl = (req, res, next) => {
   if (!res.locals.backUrl) {

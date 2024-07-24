@@ -282,12 +282,12 @@
                     <div class="btns">
                         <button class="product-show-btn-add-to-cart" data-product-id="<%= product._id %>">Add to
                             Cart</button>
-                        <form action="/buy-now" method="POST">
-                            <input type="hidden" name="productId" value="<%= product._id %>">
-                            <input type="hidden" name="quantity" value="1" min="1">
-                            <!-- Adjust based on dynamic needs -->
-                            <button type="submit" class="product-show-btn-buy-now">Buy Now</button>
-                        </form>
+                            <form action="/checkout" method="GET">
+                                <input type="hidden" name="productId" value="<%= product._id %>">
+                                <input type="hidden" name="quantity" value="1">
+                                <button type="submit" class="product-show-btn-buy-now">Buy Now</button>
+                            </form>
+                            
                         <!-- Heart Button for Wishlist -->
                         
                     </div>

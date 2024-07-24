@@ -52,26 +52,26 @@ router.get("/signup", (req, res) => {
   router.get("/login", (req, res) => {
     res.render("auth/login");
   });
-  
+
   router.post(
-    "/login", savedRedirectUrl,
+    "/login",
+    savedRedirectUrl,
     passport.authenticate('custom', {
       failureRedirect: "/login",
       failureFlash: true // Ensure this is configured if using connect-flash for messages
-      
     }),
     async (req, res) => {
       req.flash("success", `Welcome back, ${req.user.name}!`);
   
-      // Check if the redirect URL is /cart/quantity
-      if (res.locals.redirectUrl === "/cart/quantity") {
-        res.redirect("/");
-      } else {
-        // If no specific redirect URL is set, redirect to the root
-        res.redirect(res.locals.redirectUrl || "/");
-      }
+      const redirectTo = res.locals.redirectUrl || "/";
+      delete req.session.redirectUrl;
+  
+      // Redirect to the stored redirect URL or fallback to the root
+      res.redirect(redirectTo);
     }
   );
+  
+  
   
   
   

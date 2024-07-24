@@ -7,6 +7,6 @@ const showController = require('../controllers/showController');
 router.get('/products/:id/:slug', showController.showProduct);
 
 // Handle buy now functionality
-router.post('/buy-now', isLoggedIn, showController.buyNow);
+
 
 module.exports = router;
