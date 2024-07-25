@@ -48,24 +48,24 @@ document.addEventListener('click', (event) => {
   }
 });
 
-async function fetchCartQuantity() {
-  try {
-      const response = await fetch('/cart/quantity', {
-          method: 'GET',
-          headers: {
-              'Content-Type': 'application/json'
-          },
-      });
-      const data = await response.json();
-      if (response.ok) {
-          document.getElementById('cart-quantity-value').textContent = data.totalQuantity;
-      } else {
-          console.error('Failed to fetch cart quantity:', data.error);
-      }
-  } catch (error) {
-      console.error('Error fetching cart quantity:', error);
-  }
-}
+// async function fetchCartQuantity() {
+//   try {
+//       const response = await fetch('/cart/quantity', {
+//           method: 'GET',
+//           headers: {
+//               'Content-Type': 'application/json'
+//           },
+//       });
+//       const data = await response.json();
+//       if (response.ok) {
+//           document.getElementById('cart-quantity-value').textContent = data.totalQuantity;
+//       } else {
+//           console.error('Failed to fetch cart quantity:', data.error);
+//       }
+//   } catch (error) {
+//       console.error('Error fetching cart quantity:', error);
+//   }
+// }
 
 document.addEventListener('DOMContentLoaded', function() {
   const burger = document.getElementById('burger');

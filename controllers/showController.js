@@ -69,6 +69,7 @@ exports.showProduct = async (req, res) => {
 
             recommendedProducts = await Product.find({ categories: { $in: uniqueCategories } });
         }
+        
 
         res.render('home/show', { product, recommendedProducts, camelCaseToTitleCase, isInWishlist });
     } catch (error) {

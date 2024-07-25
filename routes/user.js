@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { savedRedirectUrl } = require('../middleware');
+const { savedRedirectUrl, setBackUrl } = require('../middleware');
 const User = require('../models/user');
 const wrapAsync = require('../utils/wrapAsync');
 const passport = require('passport');
@@ -56,12 +56,17 @@ router.get("/signup", (req, res) => {
   router.post(
     "/login",
     savedRedirectUrl,
+    setBackUrl,
     passport.authenticate('custom', {
       failureRedirect: "/login",
-      failureFlash: true // Ensure this is configured if using connect-flash for messages
+      failureFlash: true
     }),
     async (req, res) => {
       req.flash("success", `Welcome back, ${req.user.name}!`);
+  
+      if (res.locals.redirectUrl === '/cart/add') {
+        res.locals.redirectUrl = "/";
+      }
   
       const redirectTo = res.locals.redirectUrl || "/";
       delete req.session.redirectUrl;
@@ -70,7 +75,6 @@ router.get("/signup", (req, res) => {
       res.redirect(redirectTo);
     }
   );
-  
   
   
   
