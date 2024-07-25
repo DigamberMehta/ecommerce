@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Wishlist = require('../models/wishlist');
-const CartItem = require('../models/CartItem');
+const CartItem = require('../models/cartItem');
 const { isLoggedIn } = require('../middleware');
 
 // Add product to wishlist
