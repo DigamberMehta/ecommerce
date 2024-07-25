@@ -42,7 +42,7 @@ router.post('/wishlist/remove', async (req, res) => {
       wishlist.products = wishlist.products.filter(productId => productId.toString() !== req.body.productId);
       await wishlist.save();
     }
-    res.json({ success: true });
+   res.redirect('back');
   } catch (error) {
     res.status(500).json({ success: false, message: 'An error occurred while removing the product from your wishlist.' });
   }

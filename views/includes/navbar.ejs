@@ -100,25 +100,43 @@ body.no-scroll {
         <div class="menu-inner">
           <div class="dropdown">
             <span class="menu-item">
-              <a href="#" class="menu-link">
-                <i class="fa-light fa-user s-icons"></i>digamber
-              </a>
+              <strong>
+                <% if (!currentUser) { %>
+                  <span class="menu-item" style="white-space: nowrap;">
+                    <a href="/login" class="menu-link">
+                      <i class="fa-light fa-user s-icons" style="margin: 3px;"></i>
+                      Sign In
+                      <i class="fa-regular fa-chevron-down s-icons"></i>
+                    </a>
+                  </span>
+                <% } %>
+                <% if (currentUser) { %>
+                  <span class="menu-item" style="white-space: nowrap;">
+                    <a href="/" class="menu-link">
+                      <i class="fa-light fa-user s-icons"></i>
+                      <!-- <i class="fa-regular fa-chevron-down s-icons"></i> -->
+                    </a>
+                  </span>
+                <% } %>
+                </strong> 
             </span>
             <div class="dropdown-menu">
-              <div class="dropdown-item"><i class="fa-light fa-user icons"></i> Profile</div>
+              <a href="/profile"><div class="dropdown-item"><i class="fa-light fa-user icons"></i> Profile</div></a>
               <div class="dropdown-item"><i class="fa-light fa-cube icons"></i> Orders</div>
-              <div class="dropdown-item"><i class="fa-light fa-heart icons"></i> Wishlist</div>
-              <div class="dropdown-item"><i class="fa-thin fa-map-location-dot icons"></i> Addresses</div>
+             <a href="/wishlist"> <div class="dropdown-item"><i class="fa-light fa-heart icons"></i> Wishlist</div></a>
+              <a href="/user/view-addresses"><div class="dropdown-item"><i class="fa-thin fa-map-location-dot icons"></i> Addresses</div></a>
               <div class="dropdown-item"><i class="fa-sharp fa-light fa-tag icons"></i> Coupon</div>
               <% if (currentUser) { %>
+                <a href="/logout">
                 <div class="dropdown-item">
-                  <a href="/logout"> <i class="fa-regular fa-arrow-right-from-bracket icons"></i> Logout</a>
+                  <i class="fa-regular fa-arrow-right-from-bracket icons"></i> Logout
                 </div>
+              </a>
               <% } %>
             </div>
           </div>
           <span class="menu-item"><a href="#" class="menu-link">Return <br /> & Order</a></span>
-          <span class="menu-item"><a href="#" class="menu-link"><i class="fa-light fa-cart-shopping s-icons"></i></a></span>
+          <a href="/cart/view" class="menu-link"><span class="menu-item"><i class="fa-light fa-cart-shopping s-icons"></i></span></a>
         </div>
       </div>
     </div>
@@ -171,7 +189,7 @@ body.no-scroll {
         </div>
         <span class="menu-item"><a href="#" class="menu-link">Return & Order</a></span>
         <span class="menu-item">
-          <% if (currentUser) { %>
+      
             <a href="/cart/view" class="menu-link">
               <div class="cart-icon-wrapper">
                 <i class="fa-light fa-cart-shopping s-icons cart-total-item"></i>
@@ -181,18 +199,6 @@ body.no-scroll {
               </div>
               Cart
             </a>
-          <% } %>
-        
-          <% if(!currentUser) { %>
-            <a href="/login" class="menu-link">
-              <div class="cart-icon-wrapper">
-                <i class="fa-light fa-cart-shopping s-icons cart-total-item"></i>
-              
-
-              </div>
-              Cart
-            </a>
-          <% } %>
         </span>
         
       </div>
