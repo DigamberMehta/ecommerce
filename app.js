@@ -24,6 +24,7 @@ const reviewRoutes = require('./routes/review');
 const addressRoutes = require('./routes/address');
 const checkoutRoutes = require('./routes/checkout');
 const whishlistRoutes = require('./routes/wishlist');
+const contactRoutes = require('./routes/contact');
 
 app.use(express.json());
 app.set("view engine", "ejs");
@@ -165,10 +166,14 @@ app.use('/', reviewRoutes);
 app.use('/', addressRoutes);
 app.use('/', checkoutRoutes);
 app.use('/', whishlistRoutes);
-
+app.use('/', contactRoutes);
 app.get('/terms', (req, res) => {
   res.render('about/terms');
 });
+app.get('/about', (req, res) => {
+  res.render('about/About');
+});
+
 // Review routes
 
 // app.get('*', (req, res) => {
