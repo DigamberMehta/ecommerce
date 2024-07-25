@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Product = require('../models/product');
-const UserInteraction = require('../models/userInteraction');
+const UserInteraction = require('../models/UserInteraction');
 
 // Route to handle rendering the home page and product recommendations
 router.get('/home', async (req, res) => {
