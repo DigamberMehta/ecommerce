@@ -1,6 +1,6 @@
 const Product = require('../models/product');
 const Review = require('../models/review');
-const UserInteraction = require('../models/userInteraction');
+const UserInteraction = require('../models/UserInteraction');
 const Wishlist = require('../models/wishlist');
 
 function camelCaseToTitleCase(camelCase) {
