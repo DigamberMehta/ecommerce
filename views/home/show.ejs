@@ -258,10 +258,36 @@
     <div class="product-show-container">
         <div class="product-show-content">
             <div class="product-show-image">
-                <div class="product-image">
-                    <img src="<%= product.images[0] %>" alt="<%= product.title %>" />
+                <div class="show-carousel">
+                  <div class="show-carousel-inner">
+                    <% product.images.forEach((image, index) => { %>
+                      <div class="show-carousel-item <%= index === 0 ? 'active' : '' %>">
+                        <img src="<%= image %>" alt="Product Image <%= index + 1 %>">
+                      </div>
+                    <% }); %>
+                  </div>
+                  <% if (product.images.length > 1) { %>
+                    <div class="show-carousel-indicators">
+                      <% product.images.forEach((image, index) => { %>
+                        <span class="show-indicator <%= index === 0 ? 'active' : '' %>" data-index="<%= index %>"></span>
+                      <% }); %>
+                    </div>
+                  <% } %>
                 </div>
-            </div>
+                <% if (product.images.length > 1) { %>
+                  <div class="show-thumbnails">
+                    <% product.images.forEach((image, index) => { %>
+                      <div class="show-thumbnail" data-index="<%= index %>">
+                        <img src="<%= image %>" alt="Thumbnail <%= index + 1 %>">
+                      </div>
+                    <% }); %>
+                  </div>
+                <% } %>
+              </div>
+              
+              
+              
+              
             <div class="product-show-details">
                 <div class="top-show-section-heading">
                     <div>
@@ -464,4 +490,57 @@
     function enableScroll() {
         document.body.style.overflow = '';
     }
+    document.addEventListener('DOMContentLoaded', () => {
+  const carouselInner = document.querySelector('.show-carousel-inner');
+  const indicators = document.querySelectorAll('.show-carousel-indicators .show-indicator');
+  const thumbnails = document.querySelectorAll('.show-thumbnail');
+  let currentIndex = 0;
+  let startX, endX;
+
+  const moveToImage = (index) => {
+    indicators.forEach(ind => ind.classList.remove('active'));
+    indicators[index].classList.add('active');
+    thumbnails.forEach(thumbnail => thumbnail.classList.remove('active'));
+    thumbnails[index].classList.add('active');
+    carouselInner.style.transform = `translateX(-${index * 100}%)`;
+    currentIndex = index;
+  };
+
+  indicators.forEach((indicator, index) => {
+    indicator.addEventListener('click', () => {
+      moveToImage(index);
+    });
+  });
+
+  thumbnails.forEach((thumbnail, index) => {
+    thumbnail.addEventListener('click', () => {
+      moveToImage(index);
+    });
+  });
+
+  // Touch events for swipe functionality
+  carouselInner.addEventListener('touchstart', (e) => {
+    startX = e.touches[0].clientX;
+  });
+
+  carouselInner.addEventListener('touchmove', (e) => {
+    endX = e.touches[0].clientX;
+  });
+
+  carouselInner.addEventListener('touchend', () => {
+    if (startX > endX + 50) {
+      // Swipe left
+      if (currentIndex < indicators.length - 1) {
+        moveToImage(currentIndex + 1);
+      }
+    } else if (startX < endX - 50) {
+      // Swipe right
+      if (currentIndex > 0) {
+        moveToImage(currentIndex - 1);
+      }
+    }
+  });
+});
+
+
 </script>
