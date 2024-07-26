@@ -1,15 +1,15 @@
 :root {
-    --primary-color: #ffffff;
-    --secondary-color: #ffffff;
-    --background-color: #fff;
-    --text-color: #ffffff;
+    --primary-color: #000000;
+    --secondary-color: #000000;
+    --background-color: #000000;
+    --text-color: #000000;
     --footer-padding: 2rem;
-    --footer-border-color: #ddd;
+    --footer-border-color: #000000;
 }
 
 .footer {
     margin-top:3rem;
-    background-color: #2e3849;
+    background-color: #ffffff;
     color: var(--text-color);
     padding: var(--footer-padding) 0;
     border-top: 1px solid var(--footer-border-color);

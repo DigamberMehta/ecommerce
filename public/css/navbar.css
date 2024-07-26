@@ -1,8 +1,13 @@
 /* General styling for the header */
 .header {
-  background-color: #293241;
+  background-color: #ffffff; /* Light shade of white */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional shadow */
   padding: 0.6rem 0;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 100;
+
 }
 
 /* General styling for the navbar container */
@@ -168,7 +173,7 @@
 
 .menu-link {
   text-decoration: none;
-  color: #ffffff; /* Adjust color as needed */
+  color: #000000; /* Adjust color as needed */
   font-size: 1.1rem;
 }
 
@@ -328,7 +333,7 @@
   top: -14px;
   right: 4px;
   background-color: red;
-  color: white;
+  color: rgb(0, 0, 0);
   border-radius: 50%;
   padding: 2px 6px;
   font-size: 12px;
@@ -337,4 +342,85 @@
 
 .cart-total-item {
   position: relative;
+}
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  z-index: 999;
+}
+
+.overlay.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Side Menu */
+.side-menu {
+  position: fixed;
+  top: 0;
+  left: -300px;
+  width: 300px;
+  height: 100%;
+  background: #fff;
+  color: #333;
+  overflow-y: auto;
+  transition: left 0.3s ease;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+}
+
+.side-menu.open {
+  left: 0;
+}
+
+.side-menu-header {
+  font-weight: 900;
+  font-size: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  color: #fff;
+  background: #293241;
+}
+.side-menu-username{
+  
+}
+.close-btn {
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.side-menu-options {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.side-menu-options li {
+  padding: 15px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.side-menu-options li a {
+  color: #333;
+  text-decoration: none;
+  display: block;
+  font-weight: 500;
+}
+
+.side-menu-options li a:hover {
+  background: #f9f9f9;
+}
+
+/* Disable body scroll when side menu is open */
+body.no-scroll {
+  overflow: hidden;
 }

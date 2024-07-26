@@ -1,88 +1,4 @@
-<style>
-/* Overlay */
-.overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.3s ease, visibility 0.3s ease;
-  z-index: 999;
-}
-
-.overlay.show {
-  opacity: 1;
-  visibility: visible;
-}
-
-/* Side Menu */
-.side-menu {
-  position: fixed;
-  top: 0;
-  left: -300px;
-  width: 300px;
-  height: 100%;
-  background: #fff;
-  color: #333;
-  overflow-y: auto;
-  transition: left 0.3s ease;
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
-  z-index: 1000;
-}
-
-.side-menu.open {
-  left: 0;
-}
-
-.side-menu-header {
-  font-weight: 900;
-  font-size: 1rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px;
-  color: #fff;
-  background: #293241;
-}
-.side-menu-username{
-  
-}
-.close-btn {
-  font-size: 24px;
-  cursor: pointer;
-}
-
-.side-menu-options {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-}
-
-.side-menu-options li {
-  padding: 15px;
-  border-bottom: 1px solid #e0e0e0;
-}
-
-.side-menu-options li a {
-  color: #333;
-  text-decoration: none;
-  display: block;
-  font-weight: 500;
-}
-
-.side-menu-options li a:hover {
-  background: #f9f9f9;
-}
-
-/* Disable body scroll when side menu is open */
-body.no-scroll {
-  overflow: hidden;
-}
-
-</style>
+ 
 <header class="header" id="header">
   <nav class="navbar">
     <div class="upper-container">
@@ -92,7 +8,7 @@ body.no-scroll {
         </div>
         <div class="logo-container">
           <a href="/" style="width: 150x; height: fit-content;" >
-            <h3 style="color: white;"><i>URBANMART</i></h3>
+            <h3 style="color: rgb(0, 0, 0);"><i>URBANMART</i></h3>
           </a>
         </div>
       </div>
@@ -206,7 +122,7 @@ body.no-scroll {
   </nav>
 </header>
 
-<nav class="secondary-nav">
+<!-- <nav class="secondary-nav">
   <ul class="navigation-items">
     <li><a href=""><strong>Home</strong></a></li>
     <li><a href=""><strong>About</strong></a></li>
@@ -215,7 +131,7 @@ body.no-scroll {
     <li><a href=""><strong>Footwear</strong></a></li>
     <li><a href=""><strong>Item</strong></a></li>
   </ul>
-</nav>
+</nav> -->
 
 <!-- Side Menu -->
 <div class="side-menu" id="side-menu">
