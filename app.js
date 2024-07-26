@@ -190,7 +190,7 @@ app.get('/shipping', (req, res) => {
   res.render('about/shipping');
 });
 app.get('/privacy', (req, res) => {
-  res.render('about/privacy');
+  res.render('about/Privacy');
 });
 
 const port = 3000;
