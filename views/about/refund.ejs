@@ -1,0 +1,180 @@
+<style>
+
+    
+    .refund-policy-container {
+        font-family: 'Arial', sans-serif;
+        background-color: #f4f4f4;
+        color: #333;
+        line-height: 1.6;
+        padding: 40px;
+        max-width: 900px;
+        margin: 50px auto;
+        background-color: #fff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+    }
+
+    .refund-policy-title {
+        font-size: 2.5em;
+        margin-bottom: 10px;
+        color: #2c3e50;
+        border-bottom: 2px solid #2c3e50;
+        padding-bottom: 10px;
+    }
+
+    .refund-policy-last-updated {
+        color: #7f8c8d;
+        font-size: 0.9em;
+        margin-bottom: 30px;
+    }
+
+    .refund-policy-section {
+        margin-bottom: 30px;
+    }
+
+    .refund-policy-subtitle {
+        font-size: 1.8em;
+        margin-bottom: 10px;
+        color: #34495e;
+        border-left: 4px solid #34495e;
+        padding-left: 10px;
+    }
+
+    .refund-policy-text {
+        font-size: 1em;
+        margin-bottom: 15px;
+    }
+
+    .refund-policy-list,
+    .refund-policy-steps-list {
+        padding-left: 20px;
+    }
+
+    .refund-policy-list-item,
+    .refund-policy-steps-item {
+        margin-bottom: 10px;
+        font-size: 1em;
+    }
+
+    .refund-policy-list-item strong,
+    .refund-policy-steps-item strong {
+        color: #2980b9;
+    }
+
+    .refund-policy-thank-you {
+        font-size: 1.2em;
+        font-weight: bold;
+        margin-top: 30px;
+        color: #27ae60;
+        text-align: center;
+    }
+
+    .contact-info {
+        margin-top: 20px;
+        padding: 15px;
+        background-color: #ecf0f1;
+        border-radius: 5px;
+    }
+
+    .contact-info p {
+        margin: 5px 0;
+    }
+
+    .contact-info strong {
+        color: #2980b9;
+    }
+</style>
+
+<% layout('layouts/boilerplate') %>
+<div class="refund-policy-container">
+    <h1 class="refund-policy-title">Urban Mart Refund Policy</h1>
+    <!-- <p class="refund-policy-last-updated">Last Updated: [Date]</p> -->
+
+    <section class="refund-policy-section">
+        <h2 class="refund-policy-subtitle">Eligibility for Refunds</h2>
+        <p class="refund-policy-text">To qualify for a refund, the following conditions must be met:</p>
+        <ul class="refund-policy-list">
+            <li class="refund-policy-list-item">
+                <strong>Condition of Item:</strong> The item must be unused, unopened, and in the same condition that you received it. It must also be in the original packaging with all seals intact.
+            </li>
+            <li class="refund-policy-list-item">
+                <strong>Return Window:</strong> The return must be initiated and the product sent back to us within 14 days of the delivery date.
+            </li>
+            <li class="refund-policy-list-item">
+                <strong>Proof of Purchase:</strong> Include the original receipt or proof of purchase with the return.
+            </li>
+        </ul>
+    </section>
+
+    <section class="refund-policy-section">
+        <h2 class="refund-policy-subtitle">Non-Refundable Items</h2>
+        <p class="refund-policy-text">Certain types of items cannot be returned for a refund:</p>
+        <ul class="refund-policy-list">
+            <li class="refund-policy-list-item"><strong>Custom-made or Personalized Items:</strong> Products that are made to order or personalized for an individual cannot be returned.</li>
+            <li class="refund-policy-list-item"><strong>Perishable Goods:</strong> This includes food items, flowers, or other perishable goods.</li>
+            <li class="refund-policy-list-item"><strong>Health and Personal Care Items:</strong> Any item that requires intimate or sanitary use.</li>
+            <li class="refund-policy-list-item"><strong>Gift Cards:</strong> These are not returnable and cannot be refunded.</li>
+            <li class="refund-policy-list-item"><strong>Downloadable Software Products:</strong> Any software that has been downloaded is not eligible for return.</li>
+            <li class="refund-policy-list-item"><strong>Some Sale Items:</strong> Only regular priced items may be refunded, unfortunately, sale items cannot be refunded unless defective.</li>
+        </ul>
+    </section>
+
+    <section class="refund-policy-section">
+        <h2 class="refund-policy-subtitle">Steps to Initiate a Refund</h2>
+        <ol class="refund-policy-steps-list">
+            <li class="refund-policy-steps-item">
+                <strong>Contact Customer Service:</strong> Reach out to our customer service team via email at support@urbanmart.in or call us at +91-123-456-7890 to initiate a refund request. Provide your order number, details of the product, and a detailed reason for the return.
+            </li>
+            <li class="refund-policy-steps-item">
+                <strong>Receive Return Authorization:</strong> If your return is approved, you will receive a return authorization number and instructions on how to return the product.
+            </li>
+            <li class="refund-policy-steps-item">
+                <strong>Ship the Product Back:</strong> Return the product using the instructions provided. The product should be securely packed to prevent damage during transit. You will be responsible for paying for your own shipping costs for returning your item. Shipping costs are non-refundable.
+            </li>
+            <li class="refund-policy-steps-item">
+                <strong>Product Inspection:</strong> Upon receipt, the product will be inspected to ensure it meets the return criteria.
+            </li>
+            <li class="refund-policy-steps-item">
+                <strong>Refund Processing:</strong> If the return is approved, a refund will be processed to the original method of payment within 7-10 business days. We will also inform you of the approval or rejection of your refund via email.
+            </li>
+        </ol>
+    </section>
+
+    <section class="refund-policy-section">
+        <h2 class="refund-policy-subtitle">Partial Refunds or Restocking Fees</h2>
+        <ul class="refund-policy-list">
+            <li class="refund-policy-list-item"><strong>Items Not in Original Condition:</strong> If an item is returned not in its original condition, is damaged, or missing parts for reasons not due to our error, only a partial refund may be granted.</li>
+            <li class="refund-policy-list-item"><strong>Restocking Fee:</strong> In certain cases, a restocking fee might be applied. This will be communicated during the return approval process.</li>
+        </ul>
+    </section>
+
+    <section class="refund-policy-section">
+        <h2 class="refund-policy-subtitle">Late or Missing Refunds</h2>
+        <p class="refund-policy-text">
+            If you haven’t received a refund yet:
+        </p>
+        <ul class="refund-policy-list">
+            <li class="refund-policy-list-item">Check your bank account again.</li>
+            <li class="refund-policy-list-item">Contact your credit card company, it may take some time before your refund is officially posted.</li>
+            <li class="refund-policy-list-item">Contact your bank. There is often some processing time before a refund is posted.</li>
+            <li class="refund-policy-list-item">Contact Us: If you’ve done all of this and you still have not received your refund, please contact us at support@urbanmart.in.</li>
+        </ul>
+    </section>
+
+    <section class="refund-policy-section">
+        <h2 class="refund-policy-subtitle">Exchanges</h2>
+        <p class="refund-policy-text">
+            We only replace items if they are defective or damaged. If you need to exchange an item for the same product, follow the same procedure as for returns but specify that it is an exchange.
+        </p>
+    </section>
+
+    <section class="refund-policy-section">
+        <h2 class="refund-policy-subtitle">Contact Information</h2>
+        <div class="contact-info">
+            <p><strong>Email:</strong> support@urbanmart.in</p>
+            <p><strong>Phone:</strong> +91-123-456-7890</p>
+        </div>
+    </section>
+
+    <p class="refund-policy-thank-you">Thank you for shopping at Urban Mart. We are committed to ensuring your satisfaction with every transaction.</p>
+</div>

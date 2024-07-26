@@ -1,42 +1,63 @@
 <% layout('layouts/boilerplate') %>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Mukta:wght@200;300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
 
     .terms-container {
-        font-family: Arial, sans-serif;
-        font-size: 12px;
+        font-family: 'Inter', sans-serif;
         line-height: 1.6;
-        width:70%;
-        margin: 20px auto;
-        padding: 20px;
+        color: #333;
+        width: 60%;
+        margin: 50px auto;
+        padding: 40px;
         background: #fff;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        font-family: Inter, -apple-system, Helvetica, Arial, sans-serif;
-}
-    
+        border-radius: 10px;
+    }
+
     .terms-title {
-        margin: 10px 0;
-        color: #333;
-    }
-    .section-content-about {
+        font-size: 2.5em;
         margin-bottom: 20px;
+        color: #2c3e50;
+        border-bottom: 2px solid #2c3e50;
+        padding-bottom: 10px;
     }
-    .section-content-about p, .section-content-about ul, .section-content-about li {
-        line-height: 1.5;
+
+    .section-content-about {
+        margin-bottom: 30px;
+    }
+
+    .section-content-about p,
+    .section-content-about ul,
+    .section-content-about li {
+        line-height: 1.8;
         margin-top: 15px;
+        font-size: 1em;
     }
-    .table-content{
+
+    .table-content {
         font-weight: 600;
     }
-    /* .section-content-about-about p{
+
+    .section-content-about-about h2 {
         margin-top: 10px;
-    } */
-    .section-content-about-about h2{
-        margin-top: 10px;
+        font-size: 1.8em;
+        color: #34495e;
+        border-left: 4px solid #34495e;
+        padding-left: 10px;
     }
+
     @media (max-width: 768px) {
         .terms-container {
             width: 96%;
+            padding: 20px;
+        }
+
+        .terms-title {
+            font-size: 2em;
+        }
+
+        .section-content-about-about h2 {
+            font-size: 1.5em;
         }
     }
 </style>
@@ -49,7 +70,7 @@
             <h2 style="margin-bottom: 1rem;">TERMS OF USE</h2>
             <!-- <p>Last updated July 24, 2024</p> -->
             <h5><b>AGREEMENT TO OUR LEGAL TERMS</b></h5>
-            <p>We are __________ ("Company," "we," "us," "our").
+            <p>We are UrbanMart("Company," "we," "us," "our").
 
 
                 We operate , as well as any other related products and services that refer or link to these legal terms
@@ -58,12 +79,8 @@
 
                 You can contact us by email at __________ or by mail to __________, __________, __________.
 
+                These Legal Terms constitute a legally binding agreement made between you, whether personally or on behalf of an entity ("you"), and UrbanMart, concerning your access to and use of the Services. You agree that by accessing the Services, you have read, understood, and agreed to be bound by all of these Legal Terms. IF YOU DO NOT AGREE WITH ALL OF THESE LEGAL TERMS, THEN YOU ARE EXPRESSLY PROHIBITED FROM USING THE SERVICES AND YOU MUST DISCONTINUE USE IMMEDIATELY.
 
-                These Legal Terms constitute a legally binding agreement made between you, whether personally or on
-                behalf of an entity ("you"), and __________, concerning your access to and use of the Services. You
-                agree that by accessing the Services, you have read, understood, and agreed to be bound by all of these
-                Legal Terms. IF YOU DO NOT AGREE WITH ALL OF THESE LEGAL TERMS, THEN YOU ARE EXPRESSLY PROHIBITED FROM
-                USING THE SERVICES AND YOU MUST DISCONTINUE USE IMMEDIATELY.
 
 
                 Supplemental terms and conditions or documents that may be posted on the Services from time to time are
@@ -152,11 +169,8 @@
                 commercial purpose whatsoever, without our express prior written permission.<br>
 
 
-                If you wish to make any use of the Services, Content, or Marks other than as set out in this section or
-                elsewhere in our Legal Terms, please address your request to: __________. If we ever grant you the
-                permission to post, reproduce, or publicly display any part of our Services or Content, you must
-                identify us as the owners or licensors of the Services, Content, or Marks and ensure that any copyright
-                or proprietary notice appears or is visible on posting, reproducing, or displaying our Content.<br>
+                If you wish to make any use of the Services, Content, or Marks other than as set out in this section or elsewhere in our Legal Terms, please address your request to: [Contact Email/Department]. If we ever grant you the permission to post, reproduce, or publicly display any part of our Services or Content, you must identify us as the owners or licensors of the Services, Content, or Marks and ensure that any copyright or proprietary notice appears or is visible on posting, reproducing, or displaying our Content.
+
 
 
                 We reserve all rights not expressly granted to you in and to the Services, Content, and Marks.<br>
@@ -352,29 +366,17 @@
                 releases in connection therewith.
             </p>
             <h2>10. GOVERNING LAW</h2>
-            <p>These Legal Terms shall be governed by and defined following the laws of __________. __________ and
-                yourself irrevocably consent that the courts of __________ shall have exclusive jurisdiction to resolve
-                any dispute which may arise in connection with these Legal Terms.</p>
+            <p>These Legal Terms shall be governed by and defined following the laws of India. UrbanMart and yourself irrevocably consent that the courts of Kapurthala shall have exclusive jurisdiction to resolve any dispute which may arise in connection with these Legal Terms.</p>
+
             <h2>11. DISPUTE RESOLUTION</h2>
             <h5><b>Informal Negotiations</b></h5>
-            <p>To expedite resolution and control the cost of any dispute, controversy, or claim related to these Legal
-                Terms (each a "Dispute" and collectively, the "Disputes") brought by either you or us (individually, a
-                "Party" and collectively, the "Parties"), the Parties agree to first attempt to negotiate any Dispute
-                (except those Disputes expressly provided below) informally for at least __________ days before
-                initiating arbitration. Such informal negotiations commence upon written notice from one Party to the
-                other Party.</p>
+            <p>To expedite resolution and control the cost of any dispute, controversy, or claim related to these Legal Terms (each a "Dispute" and collectively, the "Disputes") brought by either you or us (individually, a "Party" and collectively, the "Parties"), the Parties agree to first attempt to negotiate any Dispute (except those Disputes expressly provided below) informally for at least 30 days before initiating arbitration. Such informal negotiations commence upon written notice from one Party to the other Party.</p>
 
 
             <h5><b>Binding Arbitration</b></h5>
 
 
-            <p>Any dispute arising out of or in connection with these Legal Terms, including any question regarding its
-                existence, validity, or termination, shall be referred to and finally resolved by the International
-                Commercial Arbitration Court under the European Arbitration Chamber (Belgium, Brussels, Avenue Louise,
-                146) according to the Rules of this ICAC, which, as a result of referring to it, is considered as the
-                part of this clause. The number of arbitrators shall be __________. The seat, or legal place, or
-                arbitration shall be __________. The language of the proceedings shall be __________. The governing law
-                of these Legal Terms shall be substantive law of __________.</p>
+            <p>Any dispute arising out of or in connection with these Legal Terms, including any question regarding its existence, validity, or termination, shall be referred to and finally resolved by the Indian Council of Arbitration (ICA) according to its Rules, which, as a result of referring to it, is considered as part of this clause. The number of arbitrators shall be one. The seat, or legal place, of arbitration shall be Kapurthala. The language of the proceedings shall be English. The governing law of these Legal Terms shall be the substantive law of India.</p>
 
 
             <h5><b>Restrictions</b></h5>

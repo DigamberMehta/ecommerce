@@ -169,19 +169,28 @@ app.use('/', addressRoutes);
 app.use('/', checkoutRoutes);
 app.use('/', whishlistRoutes);
 app.use('/', contactRoutes);
-app.get('/terms', (req, res) => {
-  res.render('about/terms');
-});
-app.get('/about', (req, res) => {
-  res.render('about/About');
-});
+
 
 // Review routes
 
 // app.get('*', (req, res) => {
 //   res.send("404 Page Not Found");
 // });
-
+app.get('/terms', (req, res) => {
+  res.render('about/terms');
+});
+app.get('/terms', (req, res) => {
+  res.render('about/terms');
+});
+app.get('/refund', (req, res) => {
+  res.render('about/refund');
+});
+app.get('/shipping', (req, res) => {
+  res.render('about/shipping');
+});
+app.get('/privacy', (req, res) => {
+  res.render('about/privacy');
+});
 
 const port = 3000;
 app.listen(port, () => {
