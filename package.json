@@ -1,6 +1,6 @@
 {
   "engines": {
-    "node": "21.6.1"
+    "node": "20.16.0"
   },
   "name": "e-commerce",
   "version": "1.0.0",
