@@ -1,12 +1,5 @@
 <% layout('layouts/boilerplate') %>
 <style>
-    body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        background-color: #f4f4f4;
-    }
 
     .checkout-container {
         display: flex;
@@ -37,10 +30,15 @@
 
         .checkout-left, .checkout-right {
             width: 100%; /* Adjust widths for smaller screens */
+            padding: 0;
+            max-height: fit-content;
         }
 
         .checkout-right {
             margin-bottom: 20px; /* Add space between the sections */
+        }
+        .order-summary-container{
+            padding: 20px;
         }
     }
 
@@ -229,6 +227,22 @@
         margin-top: 1rem;
         border-radius: 10px;
     }
+    @media (max-width: 500px) {
+        .checkout-container{
+            width: 100%;
+        }
+    }
+    .add-address-checkout{
+        color: white;
+       background-color: rgb(243, 116, 70);
+       border: none;
+    padding: 9px 15px;
+    cursor: pointer;
+    /* margin-top: 10px; */
+    border-radius: 5px;
+    display: inline-block;
+    font-size: 14px;
+    }
 </style>
 <div class="checkout-container">
     <div class="checkout-left">
@@ -253,13 +267,16 @@
                                 </div>
                                 <div style="margin: 1rem 0;">
                                     <a href="#" class="link edit-address" data-index="<%= index %>">Edit address</a>
-                                    <a href="/user/address/new?backUrl=<%= encodeURIComponent(backUrl) %>">
-                                        Add Address
-                                      </a>
+                                   
                                 </div>
                             </div>
                         <% }); %>
                         <button type="submit" class="btn primary">Use this address</button>
+                        <span class="add-address-checkout">
+                        <a href="/user/address/new?backUrl=<%= encodeURIComponent(backUrl) %>">
+                            Add Address
+                          </a>
+                        </span>
                     </form>
                 </div>
             </div>
@@ -310,6 +327,7 @@
     </div>
 
     <div class="checkout-right">
+        <div class="order-summary-container">
         <h2 class="order-summary-title">Order Summary</h2>
         <p class="order-summary-item">Items Total: ₹<%= totalCost.toFixed(2) %></p>
         <p class="order-summary-item">Delivery: ₹0.00</p>
@@ -318,7 +336,7 @@
         <p class="discount">Item discount</p>
     </div>
 </div>
-
+</div>
 <!-- Modal for editing address -->
 <div id="editAddressModal" class="modal">
     <div class="modal-content">

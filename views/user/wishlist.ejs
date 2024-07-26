@@ -145,41 +145,45 @@
     </div>
 
     <script>
-        document.querySelectorAll('.wishlist-remove-btn').forEach(button => {
-            button.addEventListener('click', async (e) => {
-                const productId = e.target.closest('.wishlist-item').getAttribute('data-product-id');
-                const response = await fetch('/wishlist/remove', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ productId })
-                });
-                const result = await response.json();
-                if (result.success) {
-                    e.target.closest('.wishlist-item').remove();
-                } else {
-                    alert('Failed to remove item from wishlist');
-                }
+    document.querySelectorAll('.wishlist-remove-btn').forEach(button => {
+        button.addEventListener('click', async (e) => {
+            const productId = e.target.closest('.wishlist-item').getAttribute('data-product-id');
+            const response = await fetch('/wishlist/remove', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ productId })
             });
+            const result = await response.json();
+            if (result.success) {
+                e.target.closest('.wishlist-item').remove();
+                // Optionally, show a success message to the user
+                // alert('Item removed from wishlist');
+            } else {
+                // alert('Failed to remove item from wishlist');
+            }
         });
+    });
 
-        document.querySelectorAll('.wishlist-move-to-cart-btn').forEach(button => {
-            button.addEventListener('click', async (e) => {
-                const productId = e.target.closest('.wishlist-item').getAttribute('data-product-id');
-                const response = await fetch('/wishlist/move-to-cart', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ productId })
-                });
-                const result = await response.json();
-                if (result.success) {
-                    e.target.closest('.wishlist-item').remove();
-                } else {
-                    alert('Failed to move item to cart');
-                }
+    document.querySelectorAll('.wishlist-move-to-cart-btn').forEach(button => {
+        button.addEventListener('click', async (e) => {
+            const productId = e.target.closest('.wishlist-item').getAttribute('data-product-id');
+            const response = await fetch('/wishlist/move-to-cart', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ productId })
             });
+            const result = await response.json();
+            if (result.success) {
+                e.target.closest('.wishlist-item').remove();
+                // Optionally, show a success message to the user
+                alert('Item moved to cart');
+            } else {
+                alert('Failed to move item to cart');
+            }
         });
-    </script>
+    });
+</script>

@@ -217,6 +217,41 @@
     .heart-icon {
         font-size: 1.5rem;
     }
+    .show-image-preview-modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.8);
+}
+.show-preview-content {
+    margin: auto;
+    display: block;
+   height: 100vh;
+   width: auto;
+   object-fit: contain;
+}
+.show-close-button {
+    position: absolute;
+    top: 15px;
+    right: 35px;
+    color: #fff;
+    font-size: 40px;
+    font-weight: bold;
+    transition: 0.3s;
+    cursor: pointer;
+}
+.show-close-button:hover,
+.show-close-button:focus {
+    color: #bbb;
+    text-decoration: none;
+    cursor: pointer;
+}
+
 </style>
 
 <div class="show-page">
@@ -313,69 +348,78 @@
                 </div>
             </div>
         </div>
-    </div>
-</div>
-<div className="full-width-preview">
-    <div class="review-section">
-        <div class="write-review">
-            <button id="openModal" class="review-submit">Write a Review</button>
-        </div>
-        <div id="reviewModal" class="modal">
-            <div class="modal-content">
-                <span class="close">&times;</span>
-                <h2>Write a Review</h2>
-                <form action="/products/<%= product._id %>/<%= product.slug %>/reviews" method="POST" enctype="multipart/form-data">
-                    <div class="form-group">
-                        <label for="review-title">Title</label>
-                        <input type="text" id="review-title" name="review[title]" placeholder="Enter the title of your review">
-                    </div>
-                    <div class="form-group">
-                        <label for="review-body">Review</label>
-                        <textarea id="review-body" name="review[comment]" placeholder="Write your review here" rows="5"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="review-rating">Rating</label>
-                        <input type="range" min="1" max="5" id="review-rating" name="review[rating]">
-                    </div>
-                    <div class="form-group">
-                        <label for="review-images">Upload Images</label>
-                        <input type="file" id="review-images" name="images" multiple>
-                    </div>
-                    <button type="submit" class="review-submit">Submit Review</button>
-                </form>
-            </div>
-        </div>
-        <div class="reviews">
-            <h2>Customer Reviews</h2>
-            <% product.reviews.forEach(review => { %>
-            <div class="review">
-                <h3><%= review.title %></h3>
-                <div class="review-rating">Rating: ★<%= review.rating %></div>
-                <div class="review-images ">
-                    <% if (review.image && review.image.length > 0) { %>
-                    <div class="review-images-show-container">
-                        <% review.image.forEach(imageUrl => { %>
-                        <img src="<%= imageUrl %>" alt="Review Image" class="review-image user-review-image">
-                        <% }) %>
-                    </div>
-                    <% } %>
+
+        <div className="full-width-preview">
+            <div class="review-section">
+                <div class="write-review">
+                    <button id="openModal" class="review-submit">Write a Review</button>
                 </div>
-                <p><%= review.comment %></p>
-                <div class="user-review-action">
-                    <small><i style="color: black;">Reviewed by </i>: <%= review.user.name %></small>
-                    <div class="product-review-option">
-                        <form action="/products/<%= product._id %>/<%= product.slug %>/reviews/<%= review._id %>?_method=DELETE" method="POST">
-                            <button type="submit">Delete |</button>
+                <div id="reviewModal" class="modal">
+                    <div class="modal-content">
+                        <span class="close">&times;</span>
+                        <h2>Write a Review</h2>
+                        <form action="/products/<%= product._id %>/<%= product.slug %>/reviews" method="POST" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label for="review-title">Title</label>
+                                <input type="text" id="review-title" name="review[title]" placeholder="Enter the title of your review">
+                            </div>
+                            <div class="form-group">
+                                <label for="review-body">Review</label>
+                                <textarea id="review-body" name="review[comment]" placeholder="Write your review here" rows="5"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="review-rating">Rating</label>
+                                <input type="range" min="1" max="5" id="review-rating" name="review[rating]">
+                            </div>
+                            <div class="form-group">
+                                <label for="review-images">Upload Images</label>
+                                <input type="file" id="review-images" name="images" multiple>
+                            </div>
+                            <button type="submit" class="review-submit">Submit Review</button>
                         </form>
-                        <button class="edit-button" data-review-id="<%= review._id %>">Edit</button>
                     </div>
                 </div>
+                <div class="reviews">
+                    <h2>Customer Reviews</h2>
+                    <% product.reviews.forEach(review => { %>
+                    <div class="review">
+                        <h3><%= review.title %></h3>
+                        <div class="review-rating">Rating: ★<%= review.rating %></div>
+                        <div class="review-images ">
+                            <% if (review.image && review.image.length > 0) { %>
+                            <div class="review-images-show-container">
+                                <% review.image.forEach(imageUrl => { %>
+                                <img src="<%= imageUrl %>" alt="Review Image" class="review-image user-review-image" onclick="showOpenPreview('<%= imageUrl %>')">
+                                <% }) %>
+                            </div>
+                            <% } %>
+                        </div>
+                        <p><%= review.comment %></p>
+                        <div class="user-review-action">
+                            <small><i style="color: black;">Reviewed by </i>: <%= review.user.name %></small>
+                            <div class="product-review-option">
+                                <form action="/products/<%= product._id %>/<%= product.slug %>/reviews/<%= review._id %>?_method=DELETE" method="POST">
+                                    <button type="submit">Delete |</button>
+                                </form>
+                                <button class="edit-button" data-review-id="<%= review._id %>">Edit</button>
+                            </div>
+                        </div>
+                    </div>
+                    <% }) %>
+                </div>
             </div>
-            <% }) %>
+            
+            <div id="show-image-preview-modal" class="show-image-preview-modal">
+                <span class="show-close-button" onclick="showClosePreview()">&times;</span>
+                <img class="show-preview-content" id="show-preview-image">
+            </div>
+
+            <%- include('../partials/browsingHistory.ejs') %>
         </div>
     </div>
 </div>
-<%- include('../partials/browsingHistory.ejs') %>
+
+
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         document.querySelectorAll('.edit-button').forEach(button => {
@@ -402,4 +446,22 @@
 
         discountElement.textContent = `${discountPercentage}% off`;
     });
+    function showOpenPreview(imageSrc) {
+        document.getElementById('show-image-preview-modal').style.display = 'block';
+        document.getElementById('show-preview-image').src = imageSrc;
+        disableScroll();
+    }
+
+    function showClosePreview() {
+        document.getElementById('show-image-preview-modal').style.display = 'none';
+        enableScroll();
+    }
+
+    function disableScroll() {
+        document.body.style.overflow = 'hidden';
+    }
+
+    function enableScroll() {
+        document.body.style.overflow = '';
+    }
 </script>
