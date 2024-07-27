@@ -4,7 +4,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=0.9" />
-  <title>ecommerce</title>
+  <title>UrbanMart</title>
+  
   <link rel="stylesheet" data-purpose="Layout StyleSheet" title="Web Awesome"
     href="/css/app-wa-d53d10572a0e0d37cb8d614a3f177a0c.css?vsn=d" />
 
@@ -48,66 +49,27 @@
   <link rel="stylesheet" href="/css/browsing.css" />
   <link rel="stylesheet" href="/css/footer.css" />
   <link rel="stylesheet" href="/css/cart.css" />
+  <link rel="stylesheet" href="/css/checkout.css" />
+  <script src="/js/cashfree.js" defer></script>
+  <script src="https://sdk.cashfree.com/js/v3/cashfree.js"></script>
 
   <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.5.2/css/all.css" />
-  <style>
-    .dev-banner {
-      display: none; /* Hide by default */
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      background-color: #ffcc00;
-      color: #000;
-      text-align: center;
-      padding: 10px 0;
-      font-size: 16px;
-      z-index: 9999;
-    }
-    
-    .dev-banner .close-btn {
-      position: absolute;
-      right: 10px;
-      top: 65%;
-      transform: translateY(-50%);
-      background: none;
-      border: none;
-      font-size: 20px;
-      cursor: pointer;
-    }
-  </style>
 </head>
 
+
 <body>
-  <div class="dev-banner">
-    This website is currently under development. Some features might not be available at the moment. Also currently Sample Data is added to the website for testing purpose Only. We are in the process of integrating and testing  payment gateway. Therefore applied for it .Thank you for your understanding.
-
-    <button class="close-btn" onclick="closeBanner()">&times;</button>
-  </div>
-
   <div class="main-container-body">
     <%- include('../includes/navbar.ejs') %> 
     <%- include('../flash/flash.ejs') %> 
     <%- body %>
   </div>
   <%- include('../includes/footer.ejs') %>
-
-  <script src="/js/cart.js"></script>
-  <script src="/js/show.js"></script>
-  <script src="/js/search.js"></script>
-  <script src="/js/home.js"></script>
-  <script src="/js/navbar.js"></script>
-  <script>
-    window.addEventListener('load', function() {
-      var banner = document.querySelector('.dev-banner');
-      banner.style.display = 'block';
-    });
-
-    function closeBanner() {
-      var banner = document.querySelector('.dev-banner');
-      banner.style.display = 'none';
-    }
-  </script>
 </body>
+<script src="/js/cart.js"></script>
+<script src="/js/show.js"></script>
+<script src="/js/search.js"></script>
+<script src="/js/home.js"></script>
+<script src="/js/navbar.js"></script>
+
 
 </html>

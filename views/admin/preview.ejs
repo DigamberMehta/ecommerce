@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= product.title %> - Product Preview</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Roboto', sans-serif;
+      background-color: #f0f4f8;
+      color: #333;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: #ffffff;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+    }
+
+    .product-preview {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .product-image {
+      flex: 1 1 40%;
+      max-width: 40%;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .product-image img {
+      width: 100%;
+      height: auto;
+      border-radius: 10px;
+      transition: transform 0.3s;
+    }
+
+    .product-image img:hover {
+      transform: scale(1.05);
+    }
+
+    .product-details {
+      flex: 1 1 60%;
+      max-width: 60%;
+      padding: 20px;
+    }
+
+    .product-details h1 {
+      margin: 0;
+      font-size: 28px;
+      color: #333;
+    }
+
+    .product-details .price {
+      font-size: 24px;
+      color: #007bff;
+      margin-top: 10px;
+    }
+
+    .product-details .description {
+      margin-top: 20px;
+      color: #555;
+    }
+
+    .product-details .info {
+      margin-top: 10px;
+      color: #555;
+    }
+
+    .product-details .info span {
+      display: block;
+    }
+
+    .reviews {
+      margin-top: 40px;
+    }
+
+    .review {
+      border-top: 1px solid #ddd;
+      padding: 15px 0;
+    }
+
+    .review:last-child {
+      border-bottom: 1px solid #ddd;
+    }
+
+    .review .review-author {
+      font-weight: bold;
+      color: #333;
+    }
+
+    .review .review-rating {
+      color: #ff9900;
+    }
+
+    .review .review-content {
+      margin-top: 5px;
+      color: #666;
+    }
+
+    .review .review-images img {
+      width: 100px;
+      height: auto;
+      margin-right: 10px;
+      border-radius: 5px;
+      transition: transform 0.3s;
+    }
+
+    .review .review-images img:hover {
+      transform: scale(1.1);
+    }
+
+    .specifications-table {
+      width: 100%;
+      margin-top: 20px;
+      border-collapse: collapse;
+    }
+
+    .specifications-table th, .specifications-table td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: left;
+    }
+
+    .specifications-table th {
+      background-color: #f8f9fa;
+    }
+
+    .tags, .additional-images {
+      margin-top: 20px;
+    }
+
+    .tags span, .additional-images img {
+      display: inline-block;
+      margin-right: 5px;
+      transition: transform 0.3s;
+    }
+
+    .tags span:hover, .additional-images img:hover {
+      transform: scale(1.1);
+    }
+
+    .additional-images img {
+      width: 70px;
+      height: auto;
+      border-radius: 5px;
+    }
+
+    .badge-secondary {
+      background-color: #6c757d;
+      color: #fff;
+      padding: 5px 10px;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="product-preview">
+      <div class="product-image">
+        <img src="<%= product.images[0] %>" alt="<%= product.title %>">
+      </div>
+      <div class="product-details">
+        <h1><%= product.title %></h1>
+        <div class="price">Selling Price: $<%= product.sellingPrice %></div>
+        <% if (product.mrpPrice) { %>
+          <div class="price">MRP Price: $<%= product.mrpPrice %></div>
+        <% } %>
+        <div class="description"><%= product.description %></div>
+        <div class="info">Stock: <%= product.stock %></div>
+        <div class="info">Brand: <%= product.brand %></div>
+        <div class="info">Category: <%= product.categories.join(', ') %></div>
+        <% if (product.rating) { %>
+          <div class="info">Rating: <%= product.rating %></div>
+        <% } %>
+        <div class="info">Slug: <%= product.slug %></div>
+        <div class="info">Created At: <%= product.createdAt.toLocaleString() %></div>
+        <div class="info">Updated At: <%= product.updatedAt.toLocaleString() %></div>
+        <% if (product.specifications && Object.keys(product.specifications).length > 0) { %>
+          <h3>Specifications</h3>
+          <table class="specifications-table">
+            <tbody>
+              <% for (let key in product.specifications) { %>
+                <tr>
+                  <th><%= key %></th>
+                  <td>
+                    <% if (typeof product.specifications[key] === 'object') { %>
+                      <% for (let subKey in product.specifications[key]) { %>
+                        <div><strong><%= subKey %>:</strong> <%= Array.isArray(product.specifications[key][subKey]) ? product.specifications[key][subKey].join(', ') : product.specifications[key][subKey] %></div>
+                      <% } %>
+                    <% } else { %>
+                      <%= product.specifications[key] %>
+                    <% } %>
+                  </td>
+                </tr>
+              <% } %>
+            </tbody>
+          </table>
+        <% } %>
+        <% if (product.tags && product.tags.length > 0) { %>
+          <div class="tags">
+            <h4>Tags:</h4>
+            <% product.tags.forEach(tag => { %>
+              <span class="badge badge-secondary"><%= tag %></span>
+            <% }) %>
+          </div>
+        <% } %>
+        <% if (product.additionalImages && product.additionalImages.length > 0) { %>
+          <div class="additional-images">
+            <h4>Additional Images:</h4>
+            <% product.additionalImages.forEach(image => { %>
+              <img src="<%= image %>" alt="Additional Image">
+            <% }) %>
+          </div>
+        <% } %>
+      </div>
+    </div>
+    <div class="reviews">
+      <h2>Reviews</h2>
+      <% product.reviews.forEach(review => { %>
+        <div class="review">
+          <div class="review-author"><%= review.user.name %></div>
+          <div class="review-rating">
+            <% for (let i = 0; i < review.rating; i++) { %>
+              <i class="fa fa-star"></i>
+            <% } %>
+          </div>
+          <div class="review-content"><%= review.comment %></div>
+          <div class="review-images">
+            <% review.image.forEach(img => { %>
+              <img src="<%= img %>" alt="Review Image">
+            <% }) %>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+  </div>
+</body>
+</html>

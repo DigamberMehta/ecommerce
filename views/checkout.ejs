@@ -1,264 +1,19 @@
 <% layout('layouts/boilerplate') %>
-<style>
-
-    .checkout-container {
-        display: flex;
-        width: 90%;
-        margin: 20px auto;
-        gap: 20px;
-        flex-direction: row; /* Default layout */
-    }
-
-    .checkout-left {
-        width: 70%;
-    }
-
-    .checkout-right {
-        width: 30%;
-        background-color: #fff;
-        padding: 20px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        border-radius: 5px;
-        max-height: 200px;
-    }
-
-    /* Add media query for screens 968px or less */
-    @media (max-width: 968px) {
-        .checkout-container {
-            flex-direction: column-reverse; /* Stack the right column above the left column */
-        }
-
-        .checkout-left, .checkout-right {
-            width: 100%; /* Adjust widths for smaller screens */
-            padding: 0;
-            max-height: fit-content;
-        }
-
-        .checkout-right {
-            margin-bottom: 20px; /* Add space between the sections */
-        }
-        .order-summary-container{
-            padding: 20px;
-        }
-    }
-
-    .accordion {
-        border-radius: 5px;
-        overflow: hidden;
-    }
-
-    .accordion-item {
-        border-bottom: 1px solid #e0e0e0;
-    }
-
-    .accordion-header {
-        background-color: #fff;
-        border: none;
-        outline: none;
-        padding: 15px;
-        width: 100%;
-        text-align: left;
-        font-size: 16px;
-        cursor: pointer;
-        transition: background-color 0.3s, color 0.3s;
-        border-bottom: 1px solid #ddd;
-    }
-
-    .accordion-header:hover,
-    .accordion-header.active {
-        background-color: #ffffff;
-        color: #007bff;
-    }
-
-    .accordion-content {
-        max-height: 0;
-        overflow: hidden;
-        transition: max-height 0.3s ease-out, padding 0.3s ease-out;
-        padding: 0 15px;
-        background-color: #fff;
-    }
-
-    .accordion-content.show {
-        max-height: 1000px;
-        padding: 15px;
-    }
-
-    .checkout-left h3 {
-        margin-top: 0;
-        font-size: 18px;
-        color: #333;
-    }
-
-    .checkout-left p {
-        font-size: 14px;
-        line-height: 1.6;
-        color: #555;
-    }
-
-    .checkout-left .btn {
-        background-color: #007bff;
-        color: #fff;
-        border: none;
-        padding: 10px 15px;
-        cursor: pointer;
-        margin-top: 10px;
-        border-radius: 5px;
-        display: inline-block;
-        font-size: 14px;
-        transition: background-color 0.3s;
-    }
-
-    .checkout-left .btn.primary {
-        background-color: #28a745;
-    }
-
-    .checkout-left .btn:hover {
-        opacity: 0.9;
-    }
-
-    .checkout-right h2 {
-        font-size: 24px;
-        margin-top: 0;
-        margin-bottom: 10px;
-        color: #333;
-    }
-
-    .checkout-right p {
-        font-size: 16px;
-        color: #333;
-        margin: 10px 0;
-    }
-
-    .checkout-right h3 {
-        font-size: 20px;
-        color: #28a745;
-        margin-top: 0;
-    }
-
-    .checkout-right .order-summary-item {
-        margin-bottom: 10px;
-    }
-
-    .checkout-right .savings {
-        font-weight: bold;
-        color: #ff5722;
-    }
-
-    .checkout-right .discount {
-        font-style: italic;
-        color: #555;
-    }
-
-    .modal {
-        display: none;
-        position: fixed;
-        z-index: 1;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        overflow: auto;
-        background-color: rgba(0, 0, 0, 0.5); /* Softer black overlay */
-        padding-top: 60px;
-        transition: background-color 0.3s ease; /* Smooth transition for the overlay */
-    }
-
-    .modal-content {
-        position: relative;
-        background-color: #fff;
-        margin: -2% auto;
-        padding: 40px; /* More padding for a better layout */
-        border-radius: 8px; /* Rounded corners */
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
-        width: 50%; /* Width adjustment for better focus */
-        transition: transform 0.3s ease-out; /* Smooth scaling transition */
-        transform: scale(0.9); /* Start slightly smaller */
-    }
-
-    .modal-content.active {
-        transform: scale(1); /* Scale up when active */
-    }
-
-    .close {
-        position: absolute;
-        right: 20px;
-        top: 20px;
-        color: #aaa;
-        font-size: 24px; /* Slightly smaller for subtlety */
-        font-weight: bold;
-        cursor: pointer;
-    }
-
-    .close:hover,
-    .close:focus {
-        color: #333; /* Darker gray for hover effect */
-        text-decoration: none;
-    }
-
-    .edit-form-input {
-        width: 100%; /* Full width inputs and button */
-        padding: 10px; /* Better padding for inputs */
-        margin-top: 10px; /* Space out the elements */
-        border: 1px solid #ccc; /* Subtle border style */
-        border-radius: 4px; /* Rounded borders for inputs */
-    }
-
-    button.primary {
-        background-color: #007BFF; /* Bright blue for primary actions */
-        color: white;
-        border: none;
-        cursor: pointer;
-        transition: background-color 0.2s ease;
-    }
-
-    button.primary:hover {
-        background-color: #0056b3; /* Darker blue on hover */
-    }
-
-    .address {
-       
-        margin: 1rem 0;
-        border-bottom: 1px solid #ddd;
-    }
-
-    .edit-address-btn-submit {
-        width: 15%;
-        padding: 5px;
-        margin-top: 1rem;
-        border-radius: 10px;
-    }
-    @media (max-width: 500px) {
-        .checkout-container{
-            width: 100%;
-        }
-    }
-    .add-address-checkout{
-        color: white;
-       background-color: rgb(243, 116, 70);
-       border: none;
-    padding: 9px 15px;
-    cursor: pointer;
-    /* margin-top: 10px; */
-    border-radius: 5px;
-    display: inline-block;
-    font-size: 14px;
-    }
-</style>
 <div class="checkout-container">
     <div class="checkout-left">
         <div class="accordion">
             <div class="accordion-item">
-                <button class="accordion-header active">Select a delivery address</button>
-                <div class="accordion-content show">
+                <button class="accordion-header active" id="selectAddressHeader">Select a delivery address</button>
+                <div class="accordion-content show" id="selectAddressContent">
                     <h3 class="section-title">Your addresses</h3>
                     <% if (addresses.length === 0) { %>
                         <p>You have not added any addresses yet. <a href="/user/address/new?backUrl=<%= backUrl %>"> <span style="color: #007BFF;">Add a new address</span> </a></p>
                     <% } %>
-                    <form action="/checkout/confirm" method="POST">
+                    <form id="addressForm">
                         <% addresses.forEach(function(address, index) { %>
                             <div class="address">
                                 <div class="address-checkout">
-                                    <input type="radio" name="selectedAddress" id="address-<%= index %>" value="<%= index %>" <%= index === 0 ? 'checked' : '' %>>
+                                    <input type="radio" name="selectedAddressIndex" id="address-<%= index %>" value="<%= index %>" <%= index === 0 ? 'checked' : '' %>>
                                     <label for="address-<%= index %>">
                                         <%= address.name %><br>
                                         <%= address.houseNumber %> <%= address.street %>, <%= address.city %>, <%= address.state %>, <%= address.pincode %>, <%= address.country %><br>
@@ -267,60 +22,38 @@
                                 </div>
                                 <div style="margin: 1rem 0;">
                                     <a href="#" class="link edit-address" data-index="<%= index %>">Edit address</a>
-                                   
                                 </div>
                             </div>
                         <% }); %>
-                        <button type="submit" class="btn primary">Use this address</button>
+                        <button type="button" id="useAddressBtn" class="btn primary">Use this address</button>
                         <span class="add-address-checkout">
-                        <a href="/user/address/new?backUrl=<%= encodeURIComponent(backUrl) %>">
-                            Add Address
-                          </a>
+                            <a href="/user/address/new?backUrl=<%= encodeURIComponent(backUrl) %>">Add Address</a>
                         </span>
                     </form>
                 </div>
             </div>
             
-              
-
             <div class="accordion-item">
-                <button class="accordion-header">Review items and delivery</button>
-                <div class="accordion-content">          
+                <button class="accordion-header" id="reviewItemsHeader">Review items and delivery</button>
+                <div class="accordion-content" id="reviewItemsContent">
                     <% orderDetails.forEach(function(item) { %>
                         <div class="product-item">
                             <h4 class="item-title"> <%= item.title %></h4>
                             <div class="item-checkout-deatils" style="display: flex;">
-                            <img src="<%= item.imageUrl %>" alt="<%= item.title %>" style="width:160px; height:auto;">
-                            <p class="item-details">
-                                <%= item.title %> | Blue | 26<br>
-                                MRP: ₹<%= item.mrp.toFixed(2) %><br>
-                                Selling Price: ₹<%= item.price.toFixed(2) %><br>
-                                Qty: <%= item.quantity %><br>
-                                Subtotal: ₹<%= item.subtotal.toFixed(2) %><br>
-                                Savings: ₹<%= item.savings.toFixed(2) %>
-                            </p>
-                        </div>
+                                <img src="<%= item.imageUrl %>" alt="<%= item.title %>" style="width:160px; height:auto;">
+                                <p class="item-details">
+                                    <%= item.title %> | Blue | 26<br>
+                                    MRP: ₹<%= item.mrp.toFixed(2) %><br>
+                                    Selling Price: ₹<%= item.price.toFixed(2) %><br>
+                                    Qty: <%= item.quantity %><br>
+                                    Subtotal: ₹<%= item.subtotal.toFixed(2) %><br>
+                                    Savings: ₹<%= item.savings.toFixed(2) %>
+                                </p>
+                            </div>
                         </div>
                     <% }); %>
-                    <p>Choose a delivery option:</p>
                     <p>Saturday 27 Jul<br>FREE Standard Delivery</p>
-                    <button class="btn primary">Place your order</button>
-                    <p class="terms">By placing your order, you agree to Amazon's privacy notice and conditions of use.</p>
-                </div>
-            </div>
-
-            <div class="accordion-item">
-                <button class="accordion-header">Payment Method</button>
-                <div class="accordion-content">
-                    <h3 class="section-title">Your available balance</h3>
-                    <input type="text" class="input-code" placeholder="Enter Code">
-                    <button class="btn">Apply</button>
-                    <h3 class="section-title">Another payment method</h3>
-                    <p><input type="radio" name="payment" value="card" class="payment-option"> Credit or debit card</p>
-                    <p><input type="radio" name="payment" value="netbanking" class="payment-option"> Net Banking</p>
-                    <p><input type="radio" name="payment" value="upi" class="payment-option"> Other UPI Apps</p>
-                    <p><input type="radio" name="payment" value="cod" class="payment-option"> Cash on Delivery/Pay on Delivery</p>
-                    <button class="btn primary">Use this payment method</button>
+                    <button id="payNowBtn" class="btn primary">Pay Now</button>
                 </div>
             </div>
         </div>
@@ -328,15 +61,16 @@
 
     <div class="checkout-right">
         <div class="order-summary-container">
-        <h2 class="order-summary-title">Order Summary</h2>
-        <p class="order-summary-item">Items Total: ₹<%= totalCost.toFixed(2) %></p>
-        <p class="order-summary-item">Delivery: ₹0.00</p>
-        <h3 class="order-total">Order Total: ₹<%= totalCost.toFixed(2) %></h3>
-        <p class="savings">Your Savings: ₹<%= totalSavings.toFixed(2) %> (69%)</p>
-        <p class="discount">Item discount</p>
+            <h2 class="order-summary-title">Order Summary</h2>
+            <p class="order-summary-item">Items Total: ₹<%= totalCost.toFixed(2) %></p>
+            <p class="order-summary-item">Delivery: ₹0.00</p>
+            <h3 class="order-total">Order Total: ₹<%= totalCost.toFixed(2) %></h3>
+            <p class="savings">Your Savings: ₹<%= totalSavings.toFixed(2) %> (69%)</p>
+            <p class="discount">Item discount</p>
+        </div>
     </div>
 </div>
-</div>
+
 <!-- Modal for editing address -->
 <div id="editAddressModal" class="modal">
     <div class="modal-content">
@@ -381,59 +115,114 @@
         </form>
     </div>
 </div>
+
+<script src="https://sdk.cashfree.com/js/v3/cashfree.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-    const accordionHeaders = document.querySelectorAll(".accordion-header");
+        const accordionHeaders = document.querySelectorAll(".accordion-header");
 
-    accordionHeaders.forEach(header => {
-        header.addEventListener("click", function() {
-            const currentlyActiveHeader = document.querySelector(".accordion-header.active");
-            if (currentlyActiveHeader && currentlyActiveHeader !== header) {
-                currentlyActiveHeader.classList.remove("active");
-                currentlyActiveHeader.nextElementSibling.classList.remove("show");
-            }
+        accordionHeaders.forEach(header => {
+            header.addEventListener("click", function() {
+                const currentlyActiveHeader = document.querySelector(".accordion-header.active");
+                if (currentlyActiveHeader && currentlyActiveHeader !== header) {
+                    currentlyActiveHeader.classList.remove("active");
+                    currentlyActiveHeader.nextElementSibling.classList.remove("show");
+                }
 
-            header.classList.toggle("active");
-            header.nextElementSibling.classList.toggle("show");
+                header.classList.toggle("active");
+                header.nextElementSibling.classList.toggle("show");
+            });
         });
-    });
 
-    // Handle edit address link click
-    const editLinks = document.querySelectorAll(".edit-address");
-    const modal = document.getElementById("editAddressModal");
-    const span = document.querySelector(".modal .close");
-    const form = document.getElementById("editAddressForm");
+        // Handle edit address link click
+        const editLinks = document.querySelectorAll(".edit-address");
+        const modal = document.getElementById("editAddressModal");
+        const span = document.querySelector(".modal .close");
+        const form = document.getElementById("editAddressForm");
 
-    editLinks.forEach(link => {
-        link.addEventListener("click", function(event) {
-            event.preventDefault();
-            const index = this.dataset.index;
-            const addresses = JSON.parse('<%- JSON.stringify(addresses) %>');
-            const address = addresses[index];
+        editLinks.forEach(link => {
+            link.addEventListener("click", function(event) {
+                event.preventDefault();
+                const index = this.dataset.index;
+                const addresses = JSON.parse('<%- JSON.stringify(addresses) %>');
+                const address = addresses[index];
 
-            document.getElementById("addressIndex").value = index;
-            document.getElementById("name").value = address.name;
-            document.getElementById("phone").value = address.phone;
-            document.getElementById("houseNumber").value = address.houseNumber;
-            document.getElementById("street").value = address.street;
-            document.getElementById("city").value = address.city;
-            document.getElementById("state").value = address.state;
-            document.getElementById("pincode").value = address.pincode;
-            document.getElementById("country").value = address.country;
+                document.getElementById("addressIndex").value = index;
+                document.getElementById("name").value = address.name;
+                document.getElementById("phone").value = address.phone;
+                document.getElementById("houseNumber").value = address.houseNumber;
+                document.getElementById("street").value = address.street;
+                document.getElementById("city").value = address.city;
+                document.getElementById("state").value = address.state;
+                document.getElementById("pincode").value = address.pincode;
+                document.getElementById("country").value = address.country;
 
-            modal.style.display = "block";
+                modal.style.display = "block";
+            });
         });
-    });
 
-    span.onclick = function() {
-        modal.style.display = "none";
-    }
-
-    window.onclick = function(event) {
-        if (event.target == modal) {
+        span.onclick = function() {
             modal.style.display = "none";
         }
-    }
-});
 
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        // Initialize Cashfree SDK
+        const cashfree = Cashfree({
+            mode: "production"
+        });
+
+        // Handle the "Use this address" button click
+        document.getElementById('useAddressBtn').addEventListener('click', function() {
+            const selectedAddressIndex = document.querySelector('input[name="selectedAddressIndex"]:checked').value;
+
+            // Close the address selection accordion
+            document.getElementById('selectAddressHeader').classList.remove('active');
+            document.getElementById('selectAddressContent').classList.remove('show');
+
+            // Open the review items and delivery accordion
+            document.getElementById('reviewItemsHeader').classList.add('active');
+            document.getElementById('reviewItemsContent').classList.add('show');
+        });
+
+        // Handle the "Pay Now" button click
+        document.getElementById('payNowBtn').addEventListener('click', async function() {
+            const selectedAddressIndex = document.querySelector('input[name="selectedAddressIndex"]:checked').value;
+            const productId = '<%= orderDetails.length === 1 ? orderDetails[0].productId : '' %>';
+            const quantity = '<%= orderDetails.length === 1 ? orderDetails[0].quantity : '' %>';
+
+            console.log(`Selected Address Index: ${selectedAddressIndex}, Product ID: ${productId}, Quantity: ${quantity}`);
+
+            try {
+                const response = await fetch('/checkout/create-order', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        selectedAddressIndex,
+                        productId,
+                        quantity
+                    })
+                });
+
+                const data = await response.json();
+                if (data.paymentSessionId) {
+                    cashfree.checkout({
+                        paymentSessionId: data.paymentSessionId,
+                        redirectTarget: "_self"
+                    });
+                } else {
+                    alert("Failed to create order. Please try again.");
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert("An error occurred. Please try again.");
+            }
+        });
+    });
 </script>
