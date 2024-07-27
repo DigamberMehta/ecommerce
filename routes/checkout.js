@@ -71,8 +71,6 @@ router.post('/create-order', isLoggedIn, async (req, res) => {
     const userId = req.user._id;
     const user = await User.findById(userId);
 
-    console.log(`Selected Address Index: ${selectedAddressIndex}, Product ID: ${productId}, Quantity: ${quantity}`);
-
     if (!user || !user.address[selectedAddressIndex]) {
         return res.status(400).send('Invalid address selected');
     }
@@ -94,14 +92,12 @@ router.post('/create-order', isLoggedIn, async (req, res) => {
                 quantity,
                 price: product.sellingPrice
             });
-            console.log(`Product ID: ${productId}, Quantity: ${quantity}, Subtotal: ${subtotal}`);
         } else {
             if (req.session.cart) {
                 orderProducts = await Promise.all(req.session.cart.map(async item => {
                     const product = await Product.findById(item.product._id);
                     const productAmount = product.sellingPrice * item.quantity;
                     totalAmount += productAmount;
-                    console.log(`Product ID: ${item.product._id}, Quantity: ${item.quantity}, Product Amount: ${productAmount}`);
                     return {
                         product: item.product._id,
                         quantity: item.quantity,
@@ -110,9 +106,6 @@ router.post('/create-order', isLoggedIn, async (req, res) => {
                 }));
             }
         }
-
-        console.log('Order Products:', orderProducts);
-        console.log('Total Amount:', totalAmount);
 
         if (totalAmount <= 0) {
             console.error('Total amount calculated is zero or negative:', totalAmount);
@@ -150,11 +143,9 @@ router.post('/create-order', isLoggedIn, async (req, res) => {
                 customer_email: req.user.email
             },
             order_meta: {
-                return_url: `https://urbanmart.live` // Redirect to your live website
+                return_url: `https://urbanmart.live/payment/callback` // Redirect to your live website with callback path
             }
         };
-
-        console.log('Request payload:', request);
 
         const response = await axios.post('https://api.cashfree.com/pg/orders', request, {
             headers: {
