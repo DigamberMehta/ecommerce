@@ -55,21 +55,62 @@
 
   <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.5.2/css/all.css" />
 </head>
-
+<style>
+  <style>
+    .dev-banner {
+      display: none; /* Hide by default */
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #ffcc00;
+      color: #000;
+      text-align: center;
+      padding: 10px 0;
+      font-size: 16px;
+      z-index: 9999;
+    }
+    
+    .dev-banner .close-btn {
+      position: absolute;
+      right: 10px;
+      top: 65%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+    }
+  </style>
+</style>
 
 <body>
+  <div class="dev-banner">
+    This website is currently under development. Some features might not be available at the moment. Also currently Sample Data is added to the website for testing purpose Only. We are in the process of integrating and testing Razorpay as our payment gateway. Thank you for your understanding.
+
+    <button class="close-btn" onclick="closeBanner()">&times;</button>
+  </div>
   <div class="main-container-body">
     <%- include('../includes/navbar.ejs') %> 
     <%- include('../flash/flash.ejs') %> 
     <%- body %>
   </div>
   <%- include('../includes/footer.ejs') %>
+  <script src="/js/cart.js"></script>
+  <script src="/js/show.js"></script>
+  <script src="/js/search.js"></script>
+  <script src="/js/home.js"></script>
+  <script src="/js/navbar.js"></script>
+  <script>
+    window.addEventListener('load', function() {
+      var banner = document.querySelector('.dev-banner');
+      banner.style.display = 'block';
+    });
+    function closeBanner() {
+      var banner = document.querySelector('.dev-banner');
+      banner.style.display = 'none';
+    }
+  </script>
+  
 </body>
-<script src="/js/cart.js"></script>
-<script src="/js/show.js"></script>
-<script src="/js/search.js"></script>
-<script src="/js/home.js"></script>
-<script src="/js/navbar.js"></script>
-
-
 </html>
