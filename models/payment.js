@@ -7,6 +7,17 @@ const paymentSchema = new mongoose.Schema({
   method: { type: String, required: true }, // e.g., 'credit_card', 'netbanking', 'upi', 'cod'
   status: { type: String, default: 'pending' }, // 'pending', 'completed', 'failed'
   transactionId: { type: String }, // For storing transaction reference from payment gateway
+  bankReference: { type: String },
+  cfPaymentId: { type: String },
+  paymentCompletionTime: { type: Date },
+  paymentGatewayDetails: {
+    gatewayName: { type: String },
+    gatewayOrderId: { type: String },
+    gatewayPaymentId: { type: String },
+    gatewayStatusCode: { type: String },
+    gatewaySettlement: { type: String }
+  },
+  paymentTime: { type: Date },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now }
 });

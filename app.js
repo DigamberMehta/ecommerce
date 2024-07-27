@@ -27,6 +27,7 @@ const wishlistRoutes = require('./routes/wishlist');
 const contactRoutes = require('./routes/contact');
 const adminRoutes = require('./routes/admin');
 const paymentRoutes = require('./routes/payment');
+const paymentCallbackRoutes = require('./routes/paymentCallback');
 
 app.use(express.json());
 app.set("view engine", "ejs");
@@ -38,8 +39,8 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-const dbUrl = process.env.ATLAS_URL || "mongodb://localhost:27017/ecommerce";
-//  const dbUrl =  "mongodb://localhost:27017/ecommerce";
+// const dbUrl = process.env.ATLAS_URL || "mongodb://localhost:27017/ecommerce";
+ const dbUrl =  "mongodb://localhost:27017/ecommerce";
 
 main()
   .then(() => console.log("Connected to MongoDB"))
@@ -174,9 +175,12 @@ app.use('/', contactRoutes);
 app.get('/dashboard', (req, res) => {
   res.render('dashboard/dashboard');
 });
+app.get('/test', (req, res) => {
+  res.render('paymentSuccess');
+});
 
 app.use('/payment', paymentRoutes);
-
+app.use('/payment', paymentCallbackRoutes);
 //admin routes
 app.use('/admin', adminRoutes);
 // Review routes

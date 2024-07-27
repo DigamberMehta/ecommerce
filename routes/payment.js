@@ -8,58 +8,74 @@ const User = require('../models/user');
 const cashfreeConfig = require('../cashfreeConfig');
 
 router.post('/create-order', async (req, res) => {
-    const { userId, products, shippingAddress, paymentMethod } = req.body;
+    const { selectedAddressIndex, productId, quantity } = req.body;
+    const userId = req.user._id;
+    const user = await User.findById(userId);
+
+    if (!user || !user.address[selectedAddressIndex]) {
+        return res.status(400).send('Invalid address selected');
+    }
+
+    const shippingAddress = user.address[selectedAddressIndex];
+    let totalAmount = 0;
+    let orderProducts = [];
 
     try {
-        // Validate inputs
-        if (!userId || !products || !shippingAddress || !paymentMethod) {
-            return res.status(400).send('Missing required fields');
+        if (productId && quantity) {
+            const product = await Product.findById(productId);
+            if (!product) {
+                return res.status(404).send('Product not found');
+            }
+            const subtotal = product.sellingPrice * quantity;
+            totalAmount = subtotal;
+            orderProducts.push({
+                product: productId,
+                quantity,
+                price: product.sellingPrice
+            });
+        } else {
+            if (req.session.cart) {
+                orderProducts = await Promise.all(req.session.cart.map(async item => {
+                    const product = await Product.findById(item.product._id);
+                    const productAmount = product.sellingPrice * item.quantity;
+                    totalAmount += productAmount;
+                    return {
+                        product: item.product._id,
+                        quantity: item.quantity,
+                        price: product.sellingPrice
+                    };
+                }));
+            }
         }
 
-        // Calculate total amount
-        let totalAmount = 0;
-        const orderProducts = await Promise.all(products.map(async item => {
-            const product = await Product.findById(item.productId);
-            if (!product) {
-                throw new Error(`Product not found: ${item.productId}`);
-            }
-            totalAmount += product.sellingPrice * item.quantity;
-            return {
-                product: item.productId,
-                quantity: item.quantity,
-                price: product.sellingPrice
-            };
-        }));
+        if (totalAmount <= 0) {
+            console.error('Total amount calculated is zero or negative:', totalAmount);
+            return res.status(400).send('Invalid total amount');
+        }
 
-        // Create order
         const order = new Order({
             user: userId,
             products: orderProducts,
             totalAmount,
             shippingAddress,
-            paymentMethod
+            paymentMethod: "card"
         });
 
         await order.save();
 
-        // Create payment
         const payment = new Payment({
             order: order._id,
             user: userId,
             amount: totalAmount,
-            method: paymentMethod,
-            status: 'pending' // Initially set status to pending
+            method: "card", // Default to card, will be updated based on actual method used
+            status: 'pending'
         });
 
         await payment.save();
 
-        // Get user email
-        const user = await User.findById(userId);
-        if (!user) {
-            throw new Error(`User not found: ${userId}`);
-        }
+        // Store order ID in session
+        req.session.orderId = order._id.toString();
 
-        // Create Cashfree order
         const request = {
             order_amount: totalAmount,
             order_currency: "INR",
@@ -68,14 +84,14 @@ router.post('/create-order', async (req, res) => {
                 customer_id: userId,
                 customer_phone: shippingAddress.phone,
                 customer_name: shippingAddress.name,
-                customer_email: user.email
+                customer_email: req.user.email
             },
             order_meta: {
-                return_url: `https://urbanmart.live/?order_id=${order._id}` // Replace with your live return URL
+                return_url: `http://localhost:3000/payment/callback`
             }
         };
 
-        const response = await axios.post('https://api.cashfree.com/pg/orders', request, {
+        const response = await axios.post(`${cashfreeConfig.apiUrl}/orders`, request, {
             headers: {
                 'x-client-id': cashfreeConfig.clientId,
                 'x-client-secret': cashfreeConfig.clientSecret,
@@ -85,6 +101,7 @@ router.post('/create-order', async (req, res) => {
         });
 
         res.json({ paymentSessionId: response.data.payment_session_id, orderId: order._id });
+
     } catch (error) {
         console.error('Error:', error.response ? error.response.data.message : error.message);
         res.status(500).send('Internal Server Error');

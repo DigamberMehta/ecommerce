@@ -2,7 +2,7 @@ const products = [
   {
     title: "Oppo F19 Pro",
     description: "Wireless headphones with noise cancellation and superior sound quality.",
-    sellingPrice: 149.99,
+    sellingPrice: 1,
     mrpPrice: 569.99,
     categories: ["Mobile"],
     brand: "BrandZ",

@@ -12,10 +12,13 @@ const orderSchema = new mongoose.Schema({
   totalAmount: { type: Number, required: true },
   status: { type: String, default: 'pending' },
   shippingAddress: {
+    name: String,
+    phone: String,
+    houseNumber: String,
     street: String,
     city: String,
     state: String,
-    zip: String,
+    pincode: String,
     country: String
   },
   paymentMethod: String,

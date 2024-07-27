@@ -117,6 +117,7 @@
 </div>
 
 <script src="https://sdk.cashfree.com/js/v3/cashfree.js"></script>
+
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         const accordionHeaders = document.querySelectorAll(".accordion-header");
@@ -171,9 +172,9 @@
             }
         }
 
-        // Initialize Cashfree SDK
+        // Initialize Cashfree SDK in sandbox mode for testing
         const cashfree = Cashfree({
-            mode: "production"
+            mode: "sandbox" // Change to "production" for live transactions
         });
 
         // Handle the "Use this address" button click
@@ -192,7 +193,7 @@
         // Handle the "Pay Now" button click
         document.getElementById('payNowBtn').addEventListener('click', async function() {
             const selectedAddressIndex = document.querySelector('input[name="selectedAddressIndex"]:checked').value;
-            const productId = '<%= orderDetails.length === 1 ? orderDetails[0].productId : '' %>';
+            const productId = '<%= orderDetails.length === 1 ? orderDetails[0]._id : '' %>';
             const quantity = '<%= orderDetails.length === 1 ? orderDetails[0].quantity : '' %>';
 
             console.log(`Selected Address Index: ${selectedAddressIndex}, Product ID: ${productId}, Quantity: ${quantity}`);
@@ -211,6 +212,8 @@
                 });
 
                 const data = await response.json();
+                console.log('Order creation response:', data); // Log the response
+
                 if (data.paymentSessionId) {
                     cashfree.checkout({
                         paymentSessionId: data.paymentSessionId,
