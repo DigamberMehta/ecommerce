@@ -8,9 +8,9 @@ const cashfreeConfig = require('../cashfreeConfig');
 // Route to handle payment callback
 router.get('/callback', async (req, res) => {
     const orderId = req.session.orderId;
-    if (!orderId) {
-        return res.status(400).send('Order ID not found in session');
-    }
+    // if (!orderId) {
+    //     return res.status(400).send('Order ID not found in session');
+    // }
 
     try {
         // Fetch order and payment details
