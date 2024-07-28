@@ -119,13 +119,33 @@
           </form>
         </div>
 
-        <div class="key-highlight-show">
 
+
+       <div class="product-features">
+    <div class="highlights-section">
+        <span class="section-title-highlight">Highlights</span>
+        <span class="highlights-list">
+            <li>Gives a Matte finish look</li>
+            <li>Texture is: Liquid</li>
+            <li>Quantity: 8.8 g</li>
+        </span>
+    </div>
+    <div class="services-section">
+        <span class="section-title">Services</span>
+        <div class="service-item">
+            Cash on Delivery available
         </div>
+    </div>
+</div>
+<div class="important-note">
+    <span class="important-note-title">Important</span>
+   No Returns & Exchange
+</div>
 
+        
 
         <div class="show-product-description">
-            <span class="product-show-description-title">Description : </span>
+            <span class="product-show-description-title">Description </span>
             <span class="product-show-text-wrapper">
               <div class="product-show-description-text">
                 <%= product.description %>
@@ -175,7 +195,7 @@
     <div className="full-width-preview">
       <div class="review-section">
         <div class="write-review">
-          <button id="openModal" class="review-submit">Write a Review</button>
+          <button id="openModal" class="review-heading">Write a Review</button>
         </div>
         <div id="reviewModal" class="modal">
           <div class="modal-content">
@@ -222,12 +242,15 @@
             </form>
           </div>
         </div>
-        <div class="reviews">
-          <h2>Customer Reviews</h2>
+        
+
+        <div class="reviews-container">
+          <h2 class="all-reviews-section" >Rating & Reviews</h2>
+         
           <% product.reviews.forEach(review => { %>
           <div class="review">
-            <h3><%= review.title %></h3>
-            <div class="review-rating">Rating: ★<%= review.rating %></div>
+            <h3 class="customer-review-tittle"><%= review.title %></h3>
+            <div class="review-rating">Rating: <%= review.rating %>★</div>
             <div class="review-images">
               <% if (review.image && review.image.length > 0) { %>
               <div class="review-images-show-container">

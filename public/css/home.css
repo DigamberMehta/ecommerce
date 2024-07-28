@@ -184,7 +184,12 @@ a {
 
 
 
-
+.home-category-title {
+  font-size: 1.4rem;
+  font-weight: 500;
+  margin: 1rem 0;
+ 
+}
 
 .product-section {
   margin: 0 auto;
@@ -219,7 +224,7 @@ a {
   padding: 10px;
   margin-right: 15px;
   background-color: #fff;
-  border: 1px solid #ddd;
+  border:1px solid #f0f0f0;
   border-radius: 5px;
   min-width: 175px;
   text-align: center;

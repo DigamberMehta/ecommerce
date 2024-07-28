@@ -20,6 +20,127 @@
     width: 100%;
 }
 
+
+
+
+.grid-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
+      gap: 20px;
+      padding: 20px;
+      background-color: white;
+    }
+
+    .grid-card-show {
+      position: relative;
+      background-color: #fff;
+      border-radius: 10px;
+      overflow: hidden;
+     border:1px solid #f0f0f0;
+      transition: transform 0.3s, box-shadow 0.3s;
+      cursor: pointer;
+    }
+
+    
+
+    .grid-card-show img {
+      width: 100%;
+      height: 160px; /* Fixed height for images */
+      object-fit: contain; 
+      margin-top: 0.5rem;
+      
+    }
+
+    .grid-card-info {
+      text-align: center;
+    }
+
+    .grid-product-name {
+      font-size: 16px;
+      margin: 4px 0;
+      color: #0000007c;
+      overflow: hidden; /* Ensure text does not overflow */
+    }
+
+    .grid-card-price {
+      font-size: 16px;
+      color: #000000;
+      margin: 5px 0;
+    }
+
+    .grid-card-rating {
+    position: absolute;
+    bottom: 60px;
+    left: 5px;
+    background: rgb(0, 140, 0);
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+    .grid-card-sale {
+      position: absolute;
+      top: 10px;
+      left: 5px;
+      background: #00a094;
+      color: #fff;
+      padding: 4px;
+      border-radius: 5px;
+      font-size: 12px;
+      font-weight: 600;
+      overflow: hidden;
+    }
+
+    .grid-card-sale::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 200%;
+      height: 100%;
+      background: linear-gradient(120deg, rgba(255, 255, 255, 0) 30%, rgba(255, 255, 255, 0.5) 50%, rgba(255, 255, 255, 0) 70%);
+      animation: shine 2s infinite;
+    }
+
+    @keyframes shine {
+      0% {
+        left: -100%;
+      }
+      100% {
+        left: 100%;
+      }
+    }
+
+    .grid-card-discount {
+      font-size: 14px;
+      color: #ff9800;
+      margin: 5px 0;
+    }
+    @media (max-width: 500px) {
+  .grid-container {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    background-color: #ebfbfa;
+    padding: 5px;
+  }
+  .grid-card-show{
+    margin-top: 0.2rem;
+  }
+  .product-section{
+    margin-bottom: 0;
+    padding: 5px;
+  }
+  .product-card{
+    padding: 0;
+  }
+  .grid-card-price,.grid-product-name{
+    font-size: 12px;
+    margin: 0;
+    padding-bottom: 0.2rem;
+  }
+}
 </style>
 
 <div class="home">
@@ -104,7 +225,7 @@
     
     <div class="product-section">
       <div class="home-product-card-heading" >
-        <h2 >Electronics</h2>
+        <h2 class="home-category-title" >Electronics</h2>
         </div>
         <div class="product-row" id="row-2">
           <% products.forEach(prod => { %>
@@ -127,7 +248,7 @@
 
       <div class="product-section">
         <div class="home-product-card-heading" >
-          <h2 >Laptops</h2>
+          <h2 class="home-category-title" >Laptops</h2>
           </div>
         <div class="product-row" id="row-3">
           <% products.forEach(prod => { %>
@@ -152,7 +273,7 @@
 
 <div class="product-section">
   <div class="home-product-card-heading" >
-    <h2 >Kitchen Appliances</h2>
+    <h2 class="home-category-title" >Kitchen Appliances</h2>
     </div>
   <div class="product-row" id="row-1">
     <% products.forEach(prod => { %>
@@ -181,7 +302,7 @@
         <div class="product-row" id="row-4">
             <div class="big-card">
                 <div class="big-card-heading">
-                <h2 >You may also like</h2></div>
+                <h2 class="home-category-title" >You may also like</h2></div>
                 <div class="small-cards-container">
                     <div class="small-card">
                         <img src="" alt="Image 1">
@@ -213,7 +334,74 @@
     </div>
 </div> 
 
-
+<div class="grid-container">
+  <div class="grid-card-show">
+    <div class="grig-img-container">
+    <img src="https://m.media-amazon.com/images/I/61Io5-ojWUL._SX679_.jpg" alt="Product Image">
+  </div>
+    <div class="grid-card-rating">4.1 ★</div>
+    <div class="grid-card-sale">Best Selling Product</div>
+    <div class="grid-card-info">
+      <p class="grid-product-name">Product Title 1</p>
+      <p class="grid-card-price">₹11,999</p>
+    </div>
+  </div>
+  <div class="grid-card-show">
+    <img src="https://m.media-amazon.com/images/I/51dzm2O8ZWL._SX300_SY300_QL70_FMwebp_.jpg" alt="Product Image">
+    <div class="grid-card-rating">4.2 ★</div>
+    <div class="grid-card-sale">Best Selling Product</div>
+    <div class="grid-card-info">
+      <p class="grid-product-name">Product Title 2</p>
+      <p class="grid-card-price">₹14,999</p>
+    </div>
+  </div>
+  <div class="grid-card-show">
+    <img src="https://via.placeholder.com/120" alt="Product Image">
+    <div class="grid-card-rating">4.3 ★</div>
+    <div class="grid-card-sale">Best Selling Product</div>
+    <div class="grid-card-info">
+      <p class="grid-product-name">Product Title 3</p>
+      <p class="grid-card-price">₹20,999</p>
+    </div>
+  </div>
+  <div class="grid-card-show">
+    <img src="https://via.placeholder.com/120" alt="Product Image">
+    <div class="grid-card-rating">4.4 ★</div>
+    <div class="grid-card-sale">Best Selling Product</div>
+    <div class="grid-card-info">
+      <p class="grid-product-name">Product Title 4</p>
+      <p class="grid-card-price">₹15,999</p>
+    </div>
+  </div>
+  <div class="grid-card-show">
+    <img src="https://via.placeholder.com/120" alt="Product Image">
+    <div class="grid-card-rating">4.4 ★</div>
+    <div class="grid-card-sale">Best Selling Product</div>
+    <div class="grid-card-info">
+      <p class="grid-product-name">Product Title 4</p>
+      <p class="grid-card-price">₹15,999</p>
+    </div>
+  </div>
+  <div class="grid-card-show">
+    <img src="https://via.placeholder.com/120" alt="Product Image">
+    <div class="grid-card-rating">4.4 ★</div>
+    <div class="grid-card-sale">Best Selling Product</div>
+    <div class="grid-card-info">
+      <p class="grid-product-name">Product Title 4</p>
+      <p class="grid-card-price">₹15,999</p>
+    </div>
+  </div>
+  <div class="grid-card-show">
+    <img src="https://via.placeholder.com/120" alt="Product Image">
+    <div class="grid-card-rating">4.4 ★</div>
+    <div class="grid-card-sale">Best Selling Product</div>
+    <div class="grid-card-info">
+      <p class="grid-product-name">Product Title 4</p>
+      <p class="grid-card-price">₹15,999</p>
+    </div>
+  </div>
+  <!-- Add more product cards as needed -->
+</div>
 
 
     
