@@ -1,4 +1,26 @@
- 
+<style>
+.search-form input:focus,
+.search-form:focus-within {
+    position: relative;
+    z-index: 1;
+}
+
+.search-form input:focus::after,
+.search-form:focus-within::after {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    right: -4px;
+    bottom: -4px;
+    border: 2px solid #7b9ff4; /* SkyBlue */
+    border-radius: 8px; /* Adjust this value as needed */
+    pointer-events: none;
+    z-index: -1;
+}
+</style>
+
+
 <header class="header" id="header">
   <nav class="navbar">
     <div class="upper-container">
@@ -58,7 +80,7 @@
       </div>
     </div>
     <div class="search">
-      <form class="search-form" action="/search" method="GET">
+      <form class="search-form" id="search-form-navbar" action="/search" method="GET">
           <input class="search-input" type="text" name="query" id="search-input" placeholder="Search" oninput="fetchSuggestions()" />
           <button type="submit" class="search-submit">
               <i class="fa-light fa-magnifying-glass s-icons"></i>

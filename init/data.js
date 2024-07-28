@@ -1,9 +1,9 @@
 const products = [
   {
     title: "Oppo F19 Pro",
-    description: "Wireless headphones with noise cancellation and superior sound quality.",
-    sellingPrice: 1,
-    mrpPrice: 569.99,
+    description: "Oppo F19 Pro is a revolutionary smartphone that combines style and function. Its sleek, compact design unfolds to reveal a stunning, immersive display. Capture unforgettable moments with its advanced camera system, while enjoying lightning-fast performance and seamless multitasking. Experience the future of smartphones with the Z Flip 3's durable build, water resistance, and long-lasting battery. Whether you're on the go or relaxing, this device offers a truly unique user experience.",
+    sellingPrice: 17599,
+    mrpPrice:  20000,
     categories: ["Mobile"],
     brand: "BrandZ",
     stock: 75,
@@ -87,10 +87,10 @@ const products = [
     slug: "laptop-def"
   },
   {
-    title: "samsung z flip 3",
-    description: "A stylish smartwatch with multiple health tracking features.",
-    sellingPrice: 149.99,
-    mrpPrice: 199.99,
+    title: "Samsung z flip 3",
+    description: "The Samsung Galaxy Z Flip 3 is a revolutionary smartphone that combines style and function. Its sleek, compact design unfolds to reveal a stunning, immersive display. Capture unforgettable moments with its advanced camera system, while enjoying lightning-fast performance and seamless multitasking. Experience the future of smartphones with the Z Flip 3's durable build, water resistance, and long-lasting battery. Whether you're on the go or relaxing, this device offers a truly unique user experience.",
+    sellingPrice: 14779.99,
+    mrpPrice: 19999.99,
     categories: ["Electronics", "Mobile"],
     brand: "BrandB",
     stock: 80,

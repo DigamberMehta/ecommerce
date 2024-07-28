@@ -89,4 +89,4 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // Fetch the cart quantity on page load
-fetchCartQuantity();
+// fetchCartQuantity();
