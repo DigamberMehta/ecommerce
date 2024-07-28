@@ -39,8 +39,8 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-const dbUrl = process.env.ATLAS_URL || "mongodb://localhost:27017/ecommerce";
-//  const dbUrl =  "mongodb://localhost:27017/ecommerce";
+// const dbUrl = process.env.ATLAS_URL || "mongodb://localhost:27017/ecommerce";
+ const dbUrl =  "mongodb://localhost:27017/ecommerce";
 
 main()
   .then(() => console.log("Connected to MongoDB"))
