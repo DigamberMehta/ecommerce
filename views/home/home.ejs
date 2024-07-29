@@ -141,6 +141,101 @@
     padding-bottom: 0.2rem;
   }
 }
+.product-home-review{
+  position: absolute;
+    bottom: 60px;
+    left: 5px;
+    background: #388e3c;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+
+
+
+
+.home-sale-banner {
+  padding: 2rem 0;
+}
+
+.home-sale-container {
+  display: grid;
+  max-width: 100%;
+ 
+}
+
+.grid-three-columns {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.banner-item {
+  background-color: #fff;
+  overflow: hidden;
+  position: relative;
+}
+
+.grid-two-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  padding: 0.5rem;
+}
+
+.sale-heading {
+  color: #6c63ff;
+  font-size: 1rem;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+.banner-text a {
+  color: #000;
+  text-decoration: none;
+  font-weight: bold;
+  border-bottom: 2px solid #000;
+}
+
+.banner-item::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 10rem;
+    height: 10rem;
+    border-radius: 100% 0% 0% 100% / 100% 0% 100% 0%;
+    background-color: #e3eaf0;
+    z-index: 0;
+}
+
+.banner-image img {
+  width: 100%;
+  height: auto;
+}
+
+.banner-image {
+  z-index: 1;
+}
+
+@media (max-width: 800px) {
+  .grid-three-columns {
+    grid-template-columns: 1fr;
+  }
+
+  .banner-image {
+    text-align: center;
+    margin-top: 0rem;
+  }
+
+  .banner-text p {
+    margin-bottom: 0rem;
+  }
+}
+.banner-text{
+  margin-bottom: 5rem;
+}
 </style>
 
 <div class="home">
@@ -234,6 +329,7 @@
                 <div class="img-container">
                   <img src="<%= prod.images[0] %>" alt="<%= prod.title %>" />
                 </div>
+                
                 <div class="product-desc">
                   <p class="product-name"><%= prod.title %></p>
                   <p class="product-price"><b>₹<%= prod.sellingPrice.toFixed(2) %></b></p>
@@ -282,6 +378,7 @@
           <div class="img-container">
             <img src="<%= prod.images[0] %>" alt="<%= prod.title %>" />
           </div>
+     
           <div class="product-desc">
             <p class="product-name"><%= prod.title %></p>
             <p class="product-price"><b>₹<%= prod.sellingPrice.toFixed(2) %></b></p>
@@ -333,6 +430,7 @@
         </button>
     </div>
 </div> 
+
 
 <div class="grid-container">
   <div class="grid-card-show">
@@ -391,17 +489,46 @@
       <p class="grid-card-price">₹15,999</p>
     </div>
   </div>
-  <div class="grid-card-show">
-    <img src="https://via.placeholder.com/120" alt="Product Image">
-    <div class="grid-card-rating">4.4 ★</div>
-    <div class="grid-card-sale">Best Selling Product</div>
-    <div class="grid-card-info">
-      <p class="grid-product-name">Product Title 4</p>
-      <p class="grid-card-price">₹15,999</p>
+
+</div>
+
+
+
+
+
+<section class="home-sale-banner">
+  <div class="home-sale-container grid grid-three-columns">
+    <div class="banner-item grid grid-two-columns">
+      <div class="banner-text">
+        <p>Get an extra 50% off</p>
+        <a href="#">Shop now</a>
+      </div>
+      <div class="banner-image">
+        <img src="/img/laptop.png" alt="Laptop">
+      </div>
+    </div>
+
+    <div class="banner-item grid grid-two-columns">
+      <div class="banner-text">
+        <p>Get an extra 30% off</p>
+        <a href="#">Shop now</a>
+      </div>
+      <div class="banner-image">
+        <img src="/img/headphoneEcom.png" alt="Headphones">
+      </div>
+    </div>
+
+    <div class="banner-item grid grid-two-columns">
+      <div class="banner-text">
+        <p>Get an extra 50% off</p>
+        <a href="#">Shop now</a>
+      </div>
+      <div class="banner-image">
+        <img src="/img/mobiles.png" alt="Mobile">
+      </div>
     </div>
   </div>
-  <!-- Add more product cards as needed -->
-</div>
+</section>
 
 
     

@@ -3,6 +3,7 @@ const Review = mongoose.model('Review');
 const Product = mongoose.model('Product');
 const User = mongoose.model('User');
 const { cloudinary } = require('../cloudinary');
+const calculateAverageRating = require('../utils/calculateAverageRating');
 
 // Create a new review
 exports.createReview = async (req, res) => {
@@ -38,6 +39,7 @@ exports.createReview = async (req, res) => {
       return res.status(404).send('Product not found');
     }
     product.reviews.push(review._id);
+    product.rating = await calculateAverageRating(productId); // Calculate and update the rating
     await product.save();
 
     const userUpdate = await User.findByIdAndUpdate(user, { $push: { reviews: review._id } });
@@ -122,6 +124,8 @@ exports.updateReview = async (req, res) => {
       console.error('Product not found');
       return res.redirect(`/products/${req.params.productId}`);
     }
+    product.rating = await calculateAverageRating(product._id); // Calculate and update the rating
+    await product.save();
 
     res.redirect(`/products/${product._id}/${product.slug}`);
   } catch (err) {
@@ -129,7 +133,6 @@ exports.updateReview = async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 };
-
 // Delete a review
 exports.deleteReview = async (req, res) => {
   try {

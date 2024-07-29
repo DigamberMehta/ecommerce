@@ -2,25 +2,26 @@
 <style>
     .edit-review-section {
         max-width: 800px;
-        margin: 0 auto;
-        padding: 20px;
-        background-color: #f9f9f9;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        margin: 50px auto;
+        padding: 30px;
+        background-color: #fff;
+        border: 1px solid #f0f0f0;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
     .edit-review-heading {
         text-align: center;
-        margin-bottom: 20px;
-        font-size: 24px;
+        margin-bottom: 25px;
+        font-size: 28px;
         color: #333;
+        font-weight: 600;
     }
     .edit-form-group {
-        margin-bottom: 15px;
+        margin-bottom: 20px;
     }
     .edit-label {
         display: block;
-        margin-bottom: 5px;
+        margin-bottom: 8px;
         font-weight: bold;
         color: #555;
     }
@@ -29,13 +30,15 @@
     .edit-range,
     .edit-file-input {
         width: 100%;
-        padding: 10px;
-        border: 1px solid #ccc;
+        padding: 12px;
+        border: 1px solid #f0f0f0;
         border-radius: 4px;
+        box-sizing: border-box;
     }
     .edit-input,
     .edit-textarea {
         font-size: 16px;
+        background-color: #ffffff;
     }
     .edit-range {
         margin-top: 10px;
@@ -43,7 +46,7 @@
     .edit-existing-images {
         display: flex;
         flex-wrap: wrap;
-        gap: 10px;
+        gap: 15px;
     }
     .edit-existing-image {
         position: relative;
@@ -65,7 +68,7 @@
     .edit-review-submit {
         display: block;
         width: 100%;
-        padding: 10px;
+        padding: 15px;
         background-color: #007bff;
         color: #fff;
         border: none;
@@ -73,6 +76,7 @@
         font-size: 18px;
         cursor: pointer;
         text-align: center;
+        transition: background-color 0.3s ease;
     }
     .edit-review-submit:hover {
         background-color: #0056b3;
@@ -89,14 +93,11 @@
         background-color: rgba(0, 0, 0, 0.8);
     }
     .preview-content {
-       
         margin: auto;
         display: block;
-        width: 50%;
-        height: 100vh;
-        object-fit: contain;
+        max-width: 90%;
+        max-height: 90%;
     }
-   
     .close-button {
         position: absolute;
         top: 15px;
@@ -104,19 +105,16 @@
         color: #fff;
         font-size: 40px;
         font-weight: bold;
-        transition: 0.3s;
         cursor: pointer;
     }
     .close-button:hover,
     .close-button:focus {
         color: #bbb;
         text-decoration: none;
-        cursor: pointer;
     }
     .no-scroll {
-    overflow: hidden;
-}
-
+        overflow: hidden;
+    }
 </style>
 
 <div class="edit-review-section">
@@ -155,21 +153,18 @@
 
 <div id="image-preview-modal" class="image-preview-modal">
     <span class="close-button" onclick="closePreview()">&times;</span>
-    <img class="preview-content" id="preview-image" style="margin-top: 1rem;">
+    <img class="preview-content" id="preview-image">
 </div>
 
-
 <script>
-  function openPreview(imageSrc) {
-    document.getElementById('image-preview-modal').style.display = 'block';
-    document.getElementById('preview-image').src = imageSrc;
-    document.body.classList.add('no-scroll');
-}
+    function openPreview(imageSrc) {
+        document.getElementById('image-preview-modal').style.display = 'block';
+        document.getElementById('preview-image').src = imageSrc;
+        document.body.classList.add('no-scroll');
+    }
 
-function closePreview() {
-    document.getElementById('image-preview-modal').style.display = 'none';
-    document.body.classList.remove('no-scroll');
-}
-
-  
+    function closePreview() {
+        document.getElementById('image-preview-modal').style.display = 'none';
+        document.body.classList.remove('no-scroll');
+    }
 </script>

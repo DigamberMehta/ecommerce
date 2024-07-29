@@ -9,7 +9,7 @@ const products = [
     stock: 75,
     images: ["https://m.media-amazon.com/images/I/616wnQmPQ-L._SX569_.jpg", "https://m.media-amazon.com/images/I/611DUOU0OML._SX569_.jpg","https://m.media-amazon.com/images/I/51kSMKsOB3L._SX569_.jpg","https://m.media-amazon.com/images/I/51Fiehk-xlL._SX569_.jpg","https://m.media-amazon.com/images/I/51g0A4NMD8L._SX569_.jpg"],
     reviews: [],
-    rating: 4.7,
+    rating: 1,
     specifications: {
       screenSize: "6.5 inches",
       battery: "4000mAh",

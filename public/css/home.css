@@ -229,6 +229,7 @@ a {
   min-width: 175px;
   text-align: center;
   max-height: 230px;
+  position: relative;
 }
 
 .product-card .img-container {
