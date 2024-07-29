@@ -65,11 +65,24 @@ ul{
   font-weight: inherit;
   display: inline-block;
 }
-
-
+.show-rating{
+  display: inline-block;
+  color: #fff;
+  padding: 2px 4px 2px 6px;
+  border-radius: 3px;
+  font-weight: 500;
+  font-size: 12px;
+  vertical-align: middle;
+  background-color: #388e3c;
+}
+.rating-deatils{
+  padding: 2px 4px 2px 6px;
+}
 .product-show-ratings {
-  font-size: 16px;
-  color: #777;
+  
+  font-size: 14px;
+  font-weight: 500;
+  color: #878787;
   margin-bottom: 15px;
 }
 
@@ -80,23 +93,23 @@ ul{
 }
 
 .product-show-current-price {
-  font-size: 24px;
-  font-weight: 700;
-  color: #e74c3c;
+  font-size: 28px;
+  font-weight: 500;
+  color: #212121;
   margin-right: 10px;
 }
 
 .product-show-original-price {
-  font-size: 18px;
+  font-size: 16px;
   color: #999;
   text-decoration: line-through;
   margin-right: 10px;
 }
 
 .product-show-discount {
-  font-size: 18px;
-  color: #27ae60;
+  font-size: 16px;
   font-weight: 500;
+  color: #388e3c;
 }
 .show-offer-title-heading{
   font-size: 16px;

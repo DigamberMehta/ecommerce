@@ -64,8 +64,9 @@
           </div>
         </div>
         <p class="product-show-ratings">
-          <%= product.rating %>★ <%= product.reviews.length %> Ratings & <%=
-          product.reviews.length %> Reviews
+         <span class="show-rating"> <%= product.rating %> ★ </span>
+       <span class="rating-deatils">  <%= product.reviews.length %> Ratings & <%=
+          product.reviews.length %> Reviews </span>
         </p>
         <div class="product-show-price">
           <span class="product-show-current-price"
@@ -107,14 +108,14 @@
             <input type="hidden" name="quantity" value="1" />
 
             <button type="submit" class="product-show-btn-add-to-cart">
-              Add to Cart
+              <i class="fa-light fa-cart-shopping s-icons"></i>   Add to Cart
             </button>
           </form>
           <form action="/checkout" method="GET">
             <input type="hidden" name="productId" value="<%= product._id %>" />
             <input type="hidden" name="quantity" value="1" />
             <button type="submit" class="product-show-btn-buy-now">
-              Buy Now
+              <i class="fa-sharp fa-solid fa-bolt"></i> &nbsp; Buy Now
             </button>
           </form>
         </div>
