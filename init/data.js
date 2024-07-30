@@ -1131,6 +1131,336 @@ const products = [
     "slug": "hamilton-beach-toaster"
   },
 
+
+
+  {
+    title: "Levi's Men's Casual Shirt",
+    description: "A classic casual shirt from Levi's, perfect for everyday wear. Made from high-quality cotton, this shirt features a relaxed fit and a stylish design.",
+    sellingPrice: 1999,
+    mrpPrice: 2500,
+    categories: ["Clothing", "Shirts"],
+    brand: "Levi's",
+    stock: 100,
+    images: [
+      "https://m.media-amazon.com/images/I/51x90NnvS5L._AC_UL480_FMwebp_QL65_.jpg",
+      "https://m.media-amazon.com/images/I/51XruJV28HL._AC_UL480_FMwebp_QL65_.jpg",
+      "https://m.media-amazon.com/images/I/51wAJpGFhGL._AC_UL480_FMwebp_QL65_.jpg"
+    ],
+    reviews: [],
+    rating: 4,
+    specifications: {
+      fabric: "Cotton",
+      sleeveType: "Short Sleeve",
+      collarType: "Spread Collar",
+      fit: "Relaxed Fit",
+      size: ["S", "M", "L", "XL"],
+      color: ["White", "Light Blue", "Pink"],
+      pattern: ["Solid", "Striped"],
+      length: "Regular",
+      cuffStyle: "Button Cuff",
+      pocket: "Single Pocket"
+    },
+    features: ["Breathable fabric", "Soft and comfortable", "Easy to iron"],
+    careInstructions: ["Machine wash", "Tumble dry", "Iron low"],
+    warranty: "1 year manufacturer warranty",
+    tags: ["casual shirt", "men's shirt", "levis"],
+    additionalImages: ["path/to/additionalShirtImage1.jpg", "path/to/additionalShirtImage2.jpg"],
+    slug: "levis-mens-casual-shirt"
+  },
+  {
+    title: "Wrangler Jeans",
+    description: "A stylish and comfortable pair of jeans from Wrangler, perfect for everyday wear. Made from high-quality denim, these jeans feature a slim fit and a fashionable design.",
+    sellingPrice: 2999,
+    mrpPrice: 3500,
+    categories: ["Clothing", "Jeans"],
+    brand: "Wrangler",
+    stock: 50,
+    images: [
+      "https://m.media-amazon.com/images/I/71mRre7cFsL._AC_UL480_FMwebp_QL65_.jpg",
+      "https://m.media-amazon.com/images/I/61gFw2BjKzgL._SX569_.jpg",
+      "https://m.media-amazon.com/images/I/61Fw2BjKzgL._SX569_.jpg"
+    ],
+    reviews: [],
+    rating: 4,
+    specifications: {
+      fabric: "Denim",
+      fit: "Slim Fit",
+      size: ["28", "30", "32", "34"],
+      color: ["Blue", "Black", "Grey"],
+      style: ["Regular", "Slim", "Tapered"],
+      length: ["Regular", "Long", "Short"],
+      pocket: ["Five Pocket"],
+      fly: ["Zip Fly"],
+      waist: ["Mid Rise", "Low Rise"]
+    },
+    features: ["Stretchable fabric", "Comfortable fit", "Fashionable design"],
+    careInstructions: ["Machine wash", "Tumble dry", "Iron low"],
+    warranty: "1 year manufacturer warranty",
+    tags: ["jeans", "men's jeans", "wrangler"],
+    additionalImages: ["path/to/additionalJeansImage1.jpg", "path/to/additionalJeansImage2.jpg"],
+    slug: "wrangler-mens-slim-fit-jeans"
+  },
+  {
+    title: "Adidas Men's Crew Neck Sweater",
+    description: "A warm and comfortable crew neck sweater from Adidas, perfect for casual wear. Made from high-quality cotton, this sweater features a relaxed fit and a stylish design.",
+    sellingPrice: 2999,
+    mrpPrice: 3500,
+    categories: ["Clothing", "Sweaters"],
+    brand: "Adidas",
+    stock: 50,
+    images: [
+      "https://m.media-amazon.com/images/I/51+NsmrRmZL._AC_UL480_FMwebp_QL65_.jpg",
+      "https://m.media-amazon.com/images/I/61gFw2BjKzgL._SX569_.jpg",
+      "https://m.media-amazon.com/images/I/61Fw2BjKzgL._SX569_.jpg"
+    ],
+    reviews: [],
+    rating: 4,
+    specifications: {
+      fabric: "Cotton",
+      fit: "Relaxed Fit",
+      size: ["S", "M", "L", "XL"],
+      color: ["Navy", "Grey", "White", "Black"],
+      style: ["Crew Neck", "V-Neck"],
+      sleeve: ["Long Sleeve"],
+      neckline: ["Crew Neck"],
+      pocket: ["No Pocket"]
+    },
+    features: ["Soft and comfortable", "Warm and cozy", "Fashionable design"],
+    careInstructions: ["Machine wash", "Tumble dry", "Iron low"],
+    warranty: "1 year manufacturer warranty",
+    tags: ["sweater", "men's sweater", "adidas"],
+    additionalImages: ["path/to/additionalSweaterImage1.jpg", "path/to/additionalSweaterImage2.jpg"],
+    slug: "adidas-mens-crew-neck-sweater"
+  },
+
+  {
+    title: "Denali Jacket",
+    description: "A warm and durable Denali jacket from The North Face, perfect for outdoor activities. Made from high-quality polyester, this jacket features a relaxed fit and a stylish design.",
+    sellingPrice: 4999,
+    mrpPrice: 6000,
+    categories: ["Clothing", "Jackets"],
+    brand: "The North Face",
+    stock: 20,
+    images: [
+      "https://m.media-amazon.com/images/I/61hz9cK6gnL._AC_UL480_FMwebp_QL65_.jpg",
+      "https://m.media-amazon.com/images/I/61gFw2BjKzgL._SX569_.jpg",
+      "https://m.media-amazon.com/images/I/61Fw2BjKzgL._SX569_.jpg"
+    ],
+    reviews: [],
+    rating: 4,
+    specifications: {
+      fabric: "Polyester",
+      fit: "Relaxed Fit",
+      size: ["S", "M", "L", "XL"],
+      color: ["Black", "Navy", "Grey", "Red"],
+      style: ["Denali", "Fleece"],
+      sleeve: ["Long Sleeve"],
+      neckline: ["Crew Neck"],
+      pocket: ["Multiple Pockets"]
+    },
+    features: ["Warm and durable", "Water-resistant", "Breathable fabric"],
+    careInstructions: ["Machine wash", "Tumble dry", "Iron low"],
+    warranty: "1 year manufacturer warranty",
+    tags: ["jacket", "men's jacket", "the north face"],
+    additionalImages: ["path/to/additionalJacketImage1.jpg", "path/to/additionalJacketImage2.jpg"],
+    slug: "the-north-face-mens-denali-jacket"
+  },
+
+  {
+    title: "Quilted  Jacket",
+    description: "A stylish and comfortable pair of shoes from Nike, perfect for everyday wear. Made from high-quality materials, these shoes feature a sleek design and a responsive midsole.",
+    sellingPrice: 6999,
+    mrpPrice: 8000,
+    categories: ["Footwear", "Shoes"],
+    brand: "Nike",
+    stock: 30,
+    images: [
+      "https://m.media-amazon.com/images/I/41qKmOIyD5L._AC_UL480_FMwebp_QL65_.jpg",
+      "https://m.media-amazon.com/images/I/61gFw2BjKzgL._SX569_.jpg",
+      "https://m.media-amazon.com/images/I/61Fw2BjKzgL._SX569_.jpg"
+    ],
+    reviews: [],
+    rating: 4,
+    specifications: {
+      material: "Synthetic",
+      fit: "True to Size",
+      size: ["6", "7", "8", "9", "10"],
+      color: ["Black", "White", "Grey", "Red"],
+      style: ["Running", "Casual"],
+      sole: ["Rubber"],
+      heel: ["Low Heel"],
+      width: ["Medium"]
+    },
+    features: ["Responsive midsole", "Breathable upper", "Stylish design"],
+    careInstructions: ["Wipe clean with a damp cloth", "Avoid exposure to direct sunlight"],
+    warranty: "1 year manufacturer warranty",
+    tags: ["shoes", "men's shoes", "nike"],
+    additionalImages: ["path/to/additionalShoesImage1.jpg", "path/to/additionalShoesImage2.jpg"],
+    slug: "nike-mens-air-max-270-shoes"
+  },
+  
+  {
+    "title": "Floral Dress",
+    "description": "A beautiful and elegant floral dress from Zara, perfect for any occasion. Made from high-quality materials, this dress features a fitted waist and a flowy skirt.",
+    "sellingPrice": 2999,
+    "mrpPrice": 3500,
+    "categories": ["Clothing", "Dresses"],
+    "brand": "Zara",
+    "stock": 30,
+    "images": [
+      "https://m.media-amazon.com/images/I/41IRV3ekqQL._AC_UL480_FMwebp_QL65_.jpg",
+      "https://m.media-amazon.com/images/I/61gFw2BjKzgL._SX569_.jpg",
+      "https://m.media-amazon.com/images/I/61Fw2BjKzgL._SX569_.jpg"
+    ],
+    "reviews": [],
+    "rating": 4,
+    "specifications": {
+      "fabric": "Cotton",
+      "fit": "Fitted",
+      "size": ["S", "M", "L", "XL"],
+      "color": ["Red", "Blue", "Yellow", "Green"],
+      "style": ["Floral", "Bodycon"],
+      "sleeve": ["Short Sleeve"],
+      "neckline": ["V-Neck"],
+      "length": ["Knee Length"]
+    },
+    "features": ["Fitted waist", "Flowy skirt", "Beautiful floral print"],
+    "careInstructions": ["Machine wash", "Tumble dry", "Iron low"],
+    "warranty": "1 year manufacturer warranty",
+    "tags": ["dress", "women's dress", "zara"],
+    "additionalImages": ["path/to/additionalDressImage1.jpg", "path/to/additionalDressImage2.jpg"],
+    "slug": "zara-womens-floral-dress"
+  },
+  {
+    "title": "H&M Women's Denim Jumpsuit",
+    "description": "A stylish and comfortable denim jumpsuit from H&M, perfect for casual wear. Made from high-quality materials, this jumpsuit features a relaxed fit and a trendy design.",
+    "sellingPrice": 1999,
+    "mrpPrice": 2500,
+    "categories": ["Clothing", "Jumpsuits"],
+    "brand": "H&M",
+    "stock": 25,
+    "images": [
+      "https://m.media-amazon.com/images/I/31aGblh9mzL._AC_UL480_FMwebp_QL65_.jpg",
+      "https://m.media-amazon.com/images/I/61gFw2BjKzgL._SX569_.jpg",
+      "https://m.media-amazon.com/images/I/61Fw2BjKzgL._SX569_.jpg"
+    ],
+    "reviews": [],
+    "rating": 4,
+    "specifications": {
+      "fabric": "Denim",
+      "fit": "Relaxed",
+      "size": ["S", "M", "L", "XL"],
+      "color": ["Blue", "Black", "White", "Grey"],
+      "style": ["Casual", "Trendy"],
+      "sleeve": ["Long Sleeve"],
+      "neckline": ["Round Neck"],
+      "length": ["Full Length"]
+    },
+    "features": ["Relaxed fit", "Trendy design", "Comfortable denim fabric"],
+    "careInstructions": ["Machine wash", "Tumble dry", "Iron low"],
+    "warranty": "1 year manufacturer warranty",
+    "tags": ["jumpsuit", "women's jumpsuit", "h&m"],
+    "additionalImages": ["path/to/additionalJumpsuitImage1.jpg", "path/to/additionalJumpsuitImage2.jpg"],
+    "slug": "h&m-womens-denim-jumpsuit"
+  },
+  {
+    "title": "Zara Top",
+    "description": "A trendy and stylish off-the-shoulder top from Zara, perfect for casual wear. Made from high-quality materials, this top features a relaxed fit and a beautiful design.",
+    "sellingPrice": 999,
+    "mrpPrice": 1200,
+    "categories": ["Clothing", "Tops"],
+    "brand": "Zara",
+    "stock": 30,
+    "images": [
+      "https://m.media-amazon.com/images/I/61-ca6P9eHL._AC_UL480_FMwebp_QL65_.jpg",
+      "https://m.media-amazon.com/images/I/61gFw2BjKzgL._SX569_.jpg",
+      "https://m.media-amazon.com/images/I/61Fw2BjKzgL._SX569_.jpg"
+    ],
+    "reviews": [],
+    "rating": 4,
+    "specifications": {
+      "fabric": "Cotton",
+      "fit": "Relaxed",
+      "size": ["S", "M", "L", "XL"],
+      "color": ["White", "Black", "Grey", "Navy"],
+      "style": ["Off-the-Shoulder", "Casual"],
+      "sleeve": ["Short Sleeve"],
+      "neckline": ["Off-the-Shoulder"],
+      "length": ["Cropped"]
+    },
+    "features": ["Relaxed fit", "Beautiful design", "Off-the-shoulder style"],
+    "careInstructions": ["Machine wash", "Tumble dry", "Iron low"],
+    "warranty": "1 year manufacturer warranty",
+    "tags": ["top", "women's top", "zara"],
+    "additionalImages": ["path/to/additionalTopImage1.jpg", "path/to/additionalTopImage2.jpg"],
+    "slug": "zara-womens-off-the-shoulder-top"
+  },
+  
+  {
+    "title": "H&M Men's  Shirt",
+    "description": "A stylish and comfortable slim fit shirt from H&M, perfect for casual wear. Made from high-quality materials, this shirt features a fitted design and a beautiful pattern.",
+    "sellingPrice": 999,
+    "mrpPrice": 1200,
+    "categories": ["Clothing", "Shirts"],
+    "brand": "H&M",
+    "stock": 30,
+    "images": [
+      "https://m.media-amazon.com/images/I/61DGAlvxRLL._AC_UL480_FMwebp_QL65_.jpg",
+      "https://m.media-amazon.com/images/I/61gFw2BjKzgL._SX569_.jpg",
+      "https://m.media-amazon.com/images/I/61Fw2BjKzgL._SX569_.jpg"
+    ],
+    "reviews": [],
+    "rating": 4,
+    "specifications": {
+      "fabric": "Cotton",
+      "fit": "Slim Fit",
+      "size": ["S", "M", "L", "XL"],
+      "color": ["White", "Black", "Grey", "Navy"],
+      "style": ["Casual", "Slim Fit"],
+      "sleeve": ["Short Sleeve"],
+      "neckline": ["Pointed Collar"],
+      "length": ["Regular"]
+    },
+    "features": ["Comfortable fit", "Beautiful pattern", "High-quality materials"],
+    "careInstructions": ["Machine wash", "Tumble dry", "Iron low"],
+    "warranty": "1 year manufacturer warranty",
+    "tags": ["shirt", "men's shirt", "h&m"],
+    "additionalImages": ["path/to/additionalShirtImage1.jpg", "path/to/additionalShirtImage2.jpg"],
+    "slug": "h&m-mens-slim-fit-shirt"
+  },
+  {
+    "title": "Levi's  top",
+    "description": "A classic and stylish pair of high-waisted jeans from Levi's, perfect for casual wear. Made from high-quality materials, these jeans feature a comfortable fit and a timeless design.",
+    "sellingPrice": 1999,
+    "mrpPrice": 2500,
+    "categories": ["Clothing", "Jeans"],
+    "brand": "Levi's",
+    "stock": 25,
+    "images": [
+      "https://m.media-amazon.com/images/I/81g0TspIidL._AC_UL480_FMwebp_QL65_.jpg",
+      "https://m.media-amazon.com/images/I/61gFw2BjKzgL._SX569_.jpg",
+      "https://m.media-amazon.com/images/I/61Fw2BjKzgL._SX569_.jpg"
+    ],
+    "reviews": [],
+    "rating": 4,
+    "specifications": {
+      "fabric": "Denim",
+      "fit": "High-Waisted",
+      "size": ["28", "30", "32", "34"],
+      "color": ["Blue", "Black", "Grey", "White"],
+      "style": ["Casual", "High-Waisted"],
+      "waist": ["High Rise"],
+      "length": ["Full Length"]
+    },
+    "features": ["Comfortable fit", "Timeless design", "High-quality denim"],
+    "careInstructions": ["Machine wash", "Tumble dry", "Iron low"],
+    "warranty": "1 year manufacturer warranty",
+    "tags": ["jeans", "women's jeans", "levis"],
+    "additionalImages": ["path/to/additionalJeansImage1.jpg", "path/to/additionalJeansImage2.jpg"],
+    "slug": "levis-womens-high-waisted-jeans"
+  },
+
+
 ];
 
 module.exports = { products };
