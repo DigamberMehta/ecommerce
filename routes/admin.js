@@ -106,4 +106,44 @@ router.post('/add/product', upload.fields([{ name: 'images', maxCount: 5 }, { na
   }
 });
 
+// Edit a product
+router.post('/products/:id/edit', async (req, res) => {
+  try {
+    const productId = req.params.id;
+    const updatedFields = req.body;
+
+    // Fetch the existing product
+    const product = await Product.findById(productId);
+
+    // Merge the existing and new tags
+    if (updatedFields.tags) {
+      if (Array.isArray(updatedFields.tags)) {
+        // Split tags string into an array and merge with existing tags
+        const newTags = updatedFields.tags.map(tag => tag.trim());
+        const existingTags = product.tags || [];
+        updatedFields.tags = [...new Set([...existingTags, ...newTags])];
+      } else {
+        // Single tag case, merge it with existing tags
+        const newTag = updatedFields.tags.trim();
+        const existingTags = product.tags || [];
+        updatedFields.tags = [...new Set([...existingTags, newTag])];
+      }
+    }
+
+    // Convert categories back to arrays if they were edited
+    if (updatedFields.categories) {
+      updatedFields.categories = updatedFields.categories.split(',').map(category => category.trim());
+    }
+
+    // Find and update the product with new values
+    await Product.findByIdAndUpdate(productId, updatedFields, { new: true });
+
+    req.flash('success', 'Product updated successfully');
+    res.redirect(`/admin/preview/${productId}/${updatedFields.slug}`);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Server Error');
+  }
+});
+
 module.exports = router;

@@ -310,49 +310,33 @@ object-fit: contain;
     background-color: #31b0d5;
   }
 
-  /* Existing styles */
-/* Existing styles */
-.loading {
-  pointer-events: none;
-  opacity: 0.7;
-  position: relative;
-}
-
-.loading-spinner {
-  border: 2px solid #f3f3f3;
-  border-top: 2px solid #3498db;
-  border-radius: 50%;
-  width: 16px;
-  height: 16px;
-  animation: spin 1s linear infinite;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
-@keyframes spin {
-  0% {
-    transform: translate(-50%, -50%) rotate(0deg);
+  .loading {
+    pointer-events: none;
+    opacity: 0.7;
+    position: relative;
   }
-  100% {
-    transform: translate(-50%, -50%) rotate(360deg);
+
+  .loading-spinner {
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid #3498db;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    animation: spin 1s linear infinite;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
-}
 
-/* New styles */
-.submit-btn {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.submit-btn.loading .button-text {
-  visibility: hidden;
-}
-
-
+  @keyframes spin {
+    0% {
+      transform: translate(-50%, -50%) rotate(0deg);
+    }
+    100% {
+      transform: translate(-50%, -50%) rotate(360deg);
+    }
+  }
   .modal-content {
     background-color: #fff;
     margin: 1rem auto;
