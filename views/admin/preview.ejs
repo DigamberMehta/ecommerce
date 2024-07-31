@@ -1,13 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title><%= product.title %> - Product Preview</title>
- 
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
+    rel="stylesheet"
+  />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+  />
   <style>
     body {
       margin: 0;
@@ -21,8 +26,6 @@
       margin: 20px auto;
       padding: 20px;
       background-color: #ffffff;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-      border-radius: 10px;
     }
 
     .product-preview {
@@ -30,16 +33,45 @@
       flex-wrap: wrap;
       gap: 20px;
     }
-
+    .product-image {
+      width: 200px;
+      height: 200px;
+      position: relative;
+    }
+    .image-card-container {
+      flex-direction: column;
+      display: flex;
+      width: 100%;
+      border: 1px solid #f0f4f8;
+      margin: 1rem;
+      padding: 1rem;
+    }
+    .product-image-container {
+      display: flex;
+      flex-wrap: wrap;
+      margin-top: 1rem;
+    }
     .product-image img {
       width: 100%;
-      height: auto;
+      height: 100%;
       border-radius: 10px;
       transition: transform 0.3s;
+      object-fit: contain;
     }
 
     .product-image img:hover {
       transform: scale(1.05);
+    }
+
+    .delete-image-button {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      background-color: red;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
     }
 
     .editable-container {
@@ -69,7 +101,7 @@
     .card-body {
       padding: 20px;
       background-color: #ffffff;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      border: 1px solid #f0f4f8;
       border-radius: 10px;
       margin-bottom: 20px;
     }
@@ -80,16 +112,25 @@
       margin-bottom: 15px;
     }
 
-    .info, .price, .description, .tags, .additional-images, .review {
+    .info,
+    .price,
+    .description,
+    .tags,
+    .additional-images,
+    .review {
       margin-bottom: 15px;
     }
 
-    .info span, .price span, .description span, .tags span, .additional-images img, .review img {
+    .info span,
+    .price span,
+    .description span,
+    .tags span,
+    .additional-images img,
+    .review img {
       display: inline-block;
       margin-right: 10px;
     }
 
-  
     .review-author {
       font-weight: 700;
     }
@@ -104,280 +145,507 @@
 
     .review-images img {
       margin-right: 10px;
+      position: relative;
     }
 
-    .editable input, .editable textarea {
+    .delete-review-image-button {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      background-color: red;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+
+    .editable input,
+    .editable textarea {
       width: auto;
       display: inline-block;
-      margin-right: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-family: "Arial", sans-serif;
+      padding: 5px;
     }
 
     .editable textarea {
       width: 100%;
     }
 
-    .admin-card-deatils{
-      width: 50%;
+    .admin-card-deatils {
+      width: 54%;
     }
-    .admin-specification-container{
+    .admin-specification-container {
       width: 45%;
     }
-    .admin-product-wrapper{
+    .admin-product-wrapper {
       display: flex;
       justify-content: space-between;
     }
-    .product-deatils-title{
+    .product-deatils-title {
       color: #878787;
-    font-size: 14px;
+      font-size: 14px;
     }
-    .editable{
+    .editable {
       font-size: 13px;
-    color: #212121;
-    line-height: 1.43;
+      color: #212121;
+      line-height: 1.43;
     }
-    th{
+    th {
       font-weight: 400;
       text-align: left;
       display: block;
-     
     }
+
+    .btn-save-changes {
+      display: none;
+    }
+    .admin-product-preview-btns {
+      background-color: #ffffff;
+      color: #212121;
+      border: 1px solid rgba(48, 229, 252, 0.5);
+      color: rgb(0, 0, 0);
+      padding: 10px 20px;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: background-color 0.3s;
+    }
+    .admin-product-preview-btns:hover {
+      background-color: #10d6f2;
+      box-shadow: 0 17px 24px 0 transparent, 0 5px 12px 0 rgba(48, 229, 252, 0.5);
+      color: white;
+    }
+    .admin-add-main-image-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 200px;
+  margin-left: 2rem;
+  /* padding: 20px; */
+  /* margin: 20px auto; */
+
+  /* background-color: #f8f9fa; */
+  border-radius: 10px;
+  /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
+}
+
+.admin-add-main-image {
+  border: 2px dotted #007bff;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: #ffffff;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.admin-add-main-image:hover {
+  background-color: #e9ecef;
+  border-color: #0056b3;
+}
+
+.admin-add-main-image input[type="file"] {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  color: #495057;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.admin-add-main-image input[type="file"]::file-selector-button {
+  display: none;
+}
+
   </style>
 </head>
 
 <body>
   <div class="container">
-    <form id="editProductForm" method="POST" action="/admin/products/<%= product._id %>/edit">
-      <div class="product-preview">
+    <form
+      id="editProductForm"
+      method="POST"
+      action="/admin/products/<%= product._id %>/edit"
+      enctype="multipart/form-data"
+    >
+      <input type="hidden" name="deleteImages" id="deleteImages" value="" />
+      <input type="hidden" name="deleteAdditionalImages" id="deleteAdditionalImages" value="" />
+      <input type="hidden" name="deleteReviewImages" id="deleteReviewImages" value="" />
 
-       <div class="image-card-container">
-          <div class="card">
-            <div class="card-body">
-              <div class="product-image">
-                <img src="<%= product.images[0] %>" alt="<%= product.title %>">
-              </div>
+      <div class="product-preview">
+        <div class="image-card-container">
+          <div class="image-heading">
+            <h2>Product Images</h2>
+          </div>
+
+          <div class="product-image-container">
+            <% for (let i = 0; i < product.images.length; i++) { %>
+            <div class="product-image">
+              <img src="<%= product.images[i] %>" alt="<%= product.title %>" />
+              <button type="button" class="delete-image-button" data-image="<%= product.images[i] %>">x</button>
             </div>
+            <% } %>
+            <div class="admin-add-main-image-container">
+              <div class="admin-add-main-image">
+            <input type="file" name="mainImages" multiple />
+            </div>
+          </div>
           </div>
         </div>
 
         <div class="admin-product-wrapper">
-      
-        <div class="admin-card-deatils">
-          <div class="card">
-            <div class="card-body">
-              <h1 class="card-title">
-                <div class="editable-container">
-                  <span class="editable" data-field="title"><%= product.title %></span>
-                  <button type="button" class="edit-button" data-field="title"><i class="fas fa-edit"></i></button>
-                </div>
-              </h1>
-              <div class="price edit-option-admin-appear">
-
-              <span class="product-deatils-title">  Selling Price: $</span>
-                <span class="editable-container">
-                  <span class="editable" data-field="sellingPrice"><%= product.sellingPrice %></span>
-                  <button type="button" class="edit-button" data-field="sellingPrice"><i class="fas fa-edit"></i></button>
-                </span>
-              </div>
-              <% if (product.mrpPrice) { %>
+          <div class="admin-card-deatils">
+            <div class="card">
+              <div class="card-body">
+                <h1 class="card-title">
+                  <div class="editable-container">
+                    <span class="editable" data-field="title"><%= product.title %></span>
+                    <button type="button" class="edit-button" data-field="title">
+                      <i class="fas fa-edit"></i>
+                    </button>
+                  </div>
+                </h1>
                 <div class="price edit-option-admin-appear">
-
-                <span class="product-deatils-title">  MRP Price: $</span>
+                  <span class="product-deatils-title"> Selling Price: $</span>
+                  <span class="editable-container">
+                    <span class="editable" data-field="sellingPrice"><%= product.sellingPrice %></span>
+                    <button type="button" class="edit-button" data-field="sellingPrice">
+                      <i class="fas fa-edit"></i>
+                    </button>
+                  </span>
+                </div>
+                <% if (product.mrpPrice) { %>
+                <div class="price edit-option-admin-appear">
+                  <span class="product-deatils-title"> MRP Price: $</span>
                   <span class="editable-container">
                     <span class="editable" data-field="mrpPrice"><%= product.mrpPrice %></span>
-                    <button type="button" class="edit-button" data-field="mrpPrice"><i class="fas fa-edit"></i></button>
+                    <button type="button" class="edit-button" data-field="mrpPrice">
+                      <i class="fas fa-edit"></i>
+                    </button>
                   </span>
                 </div>
-              <% } %>
-              <div class="description edit-option-admin-appear">
-
-              <span class="product-deatils-title">  Description</span>
-                <span class="editable-container">
-                  <span class="editable" data-field="description"><%= product.description %></span>
-                  <button type="button" class="edit-button" data-field="description"><i class="fas fa-edit"></i></button>
-                </span>
-              </div>
-              <div class="info edit-option-admin-appear">
-
-              <span class="product-deatils-title">  Stock:</span>
-                <span class="editable-container">
-                  <span class="editable" data-field="stock"><%= product.stock %></span>
-                  <button type="button" class="edit-button" data-field="stock"><i class="fas fa-edit"></i></button>
-                </span>
-              </div>
-              <div class="info edit-option-admin-appear">
-
-              <span class="product-deatils-title">  Brand:</span>
-                <span class="editable-container">
-                  <span class="editable" data-field="brand"><%= product.brand %></span>
-                  <button type="button" class="edit-button" data-field="brand"><i class="fas fa-edit"></i></button>
-                </span>
-              </div>
-              <div class="info edit-option-admin-appear">
-
-              <span class="product-deatils-title">  Category:</span>
-                <span class="editable-container">
-                  <span class="editable" data-field="categories"><%= product.categories.join(', ') %></span>
-                  <button type="button" class="edit-button" data-field="categories"><i class="fas fa-edit"></i></button>
-                </span>
-              </div>
-              <% if (product.rating) { %>
+                <% } %>
+                <div class="description edit-option-admin-appear">
+                  <span class="product-deatils-title"> Description</span>
+                  <span class="editable-container">
+                    <span class="editable" data-field="description"><%= product.description %></span>
+                    <button type="button" class="edit-button" data-field="description">
+                      <i class="fas fa-edit"></i>
+                    </button>
+                  </span>
+                </div>
                 <div class="info edit-option-admin-appear">
-
-                <span class="product-deatils-title">  Rating:</span>
+                  <span class="product-deatils-title"> Stock:</span>
+                  <span class="editable-container">
+                    <span class="editable" data-field="stock"><%= product.stock %></span>
+                    <button type="button" class="edit-button" data-field="stock">
+                      <i class="fas fa-edit"></i>
+                    </button>
+                  </span>
+                </div>
+                <div class="info edit-option-admin-appear">
+                  <span class="product-deatils-title"> Brand:</span>
+                  <span class="editable-container">
+                    <span class="editable" data-field="brand"><%= product.brand %></span>
+                    <button type="button" class="edit-button" data-field="brand">
+                      <i class="fas fa-edit"></i>
+                    </button>
+                  </span>
+                </div>
+                <div class="info edit-option-admin-appear">
+                  <span class="product-deatils-title"> Category:</span>
+                  <span class="editable-container">
+                    <span class="editable" data-field="categories"><%= product.categories.join(', ') %></span>
+                    <button type="button" class="edit-button" data-field="categories">
+                      <i class="fas fa-edit"></i>
+                    </button>
+                  </span>
+                </div>
+                <% if (product.rating) { %>
+                <div class="info edit-option-admin-appear">
+                  <span class="product-deatils-title"> Rating:</span>
                   <span class="editable-container">
                     <span class="editable" data-field="rating"><%= product.rating %></span>
-                    <button type="button" class="edit-button" data-field="rating"><i class="fas fa-edit"></i></button>
+                    <button type="button" class="edit-button" data-field="rating">
+                      <i class="fas fa-edit"></i>
+                    </button>
                   </span>
                 </div>
-              <% } %>
-              <div class="info edit-option-admin-appear">
-
-              <span class="product-deatils-title">  Slug:</span>
-                <span class="editable-container">
-                  <span class="editable" data-field="slug"><%= product.slug %></span>
-                  <button type="button" class="edit-button" data-field="slug"><i class="fas fa-edit"></i></button>
-                </span>
-              </div>
-              <div class="info edit-option-admin-appear">
-
-              <span class="product-deatils-title">  Created At:</span>
-                 <span class="editable"><%= product.createdAt.toLocaleString() %></span>
-              </div>
-              <div class="info">
-                Updated At: <span class="editable"><%= product.updatedAt.toLocaleString() %></span>
-              </div>
-              <button type="submit" class="btn btn-primary">Save Changes</button>
-            </div>
-          </div>
-        </div>
-      
-
-      <div class="admin-specification-container">
-      <% if (product.specifications && Object.keys(product.specifications).length > 0) { %>
-        <div class="card">
-          <div class="card-body">
-            <h3>Specifications</h3>
-            <table class="table">
-              <tbody>
-                <% for (let key in product.specifications) { %>
-                  <tr class="edit-option-admin-appear">
-                    <th >    <span class="product-deatils-title"> <%= key %> </span> </th>
-                    <td >
-                      <% if (typeof product.specifications[key] === 'object') { %>
-                        <% for (let subKey in product.specifications[key]) { %>
-                          <div class="editable-container">
-                            <span  class="product-deatils-title"><%= subKey %>:</span> <span class="editable" data-field="specifications.<%= key %>.<%= subKey %>"><%= Array.isArray(product.specifications[key][subKey]) ? product.specifications[key][subKey].join(', ') : product.specifications[key][subKey] %></span>
-                            <button type="button" class="edit-button" data-field="specifications.<%= key %>.<%= subKey %>"><i class="fas fa-edit"></i></button>
-                          </div>
-                        <% } %>
-                      <% } else { %>
-                        <div class="editable-container">
-                          <span class="editable" data-field="specifications.<%= key %>"><%= product.specifications[key] %></span>
-                          <button type="button" class="edit-button" data-field="specifications.<%= key %>"><i class="fas fa-edit"></i></button>
-                        </div>
-                      <% } %>
-                    </td>
-                  </tr>
                 <% } %>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      <% } %>
-
-      <% if (product.tags && product.tags.length > 0) { %>
-        <div class="card">
-          <div class="card-body">
-            <h4>Tags</h4>
-            <div class="tags">
-              <% product.tags.forEach((tag, index) => { %>
-                <div class="editable-container tag-item">
-                  <span class="editable" data-field="tags[<%= index %>]"><%= tag %></span>
-                  <button type="button" class="edit-button" data-field="tags[<%= index %>]"><i class="fas fa-edit"></i></button>
+                <div class="info edit-option-admin-appear">
+                  <span class="product-deatils-title"> Slug:</span>
+                  <span class="editable-container">
+                    <span class="editable" data-field="slug"><%= product.slug %></span>
+                    <button type="button" class="edit-button" data-field="slug">
+                      <i class="fas fa-edit"></i>
+                    </button>
+                  </span>
                 </div>
-              <% }) %>
-            </div>
-            <button type="button" id="addTagButton" class="btn btn-secondary btn-sm mt-2">Add Tag</button>
-          </div>
-        </div>
-      <% } %>
-
-      <% if (product.additionalImages && product.additionalImages.length > 0) { %>
-        <div class="card">
-          <div class="card-body">
-            <h4>Additional Images</h4>
-            <div class="additional-images">
-              <% product.additionalImages.forEach(image => { %>
-                <div class="editable-container">
-                  <img src="<%= image %>" alt="Additional Image" class="img-thumbnail" style="width: 100px;">
-                  <button type="button" class="edit-button" data-field="additionalImages"><i class="fas fa-edit"></i></button>
+                <div class="info edit-option-admin-appear">
+                  <span class="product-deatils-title"> Created At:</span>
+                  <span class="editable"><%= product.createdAt.toLocaleString() %></span>
                 </div>
-              <% }) %>
-            </div>
-          </div>
-        </div>
-      <% } %>
-
-      <div class="card">
-        <div class="card-body">
-          <h2>Reviews</h2>
-          <% product.reviews.forEach(review => { %>
-            <div class="review">
-              <div class="review-author"><%= review.user.name %></div>
-              <div class="review-rating">
-                <% for (let i = 0; i < review.rating; i++) { %>
-                  <i class="fa fa-star"></i>
-                <% } %>
+                <div class="info">
+                  Updated At:
+                  <span class="editable"><%= product.updatedAt.toLocaleString() %></span>
+                </div>
               </div>
-              <div class="review-content"><%= review.comment %></div>
-              <div class="review-images">
-                <% review.image.forEach(img => { %>
-                  <img src="<%= img %>" alt="Review Image" class="img-thumbnail" style="width: 100px;">
+            </div>
+
+            <div class="card">
+              <div class="card-body">
+                <h2>Reviews</h2>
+                <% product.reviews.forEach(review => { %>
+                <div class="review">
+                  <div class="review-author"><%= review.user.name %></div>
+                  <div class="review-rating">
+                    <% for (let i = 0; i < review.rating; i++) { %>
+                    <i class="fa fa-star"></i>
+                    <% } %>
+                  </div>
+                  <div class="review-content"><%= review.comment %></div>
+                  <div class="review-images">
+                    <% review.image.forEach(img => { %>
+                    <div style="position:relative;">
+                      <img
+                        src="<%= img %>"
+                        alt="Review Image"
+                        class="img-thumbnail"
+                        style="width: 100px"
+                      />
+                      <button type="button" class="delete-review-image-button " data-image="<%= img %>">x</button>
+                    </div>
+                    <% }) %>
+                  </div>
+                  <button type="button" class="delete-review-button admin-product-preview-btns" data-review-id="<%= review._id %>">Delete Review</button>
+                </div>
                 <% }) %>
               </div>
             </div>
-          <% }) %>
+
+            <div class="card">
+              <div class="">
+                <button type="submit" class="btn-save-changes admin-product-preview-btns">
+                  Save Changes
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="admin-specification-container">
+            <% if (product.specifications && Object.keys(product.specifications).length > 0) { %>
+            <div class="card">
+              <div class="card-body">
+                <h3>Specifications</h3>
+                <table class="table">
+                  <tbody>
+                    <% for (let key in product.specifications) { %>
+                    <tr class="edit-option-admin-appear">
+                      <th>
+                        <span class="product-deatils-title"><%= key %></span>
+                      </th>
+                      <td>
+                        <% if (typeof product.specifications[key] === 'object') { %>
+                        <% for (let subKey in product.specifications[key]) { %>
+                        <div class="editable-container">
+                          <span class="product-deatils-title"><%= subKey %>:</span>
+                          <span
+                            class="editable"
+                            data-field="specifications.<%= key %>.<%= subKey %>"
+                            ><%= Array.isArray(product.specifications[key][subKey])
+                              ? product.specifications[key][subKey].join(', ')
+                              : product.specifications[key][subKey] %></span
+                          >
+                          <button
+                            type="button"
+                            class="edit-button"
+                            data-field="specifications.<%= key %>.<%= subKey %>"
+                          >
+                            <i class="fas fa-edit"></i>
+                          </button>
+                        </div>
+                        <% } %>
+                        <% } else { %>
+                        <div class="editable-container">
+                          <span class="editable" data-field="specifications.<%= key %>">
+                            <%= product.specifications[key] %></span
+                          >
+                          <button
+                            type="button"
+                            class="edit-button"
+                            data-field="specifications.<%= key %>"
+                          >
+                            <i class="fas fa-edit"></i>
+                          </button>
+                        </div>
+                        <% } %>
+                      </td>
+                    </tr>
+                    <% } %>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <% } %>
+            <% if (product.tags && product.tags.length > 0) { %>
+            <div class="card">
+              <div class="card-body">
+                <h4>Tags</h4>
+                <div class="tags">
+                  <% product.tags.forEach((tag, index) => { %>
+                  <div class="editable-container tag-item">
+                    <span class="editable" data-field="tags[<%= index %>]"><%= tag %></span>
+                    <button type="button" class="edit-button" data-field="tags[<%= index %>]">
+                      <i class="fas fa-edit"></i>
+                    </button>
+                  </div>
+                  <% }) %>
+                </div>
+                <button type="button" id="addTagButton" class="admin-product-preview-btns">
+                  Add Tag
+                </button>
+              </div>
+            </div>
+            <% } %>
+            <% if (product.additionalImages && product.additionalImages.length > 0) { %>
+            <div class="card">
+              <div class="card-body">
+                <h4>Additional Images</h4>
+                <div class="additional-images">
+                  <% product.additionalImages.forEach(image => { %>
+                  <div class="product-image">
+                    <img
+                      src="<%= image %>"
+                      alt="Additional Image"
+                      class="img-thumbnail"
+                      style="width: 100px"
+                    />
+                    <button type="button" class="delete-additional-image-button" data-image="<%= image %>">x</button>
+                  </div>
+                  <% }) %>
+                  <input type="file" name="additionalImages" multiple />
+                </div>
+              </div>
+            </div>
+            <% } %>
+
+          </div>
         </div>
       </div>
-    </div>
-  </div>
-  </div>
     </form>
-  
-</div>
+  </div>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const editButtons = document.querySelectorAll('.edit-button');
-      editButtons.forEach(button => {
-        button.addEventListener('click', function() {
-          const field = button.dataset.field;
-          const span = document.querySelector(`.editable[data-field="${field}"]`);
-          if (span) {
-            const value = span.innerText;
-            if (field === 'description') {
-              span.innerHTML = `<textarea name="${field}" rows="5" cols="50" class="form-control">${value}</textarea>`;
-            } else {
-              span.innerHTML = `<input type="text" name="${field}" value="${value}" class="form-control" />`;
-            }
-            button.style.display = 'none';
-          }
-        });
-      });
+ document.addEventListener("DOMContentLoaded", function () {
+    const editButtons = document.querySelectorAll(".edit-button");
+    const saveChangesButton = document.querySelector(".btn-save-changes");
 
-      document.getElementById('addTagButton').addEventListener('click', function() {
-        const tagsDiv = document.querySelector('.tags');
-        const newIndex = tagsDiv.querySelectorAll('.tag-item').length;
-        const newTagItem = document.createElement('div');
-        newTagItem.classList.add('editable-container', 'tag-item');
-        newTagItem.innerHTML = `
-          <span class="editable" data-field="tags[${newIndex}]"><input type="text" name="tags[${newIndex}]" value="" class="form-control" /></span>
-          <button type="button" class="edit-button" data-field="tags[${newIndex}]" style="display:none;"><i class="fas fa-edit"></i></button>
-        `;
-        tagsDiv.appendChild(newTagItem);
+    function showSaveButton() {
+      saveChangesButton.style.display = "inline-block";
+    }
+
+    editButtons.forEach((button) => {
+      button.addEventListener("click", function () {
+        const field = button.dataset.field;
+        const span = document.querySelector(`.editable[data-field="${field}"]`);
+        if (span) {
+          const value = span.innerText;
+          if (field === "description") {
+            span.innerHTML = `<textarea name="${field}" rows="5" cols="50" class="form-control">${value}</textarea>`;
+          } else {
+            span.innerHTML = `<input type="text" name="${field}" value="${value}" class="form-control" />`;
+          }
+          button.style.display = "none";
+          showSaveButton();
+          console.log(`Editing field: ${field}`);
+        }
       });
     });
+
+    document.querySelectorAll(".delete-image-button").forEach((button) => {
+      button.addEventListener("click", function () {
+        const image = button.dataset.image;
+        const deleteImagesInput = document.getElementById("deleteImages");
+        const currentImages = deleteImagesInput.value ? deleteImagesInput.value.split(",") : [];
+        currentImages.push(image);
+        deleteImagesInput.value = currentImages.join(",");
+        button.parentElement.remove();
+        showSaveButton();
+        console.log(`Marked image for deletion: ${image}`);
+      });
+    });
+
+    document.querySelectorAll(".delete-additional-image-button").forEach((button) => {
+      button.addEventListener("click", function () {
+        const image = button.dataset.image;
+        const deleteAdditionalImagesInput = document.getElementById("deleteAdditionalImages");
+        const currentImages = deleteAdditionalImagesInput.value ? deleteAdditionalImagesInput.value.split(",") : [];
+        currentImages.push(image);
+        deleteAdditionalImagesInput.value = currentImages.join(",");
+        button.parentElement.remove();
+        showSaveButton();
+        console.log(`Marked additional image for deletion: ${image}`);
+      });
+    });
+
+    document.querySelectorAll(".delete-review-image-button").forEach((button) => {
+      button.addEventListener("click", function () {
+        const image = button.dataset.image;
+        const deleteReviewImagesInput = document.getElementById("deleteReviewImages");
+        const currentImages = deleteReviewImagesInput.value ? deleteReviewImagesInput.value.split(",") : [];
+        currentImages.push(image);
+        deleteReviewImagesInput.value = currentImages.join(",");
+        button.parentElement.remove();
+        showSaveButton();
+        console.log(`Marked review image for deletion: ${image}`);
+      });
+    });
+
+    document.querySelectorAll(".delete-review-button").forEach((button) => {
+      button.addEventListener("click", async function () {
+        const reviewId = button.dataset.reviewId;
+        try {
+          const response = await fetch(`/admin/reviews/${reviewId}`, {
+            method: 'DELETE'
+          });
+          const data = await response.json();
+          if (response.ok) {
+            button.parentElement.remove();
+            showSaveButton();
+            console.log(`Deleted review: ${reviewId}`);
+          } else {
+            alert(data.message);
+          }
+        } catch (error) {
+          console.error('Error deleting review:', error);
+        }
+      });
+    });
+
+    document.getElementById("addTagButton").addEventListener("click", function () {
+      const tagsDiv = document.querySelector(".tags");
+      const newIndex = tagsDiv.querySelectorAll(".tag-item").length;
+      const newTagItem = document.createElement("div");
+      newTagItem.classList.add("editable-container", "tag-item");
+      newTagItem.innerHTML = `
+        <span class="editable" data-field="tags[${newIndex}]"><input type="text" name="tags[${newIndex}]" value="" class="form-control" /></span>
+        <button type="button" class="edit-button" data-field="tags[${newIndex}]" style="display:none;"><i class="fas fa-edit"></i></button>
+      `;
+      tagsDiv.appendChild(newTagItem);
+      showSaveButton();
+      console.log(`Added new tag input: tags[${newIndex}]`);
+    });
+
+    document.getElementById("editProductForm").addEventListener("submit", function(event) {
+      event.preventDefault();
+      console.log("Submitting form...");
+      const formData = new FormData(this);
+      for (let [key, value] of formData.entries()) {
+        console.log(`${key}: ${value}`);
+      }
+      this.submit();
+    });
+  });
   </script>
 </body>
-
 </html>
