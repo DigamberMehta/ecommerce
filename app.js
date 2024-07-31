@@ -209,7 +209,9 @@ app.get('/privacy', (req, res) => {
 app.get('/test', (req, res) => {
   res.render('paymentSuccess');
 });
-const port = 3000;
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
