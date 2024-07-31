@@ -1,0 +1,114 @@
+<style>
+    .orders-container {
+      width: 80%;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #fff;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+      margin-top: 50px;
+    }
+    
+    .orders-title {
+      text-align: center;
+      font-size: 2.5em;
+      margin-bottom: 20px;
+      color: #222;
+      font-weight: 700;
+    }
+    
+    .no-orders {
+      text-align: center;
+      font-size: 1.2em;
+      color: #777;
+    }
+    
+    .orders-list {
+      list-style-type: none;
+      padding: 0;
+    }
+    
+    .order-item {
+      margin-bottom: 20px;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      background-color: #f5f5f5;
+      display: flex;
+      align-items: center;
+      transition: background-color 0.3s ease;
+    }
+    
+    .order-item a {
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      width: 100%;
+    }
+    
+    .order-item:hover {
+      background-color: #eaeaea;
+    }
+    
+    .order-image {
+      flex-shrink: 0;
+      width: 100px;
+      height: 100px;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-right: 20px;
+    }
+    
+    .order-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .order-list-summary {
+      flex-grow: 1;
+    }
+    
+    .order-title, .order-date, .order-status {
+      font-size: 1.2em;
+      color: #555;
+      margin: 5px 0;
+    }
+    
+    .order-title {
+      font-weight: 600;
+      color: #333;
+    }
+    
+    .order-status {
+      font-weight: 500;
+      color: #888;
+    }
+    </style>
+    
+    <% layout('layouts/boilerplate') %>
+    <div class="orders-container">
+      <h1 class="orders-title">Your Orders</h1>
+    
+      <% if (orders.length === 0) { %>
+        <p class="no-orders">You have no orders.</p>
+      <% } else { %>
+        <ul class="orders-list">
+          <% orders.forEach(order => { %>
+            <li class="order-item">
+              <a href="/orders/<%= order._id %>">
+                <div class="order-image">
+                  <img src="<%= order.products[0].product.images[0] %>" alt="<%= order.products[0].product.title %>">
+                </div>
+                <div class="order-list-summary">
+                  <p class="order-title"><%= order.products[0].product.title %></p>
+                  <p class="order-date"><strong>Date:</strong> <%= order.createdAt.toDateString() %></p>
+                  <p class="order-status"><strong>Status:</strong> <%= order.status %></p>
+                </div>
+              </a>
+            </li>
+          <% }); %>
+        </ul>
+      <% } %>
+    </div>
+    

@@ -1,0 +1,117 @@
+<style>
+    .order-details-container {
+      width: 80%;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #f9f9f9;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+      border-radius: 10px;
+      margin-top: 50px;
+    }
+    
+    .order-details-title {
+      text-align: center;
+      font-size: 2.5em;
+      margin-bottom: 20px;
+      color: #222;
+      font-weight: 700;
+    }
+    
+    .order-show-summary, .shipping-address, .order-products {
+      margin-bottom: 30px;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    .order-show-summary-title, .shipping-address-title, .order-products-title {
+      font-size: 1.8em;
+      border-bottom: 3px solid #ddd;
+      padding-bottom: 10px;
+      margin-bottom: 20px;
+      color: #444;
+    }
+    
+    .order-summary-item, .shipping-address-item, .order-product-title, .order-product-quantity, .order-product-price {
+      font-size: 1.2em;
+      color: #555;
+      margin-bottom: 10px;
+    }
+    
+    .order-products-list {
+      list-style-type: none;
+      padding: 0;
+    }
+    
+    .order-product-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+      background-color: #f5f5f5;
+      border-radius: 5px;
+    }
+    
+    .order-product-image img {
+      max-width: 100px;
+      margin-right: 20px;
+      border-radius: 5px;
+    }
+    
+    .order-product-details {
+      flex-grow: 1;
+    }
+    
+    .order-product-title {
+      font-size: 1.3em;
+      margin: 0;
+      font-weight: 600;
+    }
+    
+    .order-product-quantity, .order-product-price {
+      margin-top: 10px;
+      font-weight: 500;
+    }
+    </style>
+    
+    <% layout('layouts/boilerplate') %>
+    <div class="order-details-container">
+      <h1 class="order-details-title">Order Details</h1>
+    
+      <div class="order-show-summary">
+        <h2 class="order-show-summary-title">Order Summary</h2>
+        <p class="order-summary-item"><strong>Order ID:</strong> <%= order._id %></p>
+        <p class="order-summary-item"><strong>Status:</strong> <%= order.status %></p>
+        <p class="order-summary-item"><strong>Payment Status:</strong> <%= order.paymentStatus %></p>
+        <p class="order-summary-item"><strong>Total Amount:</strong> ₹<%= order.totalAmount.toFixed(2) %></p>
+        <p class="order-summary-item"><strong>Payment Method:</strong> <%= order.paymentMethod %></p>
+      </div>
+    
+      <div class="shipping-address">
+        <h2 class="shipping-address-title">Shipping Address</h2>
+        <p class="shipping-address-item"><strong>Name:</strong> <%= order.shippingAddress.name %></p>
+        <p class="shipping-address-item"><strong>Phone:</strong> <%= order.shippingAddress.phone %></p>
+        <p class="shipping-address-item"><strong>Address:</strong> <%= order.shippingAddress.houseNumber %>, <%= order.shippingAddress.street %>, <%= order.shippingAddress.city %>, <%= order.shippingAddress.state %>, <%= order.shippingAddress.pincode %>, <%= order.shippingAddress.country %></p>
+      </div>
+    
+      <div class="order-products">
+        <h2 class="order-products-title">Products</h2>
+        <ul class="order-products-list">
+          <% order.products.forEach(productItem => { %>
+            <li class="order-product-item">
+              <div class="order-product-image">
+                <img src="<%= productItem.product.images[0] %>" alt="<%= productItem.product.title %>">
+              </div>
+              <div class="order-product-details">
+                <p class="order-product-title"><%= productItem.product.title %></p>
+                <p class="order-product-quantity"><strong>Quantity:</strong> <%= productItem.quantity %></p>
+                <p class="order-product-price"><strong>Price:</strong> ₹<%= productItem.price.toFixed(2) %></p>
+              </div>
+            </li>
+          <% }); %>
+        </ul>
+      </div>
+    </div>
+    

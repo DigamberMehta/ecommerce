@@ -7,7 +7,7 @@
                 <div class="accordion-content show" id="selectAddressContent">
                     <h3 class="section-title">Your addresses</h3>
                     <% if (addresses.length === 0) { %>
-                        <p>You have not added any addresses yet. <a href="/user/address/new?backUrl=<%= backUrl %>"> <span style="color: #007BFF;">Add a new address</span> </a></p>
+                        <p id="noAddressMessage" style="color: red;">You have not added any addresses yet. <a href="/user/address/new?backUrl=<%= backUrl %>"> <span style="color: #007BFF;">Add a new address</span> </a></p>
                     <% } %>
                     <form id="addressForm">
                         <% addresses.forEach(function(address, index) { %>
@@ -25,7 +25,10 @@
                                 </div>
                             </div>
                         <% }); %>
-                        <button type="button" id="useAddressBtn" class="btn primary">Use this address</button>
+                        <% if (addresses.length > 0) { %>
+                            <button type="button" id="useAddressBtn" class="btn primary">Use this address</button>
+                        <% } %>
+                       
                         <span class="add-address-checkout">
                             <a href="/user/address/new?backUrl=<%= encodeURIComponent(backUrl) %>">Add Address</a>
                         </span>
@@ -54,6 +57,7 @@
                     <% }); %>
                     <p>Saturday 27 Jul<br>FREE Standard Delivery</p>
                     <button id="payNowBtn" class="btn primary">Pay Now</button>
+                    <button id="cashOnDeliveryBtn" class="btn primary">Cash on Delivery</button>
                 </div>
             </div>
         </div>
@@ -116,11 +120,22 @@
     </div>
 </div>
 
+<!-- Modal for order success -->
+<div id="orderSuccessModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Order Placed Successfully</h2>
+        <p>Your order has been placed successfully. You will be redirected to the home page in <span id="redirectTimer">5</span> seconds.</p>
+    </div>
+</div>
+
 <script src="https://sdk.cashfree.com/js/v3/cashfree.js"></script>
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         const accordionHeaders = document.querySelectorAll(".accordion-header");
+        const addresses = JSON.parse('<%- JSON.stringify(addresses) %>'); // Make addresses available in JS
+        const orderDetails = JSON.parse('<%- JSON.stringify(orderDetails) %>'); // Make orderDetails available in JS
 
         accordionHeaders.forEach(header => {
             header.addEventListener("click", function() {
@@ -128,6 +143,21 @@
                 if (currentlyActiveHeader && currentlyActiveHeader !== header) {
                     currentlyActiveHeader.classList.remove("active");
                     currentlyActiveHeader.nextElementSibling.classList.remove("show");
+                }
+
+                if (header.id === "reviewItemsHeader" && addresses.length === 0) {
+                    // Display the message to add an address
+                    let noAddressMessage = document.getElementById("noAddressMessage");
+                    if (!noAddressMessage) {
+                        noAddressMessage = document.createElement("p");
+                        noAddressMessage.id = "noAddressMessage";
+                        noAddressMessage.textContent = "Please add an address first.";
+                        document.getElementById("selectAddressContent").appendChild(noAddressMessage);
+                    }
+                    // Keep the first accordion open
+                    document.getElementById('selectAddressHeader').classList.add('active');
+                    document.getElementById('selectAddressContent').classList.add('show');
+                    return;
                 }
 
                 header.classList.toggle("active");
@@ -145,7 +175,6 @@
             link.addEventListener("click", function(event) {
                 event.preventDefault();
                 const index = this.dataset.index;
-                const addresses = JSON.parse('<%- JSON.stringify(addresses) %>');
                 const address = addresses[index];
 
                 document.getElementById("addressIndex").value = index;
@@ -181,6 +210,11 @@
         document.getElementById('useAddressBtn').addEventListener('click', function() {
             const selectedAddressIndex = document.querySelector('input[name="selectedAddressIndex"]:checked').value;
 
+            if (!selectedAddressIndex) {
+                alert("Please select an address first.");
+                return;
+            }
+
             // Close the address selection accordion
             document.getElementById('selectAddressHeader').classList.remove('active');
             document.getElementById('selectAddressContent').classList.remove('show');
@@ -193,6 +227,12 @@
         // Handle the "Pay Now" button click
         document.getElementById('payNowBtn').addEventListener('click', async function() {
             const selectedAddressIndex = document.querySelector('input[name="selectedAddressIndex"]:checked').value;
+
+            if (!selectedAddressIndex) {
+                alert("Please select an address first.");
+                return;
+            }
+
             const productId = '<%= orderDetails.length === 1 ? orderDetails[0]._id : '' %>';
             const quantity = '<%= orderDetails.length === 1 ? orderDetails[0].quantity : '' %>';
 
@@ -221,6 +261,61 @@
                     });
                 } else {
                     alert("Failed to create order. Please try again.");
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert("An error occurred. Please try again.");
+            }
+        });
+
+        // Handle the "Cash on Delivery" button click
+        document.getElementById('cashOnDeliveryBtn').addEventListener('click', async function() {
+            const selectedAddressIndex = document.querySelector('input[name="selectedAddressIndex"]:checked').value;
+
+            if (!selectedAddressIndex) {
+                alert("Please select an address first.");
+                return;
+            }
+
+            const products = orderDetails.map(item => ({
+                productId: item._id,
+                quantity: item.quantity
+            }));
+
+            console.log(`Selected Address Index: ${selectedAddressIndex}, Products: ${JSON.stringify(products)}`);
+
+            try {
+                const response = await fetch('/checkout/cash-on-delivery', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        selectedAddressIndex,
+                        products
+                    })
+                });
+
+                const data = await response.json();
+                console.log('Order creation response:', data); // Log the response
+
+                if (data.success) {
+                    // Show order success modal
+                    const orderSuccessModal = document.getElementById('orderSuccessModal');
+                    orderSuccessModal.style.display = 'block';
+
+                    let timer = 5;
+                    const redirectTimer = document.getElementById('redirectTimer');
+                    const countdown = setInterval(() => {
+                        timer--;
+                        redirectTimer.textContent = timer;
+                        if (timer === 0) {
+                            clearInterval(countdown);
+                            window.location.href = '/home';
+                        }
+                    }, 1000);
+                } else {
+                    alert("Failed to place order. Please try again.");
                 }
             } catch (error) {
                 console.error('Error:', error);

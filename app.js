@@ -28,7 +28,8 @@ const contactRoutes = require('./routes/contact');
 const adminRoutes = require('./routes/admin');
 const paymentRoutes = require('./routes/payment');
 const paymentCallbackRoutes = require('./routes/paymentCallback');
-
+const cashOnDeliveryRoutes = require('./routes/cashOnDelivery');
+const orderRoutes = require('./routes/orders');
 app.use(express.json());
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -39,8 +40,8 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-// const dbUrl = process.env.ATLAS_URL || "mongodb://localhost:27017/ecommerce";
- const dbUrl =  "mongodb://localhost:27017/ecommerce";
+const dbUrl = process.env.ATLAS_URL || "mongodb://localhost:27017/ecommerce";
+//  const dbUrl =  "mongodb://localhost:27017/ecommerce";
  
 
 
@@ -174,19 +175,25 @@ app.use('/', addressRoutes);
 app.use('/checkout', checkoutRoutes);
 app.use('/', wishlistRoutes);
 app.use('/', contactRoutes);
+app.use('/orders', orderRoutes);
+
+
+
+
+
+// payment routes
+app.use('/payment', paymentRoutes);
+app.use('/payment', paymentCallbackRoutes);
+app.use('/', cashOnDeliveryRoutes);
+
+
+
+
+//admin routes
+app.use('/admin', adminRoutes);
 app.get('/dashboard', (req, res) => {
   res.render('dashboard/dashboard');
 });
-app.get('/test', (req, res) => {
-  res.render('paymentSuccess');
-});
-
-app.use('/payment', paymentRoutes);
-app.use('/payment', paymentCallbackRoutes);
-//admin routes
-app.use('/admin', adminRoutes);
-// Review routes
- 
 app.get('/terms', (req, res) => {
   res.render('about/terms');
 });
@@ -199,7 +206,9 @@ app.get('/shipping', (req, res) => {
 app.get('/privacy', (req, res) => {
   res.render('about/Privacy');
 });
-
+app.get('/test', (req, res) => {
+  res.render('paymentSuccess');
+});
 const port = 3000;
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
