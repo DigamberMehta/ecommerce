@@ -136,12 +136,12 @@ object-fit: contain;
   .product-card:hover {
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
   }
-
   .product-card img {
     width: 100px;
-    height: auto;
+    max-height: 125px;
     margin-bottom: 10px;
-  }
+    object-fit: contain;
+}
 
   .product-card h2 {
     font-size: 18px;
