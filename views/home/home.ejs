@@ -447,7 +447,7 @@
                 </div>
                 
                 <div class="product-desc">
-                  <p class="product-name"><%= prod.title %></p>
+                  <p class="product-name" data-maxlength="15"><%= prod.title %></p>
                   <p class="product-price"><b>₹<%= prod.sellingPrice.toFixed(2) %></b></p>
                 </div>
               </a>
@@ -470,7 +470,7 @@
                   <img src="<%= prod.images[0] %>" alt="<%= prod.title %>" />
                 </div>
                 <div class="product-desc">
-                  <p class="product-name"><%= prod.title %></p>
+                  <p class="product-name" data-maxlength="15"><%= prod.title %></p>
                   <p class="product-price"><b>₹<%= prod.sellingPrice.toFixed(2) %></b></p>
                 </div>
               </a>
@@ -496,7 +496,7 @@
           </div>
      
           <div class="product-desc">
-            <p class="product-name"><%= prod.title %></p>
+            <p class="product-name" data-maxlength="15"><%= prod.title %></p>
             <p class="product-price"><b>₹<%= prod.sellingPrice.toFixed(2) %></b></p>
           </div>
         </a>
@@ -777,7 +777,7 @@
           </div>
      
           <div class="product-desc">
-            <p class="product-name"><%= prod.title %></p>
+            <p class="product-name" data-maxlength="15"><%= prod.title %></p>
             <p class="product-price"><b>₹<%= prod.sellingPrice.toFixed(2) %></b></p>
           </div>
         </a>
@@ -798,6 +798,53 @@
 
 
 <script>
+document.addEventListener('DOMContentLoaded', function() {
+  
+  function updateTextTruncation() {
+    const elements = document.querySelectorAll('.product-name');
+    
+    elements.forEach(element => {
+      const originalText = element.getAttribute('data-original-text');
+      
+      if (!originalText) {
+        element.setAttribute('data-original-text', element.textContent.trim());
+      }
+      
+      const maxLengthAttr = element.getAttribute('data-maxlength');
+      const defaultMaxLength = parseInt(maxLengthAttr, 15);
+      
+      let maxLength;
+      if (window.innerWidth < 576) { // Extra small devices
+        maxLength = defaultMaxLength - 5;
+      } else if (window.innerWidth >= 576 && window.innerWidth < 768) { // Small devices
+        maxLength = defaultMaxLength - 3;
+      } else if (window.innerWidth >= 768 && window.innerWidth < 992) { // Medium devices
+        maxLength = defaultMaxLength;
+      } else if (window.innerWidth >= 992 && window.innerWidth < 1200) { // Large devices
+        maxLength = defaultMaxLength - 3;
+      } else { // Extra large devices
+        maxLength = defaultMaxLength - 2;
+      }
+      
+      const textToDisplay = element.getAttribute('data-original-text');
+      
+      if (!isNaN(maxLength) && maxLength > 0) {
+        if (textToDisplay.length > maxLength) {
+          element.textContent = textToDisplay.slice(0, maxLength) + '...';
+        } else {
+          element.textContent = textToDisplay;
+        }
+      }
+    });
+  }
+  
+  updateTextTruncation();
+  
+  window.addEventListener('resize', updateTextTruncation);
+});
+
+
+
  let cardCarousel_currentSlide = 0;
 const cardCarousel_totalSlides = document.querySelectorAll('.card-carousel-slide').length;
 

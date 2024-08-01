@@ -283,8 +283,9 @@ ul{
 
 .show-carousel-item img {
   width: 100%;
-  height: auto;
+  height: 400px;
   display: block;
+  object-fit: contain;
   border-radius: 8px;
 }
 
@@ -330,7 +331,7 @@ ul{
 .show-thumbnail img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   display: block;
 }
 
