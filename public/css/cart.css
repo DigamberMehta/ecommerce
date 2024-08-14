@@ -35,7 +35,7 @@
 
 .cart-item {
     display: flex;
-    height: 14rem;
+    height: fit-content;
     border: 0.0625rem solid #f3f2f2;
     padding: 0.6rem;
     border-bottom: 1px solid #f3f2f2;
@@ -57,6 +57,12 @@
     height: 12rem;
     object-fit: contain;
 }
+.cart-title-container{
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    
+}
 
 .item-details {
     flex: 2;
@@ -67,9 +73,9 @@
 }
 
 .item-title {
-    font-size: 1rem;
-    font-weight: bold;
-    margin-bottom: 0.5rem;
+    font-size: 1.2rem;
+    
+    margin-right: 0.5rem;
 }
 
 .item-purchased,
@@ -278,6 +284,14 @@ margin-left: 1rem;
 .remove-button{
     color: #292840;
     cursor: pointer;
+}
+.cart-save-later{
+    color: #292840;
+    cursor: pointer;
+    background-color: white;
+    border: none;
+    font-size: 1rem;
+   
 }
 .manual-quantity{
     width: 5rem;

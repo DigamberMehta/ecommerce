@@ -6,7 +6,7 @@ const products = [
     mrpPrice:  20000,
     categories: ["Mobile"],
     brand: "BrandZ",
-    stock: 75,
+    stock: 75, // General stock (could be used as a fallback or sum of all variants)
     images: ["https://m.media-amazon.com/images/I/616wnQmPQ-L._SX569_.jpg", "https://m.media-amazon.com/images/I/611DUOU0OML._SX569_.jpg","https://m.media-amazon.com/images/I/51kSMKsOB3L._SX569_.jpg","https://m.media-amazon.com/images/I/51Fiehk-xlL._SX569_.jpg","https://m.media-amazon.com/images/I/51g0A4NMD8L._SX569_.jpg"],
     reviews: [],
     rating: 1,
@@ -15,40 +15,114 @@ const products = [
       battery: "4000mAh",
       processor: "Octa-core",
       camera: {
-      rearCamera: "64MP + 8MP + 2MP",
-      frontCamera: "16MP"
-      },
-      storage: {
-      internalStorage: "128GB",
-      expandableStorage: "Up to 1TB"
+        rearCamera: "64MP + 8MP + 2MP",
+        frontCamera: "16MP"
       },
       operatingSystem: "Android 11",
       display: {
-      type: "AMOLED",
-      resolution: "1080 x 2400 pixels",
-      refreshRate: "90Hz"
+        type: "AMOLED",
+        resolution: "1080 x 2400 pixels",
+        refreshRate: "90Hz"
       },
       connectivity: {
-      network: "5G",
-      wifi: "Wi-Fi 802.11 a/b/g/n/ac",
-      bluetooth: "Bluetooth 5.1",
-      gps: "GPS/AGPS/GLONASS/GALILEO/BDS/QZSS"
+        network: "5G",
+        wifi: "Wi-Fi 802.11 a/b/g/n/ac",
+        bluetooth: "Bluetooth 5.1",
+        gps: "GPS/AGPS/GLONASS/GALILEO/BDS/QZSS"
       },
       sensors: ["Fingerprint (under display)", "Accelerometer", "Gyroscope", "Proximity", "Compass"],
       dimensions: {
-      height: "164.4mm",
-      width: "76.3mm",
-      thickness: "8.4mm"
+        height: "164.4mm",
+        width: "76.3mm",
+        thickness: "8.4mm"
       },
       weight: "185g",
-      colors: ["Midnight Black", "Aurora Blue", "Sunset Dazzle"],
       features: ["Face Unlock", "Fast Charging", "Reverse Charging"],
       warranty: "1 year manufacturer warranty"
     },
-    tags: ["shoes", "fashion", "sports"],
-    additionalImages: ["path/to/additionalShoesImage1.jpg"],
-    slug: "running-shoes-abc"
+    tags: ["smartphone", "electronics", "mobile"],
+    additionalImages: ["path/to/additionalImage1.jpg"],
+    slug: "oppo-f19-pro",
+    colors: [
+      {
+        color: "Midnight Black",
+        images: ["https://m.media-amazon.com/images/I/616wnQmPQ-L._SX569_.jpg", "https://m.media-amazon.com/images/I/611DUOU0OML._SX569_.jpg","https://m.media-amazon.com/images/I/51kSMKsOB3L._SX569_.jpg","https://m.media-amazon.com/images/I/51Fiehk-xlL._SX569_.jpg","https://m.media-amazon.com/images/I/51g0A4NMD8L._SX569_.jpg"],
+        variants: [
+          {
+            ram: "6GB",
+            storage: "128GB",
+            stock: 30,
+            price: 3999
+          },
+          {
+            ram: "6GB",
+            storage: "256GB",
+            stock: 30,
+            price: 18599
+          },
+          {
+            ram: "8GB",
+            storage: "128GB",
+            stock: 30,
+            price: 18999
+          },
+          {
+            ram: "8GB",
+            storage: "256GB",
+            stock: 15,
+            price: 19999
+          }
+        ]
+      },
+      {
+        color: "Aurora Blue",
+        images: ["https://m.media-amazon.com/images/I/611DUOU0OML._SX569_.jpg"],
+        variants: [
+          {
+            ram: "6GB",
+            storage: "128GB",
+            stock: 20,
+            price: 17999
+          },
+          {
+            ram: "8GB",
+            storage: "256GB",
+            stock: 10,
+            price: 19999
+          }
+        ]
+      },
+      {
+        color: "Sunset Dazzle",
+        images: ["https://m.media-amazon.com/images/I/616wnQmPQ-L._SX569_.jpg", "https://m.media-amazon.com/images/I/611DUOU0OML._SX569_.jpg","https://m.media-amazon.com/images/I/51kSMKsOB3L._SX569_.jpg","https://m.media-amazon.com/images/I/51Fiehk-xlL._SX569_.jpg","https://m.media-amazon.com/images/I/51g0A4NMD8L._SX569_.jpg"],
+        variants: [
+          {
+            ram: "6GB",
+            storage: "128GB",
+            stock: 10,
+            price: 17999
+          },
+          {
+            ram: "8GB",
+            storage: "256GB",
+            stock: 5,
+            price: 19999
+          }
+        ]
+      }
+    ],
+    discount: 10, // 10% discount
+    featured: true,
+    bestseller: false,
+    active: true,
+    metadata: {
+      isLimitedEdition: false,
+      releaseDate: "2023-07-01"
+    },
+    createdAt: new Date(),
+    updatedAt: new Date()
   },
+  
   {
     title: "vivo X70 Pro",
     description: "A powerful laptop with a sleek design, perfect for both work and play.",
@@ -1395,9 +1469,8 @@ const products = [
     "additionalImages": ["path/to/additionalTopImage1.jpg", "path/to/additionalTopImage2.jpg"],
     "slug": "zara-womens-off-the-shoulder-top"
   },
-  
   {
-    "title": "H&M Men's  Shirt",
+    "title": "H&M Men's Slim Fit Shirt",
     "description": "A stylish and comfortable slim fit shirt from H&M, perfect for casual wear. Made from high-quality materials, this shirt features a fitted design and a beautiful pattern.",
     "sellingPrice": 999,
     "mrpPrice": 1200,
@@ -1411,11 +1484,59 @@ const products = [
     ],
     "reviews": [],
     "rating": 4,
+    "colors": [
+      {
+        "color": "White",
+        "images": [
+          "https://m.media-amazon.com/images/I/61DGAlvxRLL._AC_UL480_FMwebp_QL65_.jpg",
+          "https://m.media-amazon.com/images/I/61gFw2BjKzgL._SX569_.jpg"
+        ],
+        "variants": [
+          {
+            "size": "S",
+            "stock": 10,
+            "price": 999
+          },
+          {
+            "size": "M",
+            "stock": 8,
+            "price": 999
+          },
+          {
+            "size": "L",
+            "stock": 5,
+            "price": 1999
+          }
+        ]
+      },
+      {
+        "color": "Black",
+        "images": [
+          "https://m.media-amazon.com/images/I/61Fw2BjKzgL._SX569_.jpg",
+          "https://m.media-amazon.com/images/I/61gFw2BjKzgL._SX569_.jpg"
+        ],
+        "variants": [
+          {
+            "size": "M",
+            "stock": 7,
+            "price": 999
+          },
+          {
+            "size": "L",
+            "stock": 10,
+            "price": 999
+          },
+          {
+            "size": "XL",
+            "stock": 5,
+            "price": 999
+          }
+        ]
+      }
+    ],
     "specifications": {
       "fabric": "Cotton",
       "fit": "Slim Fit",
-      "size": ["S", "M", "L", "XL"],
-      "color": ["White", "Black", "Grey", "Navy"],
       "style": ["Casual", "Slim Fit"],
       "sleeve": ["Short Sleeve"],
       "neckline": ["Pointed Collar"],
@@ -1428,6 +1549,7 @@ const products = [
     "additionalImages": ["path/to/additionalShirtImage1.jpg", "path/to/additionalShirtImage2.jpg"],
     "slug": "h&m-mens-slim-fit-shirt"
   },
+  
   {
     "title": "Levi's  top",
     "description": "A classic and stylish pair of high-waisted jeans from Levi's, perfect for casual wear. Made from high-quality materials, these jeans feature a comfortable fit and a timeless design.",

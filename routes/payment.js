@@ -8,7 +8,7 @@ const User = require('../models/user');
 const cashfreeConfig = require('../cashfreeConfig');
 
 router.post('/create-order', async (req, res) => {
-    const { selectedAddressIndex, productId, quantity } = req.body;
+    const { selectedAddressIndex, productId, quantity, attributes } = req.body; // Capture attributes from the request body
     const userId = req.user._id;
     const user = await User.findById(userId);
 
@@ -26,23 +26,60 @@ router.post('/create-order', async (req, res) => {
             if (!product) {
                 return res.status(404).send('Product not found');
             }
-            const subtotal = product.sellingPrice * quantity;
+
+            let price = product.sellingPrice;
+
+            // Handle attribute-based pricing
+            if (attributes && attributes.color) {
+                const colorVariant = product.colors.find(c => c.color === attributes.color);
+                if (colorVariant) {
+                    const variant = colorVariant.variants.find(v => 
+                        (!attributes.ram || v.ram === attributes.ram) &&
+                        (!attributes.storage || v.storage === attributes.storage) &&
+                        (!attributes.size || v.size === attributes.size)
+                    );
+                    if (variant) {
+                        price = variant.price;
+                    }
+                }
+            }
+
+            const subtotal = price * quantity;
             totalAmount = subtotal;
             orderProducts.push({
                 product: productId,
                 quantity,
-                price: product.sellingPrice
+                price: price,
+                attributes // Store the selected attributes in the order
             });
         } else {
             if (req.session.cart) {
                 orderProducts = await Promise.all(req.session.cart.map(async item => {
                     const product = await Product.findById(item.product._id);
-                    const productAmount = product.sellingPrice * item.quantity;
+                    let price = product.sellingPrice;
+
+                    // Handle attribute-based pricing
+                    if (item.attributes && item.attributes.color) {
+                        const colorVariant = product.colors.find(c => c.color === item.attributes.color);
+                        if (colorVariant) {
+                            const variant = colorVariant.variants.find(v => 
+                                (!item.attributes.ram || v.ram === item.attributes.ram) &&
+                                (!item.attributes.storage || v.storage === item.attributes.storage) &&
+                                (!item.attributes.size || v.size === item.attributes.size)
+                            );
+                            if (variant) {
+                                price = variant.price;
+                            }
+                        }
+                    }
+
+                    const productAmount = price * item.quantity;
                     totalAmount += productAmount;
                     return {
                         product: item.product._id,
                         quantity: item.quantity,
-                        price: product.sellingPrice
+                        price: price,
+                        attributes: item.attributes // Store the selected attributes in the order
                     };
                 }));
             }
@@ -107,5 +144,8 @@ router.post('/create-order', async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 });
+
+module.exports = router;
+
 
 module.exports = router;

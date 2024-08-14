@@ -1,189 +1,218 @@
 <% layout('layouts/boilerplate') %>
-    <style>
-        .wishlist-container {
-            max-width: 94%;
-            margin: 2rem auto;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
+<style>
+    .wishlist-container {
+        max-width: 94%;
+        margin: 2rem auto;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
 
-        .wishlist-title {
-            text-align: center;
-            color: #333;
-        }
+    .wishlist-title {
+        text-align: center;
+        color: #333;
+    }
 
-        .wishlist-empty {
-            text-align: center;
-            color: #999;
-        }
+    .wishlist-empty {
+        text-align: center;
+        color: #999;
+    }
 
-        .wishlist-list {
-            list-style-type: none;
-            padding: 0;
-        }
+    .wishlist-list {
+        list-style-type: none;
+        padding: 0;
+    }
 
-        .wishlist-item {
-            padding: 10px 0;
-            position: relative;
-        }
+    .wishlist-item {
+        padding: 10px 0;
+        position: relative;
+    }
 
-        .wishlist-item-container {
-            border-bottom: 1px solid #ddd;
-        }
+    .wishlist-item-container {
+        border-bottom: 1px solid #ddd;
+    }
 
-        .wishlist-item:last-child {
-            border-bottom: none;
-        }
+    .wishlist-item:last-child {
+        border-bottom: none;
+    }
 
-        .wishlist-image {
-            width: 100px;
-            margin-right: 20px;
-        }
+    .wishlist-image {
+        width: 100px;
+        margin-right: 20px;
+    }
 
-        .wishlist-info {
-            flex: 1;
-        }
+    .wishlist-info {
+        flex: 1;
+    }
 
-        .wishlist-product-title {
-            font-size: 1.2em;
-            margin: 0 0 5px;
-            color: #333;
-        }
+    .wishlist-product-title {
+        font-size: 1.2em;
+        margin: 0 0 5px;
+        color: #333;
+    }
 
-        .wishlist-product-description {
-            margin: 0 0 10px;
-            color: #666;
-        }
+    .wishlist-product-description {
+        margin: 0 0 10px;
+        color: #666;
+    }
 
-        .wishlist-prices {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+    .wishlist-prices {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
 
-        .wishlist-selling-price {
-            color: #e91e63;
-            font-size: 1.2em;
-        }
+    .wishlist-selling-price {
+        color: #e91e63;
+        font-size: 1.2em;
+    }
 
-        .wishlist-mrp-price {
-            color: #999;
-            text-decoration: line-through;
-        }
+    .wishlist-mrp-price {
+        color: #999;
+        text-decoration: line-through;
+    }
 
-        .wishlist-discount {
-            background-color: #e91e63;
-            color: #fff;
-            padding: 2px 5px;
-            border-radius: 4px;
-            font-size: 0.9em;
-        }
+    .wishlist-discount {
+        background-color: #e91e63;
+        color: #fff;
+        padding: 2px 5px;
+        border-radius: 4px;
+        font-size: 0.9em;
+    }
 
-        .wishlist-remove-btn {
-            background-color: #ed2828;
-            color: #fff;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 4px;
-            cursor: pointer;
-            margin-left: 10px;
-        }
+    .wishlist-remove-btn {
+        background-color: #ed2828;
+        color: #fff;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-left: 10px;
+    }
 
-        .wishlist-move-to-cart-btn {
-            background-color: #f16e3e;
-            color: #fff;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 4px;
-            cursor: pointer;
-            margin-left: 10px;
-        }
+    .wishlist-move-to-cart-btn {
+        background-color: #f16e3e;
+        color: #fff;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-left: 10px;
+    }
 
-        .wishlist-remove-btn:hover, .wishlist-move-to-cart-btn:hover {
-            background-color: #c2185b;
-        }
-        .wish-info-container{
-            display: flex;
-            align-items: center;
-        }
-    </style>
+    .wishlist-remove-btn:hover, .wishlist-move-to-cart-btn:hover {
+        background-color: #c2185b;
+    }
+    .wish-info-container{
+        display: flex;
+        align-items: center;
+    }
+</style>
 
-    <div class="wishlist-container">
-        <h1 class="wishlist-title">My Wishlist</h1>
-        <% if (products.length === 0) { %>
-            <p class="wishlist-empty">Your wishlist is empty.</p>
-        <% } else { %>
-            <ul class="wishlist-list">
-                <% products.forEach(product => { 
-                    const discountPercentage = Math.round(((product.mrpPrice - product.sellingPrice) / product.mrpPrice) * 100);
-                %>
-                <div class="wishlist-item-container">
-                    <li class="wishlist-item" data-product-id="<%= product._id %>">
-                        <div class="wish-info-container">
-                        <img src="<%= product.images[0] %>" alt="<%= product.title %> image" class="wishlist-image">
-                        <div class="wishlist-info">
-                            <h2 class="wishlist-product-title"><%= product.title %></h2>
-                            <p class="wishlist-product-description"><%= product.description %></p>
-                            <div class="wishlist-prices">
-                                <span class="wishlist-selling-price">$<%= product.sellingPrice %></span>
-                                <span class="wishlist-mrp-price">$<%= product.mrpPrice %></span>
-                                <span class="wishlist-discount"><%= discountPercentage %>% off</span>
-                            </div>
+<div class="wishlist-container">
+    <h1 class="wishlist-title">My Wishlist</h1>
+    <% if (products.length === 0) { %>
+        <p class="wishlist-empty">Your wishlist is empty.</p>
+    <% } else { %>
+        <ul class="wishlist-list">
+            <% products.forEach(item => { 
+                const discountPercentage = Math.round(((item.product.mrpPrice - item.price) / item.product.mrpPrice) * 100);
+            %>
+            <div class="wishlist-item-container">
+                <li class="wishlist-item" data-product-id="<%= item.product._id %>" data-color="<%= item.attributes.color %>" data-ram="<%= item.attributes.ram %>" data-storage="<%= item.attributes.storage %>" data-size="<%= item.attributes.size %>">
+                    <div class="wish-info-container">
+                    <img src="<%= item.product.images[0] %>" alt="<%= item.product.title %> image" class="wishlist-image">
+                    <div class="wishlist-info">
+                        <h2 class="wishlist-product-title"><%= item.product.title %></h2>
+                      
+                        <div class="wishlist-attributes">
+                            <% if (item.attributes.color) { %>
+                                <div><strong>Color:</strong> <%= item.attributes.color %></div>
+                            <% } %>
+                            <% if (item.attributes.ram) { %>
+                                <div><strong>RAM:</strong> <%= item.attributes.ram %></div>
+                            <% } %>
+                            <% if (item.attributes.storage) { %>
+                                <div><strong>Storage:</strong> <%= item.attributes.storage %></div>
+                            <% } %>
+                            <% if (item.attributes.size) { %>
+                                <div><strong>Size:</strong> <%= item.attributes.size %></div>
+                            <% } %>
                         </div>
+                        <div class="wishlist-prices">
+                            <span class="wishlist-selling-price">₹<%= item.price %></span>
+                            <span class="wishlist-mrp-price">₹<%= item.product.mrpPrice %></span>
+                            <span class="wishlist-discount"><%= discountPercentage %>% off</span>
                         </div>
-                        <div style="margin: 1rem 0;">
-                            <button class="wishlist-remove-btn">Remove</button>
-                            <button class="wishlist-move-to-cart-btn">Move to Cart</button>
-                        </div>
-                    </li>
-                </div>
-                <% }); %>
-            </ul>
-        <% } %>
-    </div>
+                    </div>
+                    </div>
+                    <div style="margin: 1rem 0;">
+                        <button class="wishlist-remove-btn">Remove</button>
+                        <button class="wishlist-move-to-cart-btn">Move to Cart</button>
+                    </div>
+                </li>
+            </div>
+            <% }); %>
+        </ul>
+    <% } %>
+</div>
 
-    <script>
-    document.querySelectorAll('.wishlist-remove-btn').forEach(button => {
-        button.addEventListener('click', async (e) => {
-            const productId = e.target.closest('.wishlist-item').getAttribute('data-product-id');
-            const response = await fetch('/wishlist/remove', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ productId })
-            });
-            const result = await response.json();
-            if (result.success) {
-                e.target.closest('.wishlist-item').remove();
-                // Optionally, show a success message to the user
-                // alert('Item removed from wishlist');
-            } else {
-                // alert('Failed to remove item from wishlist');
-            }
+<script>
+document.querySelectorAll('.wishlist-remove-btn').forEach(button => {
+    button.addEventListener('click', async (e) => {
+        const wishlistItem = e.target.closest('.wishlist-item');
+        const productId = wishlistItem.getAttribute('data-product-id');
+        const color = wishlistItem.getAttribute('data-color');
+        const ram = wishlistItem.getAttribute('data-ram');
+        const storage = wishlistItem.getAttribute('data-storage');
+        const size = wishlistItem.getAttribute('data-size');
+        
+        const response = await fetch('/wishlist/remove', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ productId, color, ram, storage, size })
         });
+        
+        const result = await response.json();
+        if (result.success) {
+            wishlistItem.remove();
+            // Optionally, show a success message to the user
+            // alert('Item removed from wishlist');
+        } else {
+            // alert('Failed to remove item from wishlist');
+        }
     });
+});
 
-    document.querySelectorAll('.wishlist-move-to-cart-btn').forEach(button => {
-        button.addEventListener('click', async (e) => {
-            const productId = e.target.closest('.wishlist-item').getAttribute('data-product-id');
-            const response = await fetch('/wishlist/move-to-cart', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ productId })
-            });
-            const result = await response.json();
-            if (result.success) {
-                e.target.closest('.wishlist-item').remove();
-                // Optionally, show a success message to the user
-                alert('Item moved to cart');
-            } else {
-                alert('Failed to move item to cart');
-            }
+document.querySelectorAll('.wishlist-move-to-cart-btn').forEach(button => {
+    button.addEventListener('click', async (e) => {
+        const wishlistItem = e.target.closest('.wishlist-item');
+        const productId = wishlistItem.getAttribute('data-product-id');
+        const color = wishlistItem.getAttribute('data-color');
+        const ram = wishlistItem.getAttribute('data-ram');
+        const storage = wishlistItem.getAttribute('data-storage');
+        const size = wishlistItem.getAttribute('data-size');
+        const price = wishlistItem.querySelector('.wishlist-selling-price').textContent.replace('₹', '');
+
+        const response = await fetch('/wishlist/move-to-cart', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ productId, color, ram, storage, size, price })
         });
+
+        const result = await response.json();
+        if (result.success) {
+            wishlistItem.remove();
+            // Optionally, show a success message to the user
+          
+        } else {
+            alert('Failed to move item to cart');
+        }
     });
+});
 </script>

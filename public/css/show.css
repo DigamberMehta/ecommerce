@@ -227,10 +227,6 @@ ul{
   font-size: 16px;
 }
 
-.btns {
-  display: flex;
-  align-items: center;
-}
 
 @media (max-width: 1000px) {
   .product-show-image {
@@ -333,10 +329,13 @@ ul{
   height: 100%;
   object-fit: contain;
   display: block;
+
 }
 
 .show-thumbnail.active {
-  border-color: #333;
+  border-color: #679dd2;
+  padding: 0.2rem;
+  border-radius: 5px;
 }
 
 
@@ -349,9 +348,10 @@ ul{
 
 
 
-.btns {
+.show-btns-buy-checkout {
   display: flex;
   align-items: center;
+  margin-top: 1rem;
 }
 
 .review-heading{

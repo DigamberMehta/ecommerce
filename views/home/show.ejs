@@ -1,172 +1,341 @@
 <% layout('layouts/boilerplate') %>
-<style>
-.star-rating {
-  display: flex;
-  gap: 5px;
-  cursor: pointer;
-}
+  <style>
+    .star-rating {
+      display: flex;
+      gap: 5px;
+      cursor: pointer;
+    }
 
-.star {
-  font-size: 2rem;
-  color: #ddd;
-  cursor: pointer;
-  transition: color 0.2s ease-in-out; /* Smooth transition */
-}
+    .star {
+      font-size: 2rem;
+      color: #ddd;
+      cursor: pointer;
+      transition: color 0.2s ease-in-out;
+      /* Smooth transition */
+    }
 
-.star.hover,
-.star.selected {
-  color: gold;
-}
+    .star.hover,
+    .star.selected {
+      color: gold;
+    }
+
+    /* Container for color options */
+    .color-options {
+      display: flex;
+      align-items: center;
+      margin-top: 10px;
+    }
+
+    .color-options label {
+      font-weight: bold;
+      margin-right: 10px;
+    }
+
+    .color-selector {
+      display: flex;
+      gap: 10px;
+    }
+
+    .color-option {
+      width: 40px;
+      height: 40px;
+      border: 2px solid #ddd;
+      border-radius: 5px;
+      cursor: pointer;
+      padding: 5px;
+      transition: border-color 0.3s;
+      object-fit: contain;
+    }
+
+    .color-option.active {
+      border-color: #007bff;
+    }
+
+    /* Container for RAM options */
+    .ram-options,
+    .storage-options {
+      display: flex;
+      align-items: center;
+      margin-top: 10px;
+    }
+
+    .ram-options label,
+    .storage-options label {
+      font-weight: bold;
+      margin-right: 10px;
+    }
+
+    .ram-options #ram-options-container,
+    .storage-options #storage-options-container {
+      display: flex;
+      gap: 10px;
+    }
+
+    .ram-option,
+    .storage-option {
+      padding: 5px 15px;
+      border: 2px solid #ddd;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s, border-color 0.3s;
+    }
+
+    .ram-option:hover,
+    .storage-option:hover {
+      background-color: #f0f0f0;
+    }
+
+    .ram-option.selected,
+    .storage-option.selected {
+      /* background-color: #efefef; */
+      color: rgb(0, 0, 0);
+      border:2px solid #679dd2;
+      /* border-color: #007bff; */
+    }
+
+    /* For uniformity across all options */
+    .ram-option,
+    .storage-option,
+    .color-option {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
 
 
 
-</style>
+    .show-carousel-item img {
+      max-width: 100%;
+      height: auto;
+    }
 
-<div class="show-page">
-  <div class="product-show-container">
-    <div class="product-show-content">
-      <div class="product-show-image">
-        <div class="show-carousel">
-          <div class="show-carousel-inner">
-            <% product.images.forEach((image, index) => { %>
-            <div class="show-carousel-item <%= index === 0 ? 'active' : '' %>">
-              <img src="<%= image %>" alt="Product Image <%= index + 1 %>" />
+    .size-options {
+      display: flex;
+      align-items: center;
+    }
+
+    #size-options-container {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .size-option {
+      padding: 10px 15px;
+      border: 2px solid #ddd;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s, border-color 0.3s;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .size-option:hover {
+      background-color: #f0f0f0;
+    }
+
+    .size-option.selected {
+      background-color: #525456;
+      color: white;
+      border-color: #007bff;
+    }
+
+    .show-option-label {
+      font-weight: bold;
+      margin-right: 10px;
+    }
+  </style>
+
+  <div class="show-page">
+    <div class="product-show-container">
+      <div class="product-show-content">
+        <div class="product-show-image">
+          <div class="show-carousel">
+            <div class="show-carousel-inner">
+              <% // Check if color variants and images are available, otherwise fallback to general product images const
+                imagesToShow=(product.colors && product.colors.length> 0 && product.colors[0].images &&
+                product.colors[0].images.length > 0)
+                ? product.colors[0].images
+                : product.images;
+                %>
+                <% imagesToShow.forEach((image, index)=> { %>
+                  <div class="show-carousel-item <%= index === 0 ? 'active' : '' %>">
+                    <img src="<%= image %>" alt="Product Image <%= index + 1 %>" />
+                  </div>
+                  <% }); %>
             </div>
-            <% }); %>
+            <% if (imagesToShow.length> 1) { %>
+              <div class="show-carousel-indicators">
+                <% imagesToShow.forEach((image, index)=> { %>
+                  <span class="show-indicator <%= index === 0 ? 'active' : '' %>" data-index="<%= index %>"></span>
+                  <% }); %>
+              </div>
+              <% } %>
           </div>
-          <% if (product.images.length > 1) { %>
-          <div class="show-carousel-indicators">
-            <% product.images.forEach((image, index) => { %>
-            <span
-              class="show-indicator <%= index === 0 ? 'active' : '' %>"
-              data-index="<%= index %>"
-            ></span>
-            <% }); %>
-          </div>
-          <% } %>
+          <% if (imagesToShow.length> 1) { %>
+            <div class="show-thumbnails">
+              <% imagesToShow.forEach((image, index)=> { %>
+                <div class="show-thumbnail" data-index="<%= index %>">
+                  <img src="<%= image %>" alt="Thumbnail <%= index + 1 %>" />
+                </div>
+                <% }); %>
+            </div>
+            <% } %>
         </div>
-        <% if (product.images.length > 1) { %>
-        <div class="show-thumbnails">
-          <% product.images.forEach((image, index) => { %>
-          <div class="show-thumbnail" data-index="<%= index %>">
-            <img src="<%= image %>" alt="Thumbnail <%= index + 1 %>" />
-          </div>
-          <% }); %>
-        </div>
-        <% } %>
-      </div>
 
-      <div class="product-show-details">
-        <div class="top-show-section-heading">
-          <div>
-            <h1 class="product-show-title-container">
-            <span class="product-show-title"><%= product.title %></span>
-             </h1>
-          </div>
-          <div class="wishlist-btn-show">
-            <form
-              action="/wishlist/<%= isInWishlist ? 'remove' : 'add' %>"
-              method="POST"
-            >
-              <input
-                type="hidden"
-                name="productId"
-                value="<%= product._id %>"
-              />
-              <button
-                type="submit"
-                class="product-show-btn-wishlist <%= isInWishlist ? 'wishlist-active' : '' %>"
-              >
-                <span class="heart-icon">
-                  <%= isInWishlist ? '❤️' : '🤍' %>
+        <div class="product-show-details">
+          <div class="top-show-section-heading">
+            <div>
+              <h1 class="product-show-title-container">
+                <span class="product-show-title">
+                  <%= product.title %>
                 </span>
+              </h1>
+            </div>
+            <div class="wishlist-btn-show">
+              <form action="/wishlist/<%= isInWishlist ? 'remove' : 'add' %>" method="POST">
+                <input type="hidden" name="productId" value="<%= product._id %>" />
+                <button type="submit" class="product-show-btn-wishlist <%= isInWishlist ? 'wishlist-active' : '' %>">
+                  <span class="heart-icon">
+                    <%= isInWishlist ? '❤️' : '🤍' %>
+                  </span>
+                </button>
+              </form>
+            </div>
+          </div>
+          <p class="product-show-ratings">
+            <span class="show-rating">
+              <%= product.rating %> ★
+            </span>
+            <span class="rating-deatils">
+              <%= product.reviews.length %> Ratings & <%= product.reviews.length %> Reviews
+            </span>
+          </p>
+          <div class="product-show-price">
+            <span class="product-show-current-price">₹<%= product.colors && product.colors.length> 0 &&
+                product.colors[0].variants && product.colors[0].variants.length > 0 ?
+                product.colors[0].variants[0].price : product.sellingPrice %></span>
+            <span class="product-show-original-price">₹<%= product.mrpPrice %></span>
+            <span class="product-show-discount"></span>
+          </div>
+
+
+
+          <div class="show-offer-container">
+            <div class="show-offer-title">
+              <p class="show-offer-title-heading">Available offers</p>
+            </div>
+            <div class="show-offers">
+              <p class="show-offer-text-container">
+                <i class="fa-sharp fa-solid fa-tag show-offer-tag"></i>
+                <span class="showoffer-name"> Combo Offer</span> <span class="show-offer-description">Buy 3 items save
+                  3%; Buy 4 or more save 5%</span>
+              </p>
+              <p class="show-offer-text-container">
+                <i class="fa-sharp fa-solid fa-tag show-offer-tag"></i>
+                <span class="showoffer-name"> Combo Offer</span> <span class="show-offer-description">Buy 3 items save
+                  3%; Buy 4 or more save 5%</span>
+              </p>
+              <p class="show-offer-text-container">
+                <i class="fa-sharp fa-solid fa-tag show-offer-tag"></i>
+                <span class="showoffer-name"> Bank Offer </span> <span class="show-offer-description">Buy 3 items save
+                  3%; Buy 4 or more save 5%</span>
+              </p>
+              <p class="show-offer-text-container">
+                <i class="fa-sharp fa-solid fa-tag show-offer-tag"></i>
+                <span class="showoffer-name"> Bank Offer </span> <span class="show-offer-description">Buy 3 items save
+                  3%; Buy 4 or more save 5%</span>
+              </p>
+            </div>
+          </div>
+
+
+
+          <div class="color-options">
+            <label>Color:</label>
+            <div class="color-selector">
+              <% product.colors.forEach((colorVariant, colorIndex)=> { %>
+                <img src="<%= colorVariant.images[0] %>" alt="<%= colorVariant.color %>"
+                  class="color-option <%= colorIndex === 0 ? 'active' : '' %>" data-color-index="<%= colorIndex %>"
+                  data-color="<%= colorVariant.color %>" />
+                <% }); %>
+            </div>
+          </div>
+
+          <div class="ram-options">
+            <label class="show-option-label">RAM:</label>
+            <div id="ram-options-container">
+              <!-- RAM options will be dynamically updated based on the selected color -->
+            </div>
+          </div>
+
+          <div class="storage-options">
+            <label class="show-option-label">Storage:</label>
+            <div id="storage-options-container">
+              <!-- Storage options will be dynamically updated based on the selected color -->
+            </div>
+          </div>
+
+          <div class="size-options">
+            <label class="show-option-label">Size:</label>
+            <div id="size-options-container">
+              <!-- Size options will be dynamically updated based on the selected color -->
+            </div>
+          </div>
+
+          <div class="show-btns-buy-checkout">
+            <form action="/cart/add" method="POST">
+              <input type="hidden" name="productId" value="<%= product._id %>" />
+              <input type="hidden" name="color" id="selectedColor" />
+              <input type="hidden" name="ram" id="selectedRam" />
+              <input type="hidden" name="storage" id="selectedStorage" />
+              <input type="hidden" name="size" id="selectedSize" />
+              <input type="hidden" name="price" id="selectedPrice" />
+              <input type="hidden" name="quantity" value="1" />
+
+              <button type="submit" class="product-show-btn-add-to-cart">
+                <i class="fa-light fa-cart-shopping s-icons"></i> Add to Cart
               </button>
             </form>
+
+            <form action="/checkout" method="GET" id="buyNowForm">
+              <input type="hidden" name="productId" value="<%= product._id %>" />
+              <input type="hidden" name="color" id="selectedBuyColor" />
+              <input type="hidden" name="ram" id="selectedBuyRam" />
+              <input type="hidden" name="storage" id="selectedBuyStorage" />
+              <input type="hidden" name="size" id="selectedBuySize" />
+              <input type="hidden" name="price" id="selectedBuyPrice" />
+              <input type="hidden" name="quantity" value="1" />
+              <button type="submit" class="product-show-btn-buy-now">
+                <i class="fa-sharp fa-solid fa-bolt"></i> &nbsp; Buy Now
+              </button>
+            </form>
+
           </div>
-        </div>
-        <p class="product-show-ratings">
-         <span class="show-rating"> <%= product.rating %> ★ </span>
-       <span class="rating-deatils">  <%= product.reviews.length %> Ratings & <%=
-          product.reviews.length %> Reviews </span>
-        </p>
-        <div class="product-show-price">
-          <span class="product-show-current-price"
-            >₹<%= product.sellingPrice %></span
-          >
-          <span class="product-show-original-price"
-            >₹<%= product.mrpPrice %></span
-          >
-          <span class="product-show-discount"></span>
-        </div>
 
-        <div class="show-offer-container">
-          <div class="show-offer-title">
-            <p class="show-offer-title-heading">Available offers</p>
+          <div class="product-features">
+            <div class="highlights-section">
+              <span class="section-title-highlight">Highlights</span>
+              <span class="highlights-list">
+                <li>Gives a Matte finish look</li>
+                <li>Texture is: Liquid</li>
+                <li>Quantity: 8.8 g</li>
+              </span>
+            </div>
+            <div class="services-section">
+              <span class="section-title">Services</span>
+              <div class="service-item">
+                Cash on Delivery available
+              </div>
+            </div>
           </div>
-          <div class="show-offers">
-            <p class="show-offer-text-container">
-              <i class="fa-sharp fa-solid fa-tag show-offer-tag"></i>
-              <span class="showoffer-name"> Combo Offer</span> <span class="show-offer-description">Buy 3 items save 3%; Buy 4 or more save 5%</span>
-            </p>
-            <p class="show-offer-text-container">
-              <i class="fa-sharp fa-solid fa-tag show-offer-tag"></i>
-              <span class="showoffer-name"> Combo Offer</span> <span class="show-offer-description">Buy 3 items save  3%; Buy 4 or more save 5%</span>
-            </p>
-            <p class="show-offer-text-container">
-              <i class="fa-sharp fa-solid fa-tag show-offer-tag"></i>
-              <span class="showoffer-name"> Bank Offer </span> <span class="show-offer-description">Buy 3 items save  3%; Buy 4 or more save 5%</span>
-            </p>
-            <p class="show-offer-text-container">
-              <i class="fa-sharp fa-solid fa-tag show-offer-tag"></i>
-              <span class="showoffer-name"> Bank Offer </span> <span class="show-offer-description">Buy 3 items save 3%; Buy 4 or more save 5%</span> 
-            </p>
+          <div class="important-note">
+            <span class="important-note-title">Important</span>
+            No Returns & Exchange
           </div>
-        </div>
 
-        <div class="btns">
-          <form action="/cart/add" method="POST">
-            <input type="hidden" name="productId" value="<%= product._id %>" />
-            <input type="hidden" name="quantity" value="1" />
-
-            <button type="submit" class="product-show-btn-add-to-cart">
-              <i class="fa-light fa-cart-shopping s-icons"></i>   Add to Cart
-            </button>
-          </form>
-          <form action="/checkout" method="GET">
-            <input type="hidden" name="productId" value="<%= product._id %>" />
-            <input type="hidden" name="quantity" value="1" />
-            <button type="submit" class="product-show-btn-buy-now">
-              <i class="fa-sharp fa-solid fa-bolt"></i> &nbsp; Buy Now
-            </button>
-          </form>
-        </div>
-
-
-
-       <div class="product-features">
-    <div class="highlights-section">
-        <span class="section-title-highlight">Highlights</span>
-        <span class="highlights-list">
-            <li>Gives a Matte finish look</li>
-            <li>Texture is: Liquid</li>
-            <li>Quantity: 8.8 g</li>
-        </span>
-    </div>
-    <div class="services-section">
-        <span class="section-title">Services</span>
-        <div class="service-item">
-            Cash on Delivery available
-        </div>
-    </div>
-</div>
-<div class="important-note">
-    <span class="important-note-title">Important</span>
-   No Returns & Exchange
-</div>
-
-        
-
-        <div class="show-product-description">
+          <div class="show-product-description">
             <span class="product-show-description-title">Description </span>
             <span class="product-show-text-wrapper">
               <div class="product-show-description-text">
@@ -174,10 +343,8 @@
               </div>
             </span>
           </div>
-          
-  
-        
-        <div class="product-show-highlight">
+
+          <div class="product-show-highlight">
             <div class="product-show-highlight-title">All Specifications</div>
             <table class="product-specifications-table">
               <tr>
@@ -185,283 +352,477 @@
                 <th>Details</th>
               </tr>
               <% for (let key in product.specifications) { %>
-              <tr>
-                <td><span class="show-table-key-heading"><%= camelCaseToTitleCase(key) %></span></td>
-                <td>
-                  <% if (typeof product.specifications[key] === 'object') { %>
-                  <div class="product-specifications-list">
-                    <% for (let subKey in product.specifications[key]) { %>
-                    <li class="product-specifications-list-item">
-                      <% if (typeof subKey === 'string' && !/^\d+$/.test(subKey)) { %>
-                        <span class="product-specifications-key"><%= camelCaseToTitleCase(subKey) %>:</span>
-                      <% } %> 
-                      <span class="product-specifications-value"><%= product.specifications[key][subKey] %></span>
-                    </li>
-                    <% } %>
-                </div>
-                  <% } else { %>
-                  <span class="product-specifications-value"><%= product.specifications[key] %></span>
-                  <% } %>
-                </td>
-              </tr>
-              <% } %>
+                <tr>
+                  <td><span class="show-table-key-heading">
+                      <%= camelCaseToTitleCase(key) %>
+                    </span></td>
+                  <td>
+                    <% if (typeof product.specifications[key]==='object' ) { %>
+                      <div class="product-specifications-list">
+                        <% for (let subKey in product.specifications[key]) { %>
+                          <li class="product-specifications-list-item">
+                            <% if (typeof subKey==='string' && !/^\d+$/.test(subKey)) { %>
+                              <span class="product-specifications-key">
+                                <%= camelCaseToTitleCase(subKey) %>:
+                              </span>
+                              <% } %>
+                                <span class="product-specifications-value">
+                                  <%= product.specifications[key][subKey] %>
+                                </span>
+                          </li>
+                          <% } %>
+                      </div>
+                      <% } else { %>
+                        <span class="product-specifications-value">
+                          <%= product.specifications[key] %>
+                        </span>
+                        <% } %>
+                  </td>
+                </tr>
+                <% } %>
             </table>
           </div>
-          
-          
-
-
+        </div>
       </div>
-    </div>
 
-    <div className="full-width-preview">
-      <div class="review-section">
-        <div class="write-review">
-          <button id="openModal" class="review-heading">Write a Review</button>
-        </div>
-        <div id="reviewModal" class="modal">
-          <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2>Write a Review</h2>
-
-            <form
-            action="/products/<%= product._id %>/<%= product.slug %>/reviews"
-            method="POST"
-            enctype="multipart/form-data"
-          >
-            <div class="form-group">
-              <label for="review-title">Title</label>
-              <input
-                type="text"
-                id="review-title"
-                name="review[title]"
-                placeholder="Enter the title of your review"
-              />
-            </div>
-            <div class="form-group">
-              <label for="review-body">Review</label>
-              <textarea
-                id="review-body"
-                name="review[comment]"
-                placeholder="Write your review here"
-                rows="5"
-              ></textarea>
-            </div>
-            <div class="form-group">
-              <label for="review-rating">Rating</label>
-              <div class="star-rating" id="star-rating">
-                <span class="star" data-value="1">&#9733;</span>
-                <span class="star" data-value="2">&#9733;</span>
-                <span class="star" data-value="3">&#9733;</span>
-                <span class="star" data-value="4">&#9733;</span>
-                <span class="star" data-value="5">&#9733;</span>
-              </div>
-              <input type="hidden" id="review-rating" name="review[rating]" />
-            </div>
-            <div class="form-group">
-              <label for="review-images">Upload Images</label>
-              <input type="file" id="review-images" name="images" multiple />
-            </div>
-            <button type="submit" class="review-submit">Submit Review</button>
-          </form>
-          
-
+      <div class="full-width-preview">
+        <div class="review-section">
+          <div class="write-review">
+            <button id="openModal" class="review-heading">Write a Review</button>
           </div>
-        </div>
-        
+          <div id="reviewModal" class="modal">
+            <div class="modal-content">
+              <span class="close">&times;</span>
+              <h2>Write a Review</h2>
 
-        <div class="reviews-container">
-          <h2 class="all-reviews-section" >Rating & Reviews</h2>
-         
-          <% product.reviews.forEach(review => { %>
-          <div class="review">
-            <h3 class="customer-review-tittle"><%= review.title %></h3>
-            <div class="review-rating">
-              <% for (let i = 0; i < review.rating; i++) { %>
-                <i class="fa fa-star"></i>
-              <% } %>
-            </div>
-            <div class="review-images">
-              <% if (review.image && review.image.length > 0) { %>
-              <div class="review-images-show-container">
-                <% review.image.forEach(imageUrl => { %>
-                <img
-                  src="<%= imageUrl %>"
-                  alt="Review Image"
-                  class="review-image user-review-image"
-                  onclick="showOpenPreview('<%= imageUrl %>')"
-                />
-                <% }) %>
-              </div>
-              <% } %>
-            </div>
-            <p><%= review.comment %></p>
-            <div class="user-review-action">
-              <small
-                ><i style="color: black">Reviewed by </i>: <%= review.user.name
-                %></small
-              >
-              <div class="product-review-option">
-                <form
-                  action="/products/<%= product._id %>/<%= product.slug %>/reviews/<%= review._id %>?_method=DELETE"
-                  method="POST"
-                >
-                  <button type="submit">Delete |</button>
-                </form>
-                <button class="edit-button" data-review-id="<%= review._id %>">
-                  Edit
-                </button>
-              </div>
+              <form action="/products/<%= product._id %>/<%= product.slug %>/reviews" method="POST"
+                enctype="multipart/form-data">
+                <div class="form-group">
+                  <label for="review-title">Title</label>
+                  <input type="text" id="review-title" name="review[title]"
+                    placeholder="Enter the title of your review" />
+                </div>
+                <div class="form-group">
+                  <label for="review-body">Review</label>
+                  <textarea id="review-body" name="review[comment]" placeholder="Write your review here"
+                    rows="5"></textarea>
+                </div>
+                <div class="form-group">
+                  <label for="review-rating">Rating</label>
+                  <div class="star-rating" id="star-rating">
+                    <span class="star" data-value="1">&#9733;</span>
+                    <span class="star" data-value="2">&#9733;</span>
+                    <span class="star" data-value="3">&#9733;</span>
+                    <span class="star" data-value="4">&#9733;</span>
+                    <span class="star" data-value="5">&#9733;</span>
+                  </div>
+                  <input type="hidden" id="review-rating" name="review[rating]" />
+                </div>
+                <div class="form-group">
+                  <label for="review-images">Upload Images</label>
+                  <input type="file" id="review-images" name="images" multiple />
+                </div>
+                <button type="submit" class="review-submit">Submit Review</button>
+              </form>
             </div>
           </div>
-          <% }) %>
+
+          <div class="reviews-container">
+            <h2 class="all-reviews-section">Rating & Reviews</h2>
+
+            <% product.reviews.forEach(review=> { %>
+              <div class="review">
+                <h3 class="customer-review-tittle">
+                  <%= review.title %>
+                </h3>
+                <div class="review-rating">
+                  <% for (let i=0; i < review.rating; i++) { %>
+                    <i class="fa fa-star"></i>
+                    <% } %>
+                </div>
+                <div class="review-images">
+                  <% if (review.image && review.image.length> 0) { %>
+                    <div class="review-images-show-container">
+                      <% review.image.forEach(imageUrl=> { %>
+                        <img src="<%= imageUrl %>" alt="Review Image" class="review-image user-review-image"
+                          onclick="showOpenPreview('<%= imageUrl %>')" />
+                        <% }) %>
+                    </div>
+                    <% } %>
+                </div>
+                <p>
+                  <%= review.comment %>
+                </p>
+                <div class="user-review-action">
+                  <small><i style="color: black">Reviewed by </i>: <%= review.user.name %></small>
+                  <div class="product-review-option">
+                    <form
+                      action="/products/<%= product._id %>/<%= product.slug %>/reviews/<%= review._id %>?_method=DELETE"
+                      method="POST">
+                      <button type="submit">Delete |</button>
+                    </form>
+                    <button class="edit-button" data-review-id="<%= review._id %>">
+                      Edit
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <% }) %>
+          </div>
         </div>
-      </div>
 
-      <div id="show-image-preview-modal" class="show-image-preview-modal">
-        <span class="show-close-button" onclick="showClosePreview()"
-          >&times;</span
-        >
-        <img class="show-preview-content" id="show-preview-image" />
-      </div>
+        <div id="show-image-preview-modal" class="show-image-preview-modal">
+          <span class="show-close-button" onclick="showClosePreview()">&times;</span>
+          <img class="show-preview-content" id="show-preview-image" />
+        </div>
 
-      <%- include('../partials/browsingHistory.ejs') %>
+        <%- include('../partials/browsingHistory.ejs') %>
+      </div>
     </div>
   </div>
-</div>
-
-<script>
-      document.addEventListener("DOMContentLoaded", function () {
-          document.querySelectorAll('.edit-button').forEach(button => {
-              button.addEventListener('click', function () {
-                  const reviewId = this.getAttribute('data-review-id');
-                  window.location.href = `/products/<%= product._id %>/reviews/${reviewId}/edit`;
-              });
-          });
-
-          document.getElementById('openModal').addEventListener('click', function () {
-              document.getElementById('reviewModal').classList.add('show');
-          });
-
-          document.querySelector('.close').addEventListener('click', function () {
-              document.getElementById('reviewModal').classList.remove('show');
-          });
-
-          const sellingPrice = <%= product.sellingPrice %>;
-          const mrpPrice = <%= product.mrpPrice %>;
-          const discountElement = document.querySelector(".product-show-discount");
-
-          const discountAmount = mrpPrice - sellingPrice;
-          const discountPercentage = ((discountAmount / mrpPrice) * 100).toFixed(2);
-
-          discountElement.textContent = `${discountPercentage}% off`;
-      });
-      function showOpenPreview(imageSrc) {
-          document.getElementById('show-image-preview-modal').style.display = 'block';
-          document.getElementById('show-preview-image').src = imageSrc;
-          disableScroll();
-      }
-
-      function showClosePreview() {
-          document.getElementById('show-image-preview-modal').style.display = 'none';
-          enableScroll();
-      }
-
-      function disableScroll() {
-          document.body.style.overflow = 'hidden';
-      }
-
-      function enableScroll() {
-          document.body.style.overflow = '';
-      }
-      document.addEventListener('DOMContentLoaded', () => {
+  <script>
+   document.addEventListener("DOMContentLoaded", function () {
+    const product = <%- JSON.stringify(product) %>;
+    const colorOptions = document.querySelectorAll(".color-option");
     const carouselInner = document.querySelector('.show-carousel-inner');
-    const indicators = document.querySelectorAll('.show-carousel-indicators .show-indicator');
-    const thumbnails = document.querySelectorAll('.show-thumbnail');
+    const indicatorsContainer = document.querySelector('.show-carousel-indicators');
+    const thumbnailsContainer = document.querySelector('.show-thumbnails');
+    const priceElement = document.querySelector(".product-show-current-price");
+    const ramOptionsContainer = document.getElementById("ram-options-container");
+    const storageOptionsContainer = document.getElementById("storage-options-container");
+    const sizeOptionsContainer = document.getElementById("size-options-container");
+
+    const ramSection = document.querySelector(".ram-options");
+    const storageSection = document.querySelector(".storage-options");
+    const sizeSection = document.querySelector(".size-options");
+    const colorSection = document.querySelector(".color-options");
+
+    const ramLabel = document.querySelector(".ram-options label");
+    const storageLabel = document.querySelector(".storage-options label");
+    const sizeLabel = document.querySelector(".size-options label");
+
+    let selectedColorIndex = 0;
     let currentIndex = 0;
-    let startX, endX;
-    let isTransitioning = false;
 
-    const moveToImage = (index) => {
-      if (isTransitioning) return;
+    function updateFormFields() {
+        const selectedColorVariant = product.colors[selectedColorIndex];
+        const selectedRam = document.querySelector('.ram-option.selected')?.textContent || '';
+        const selectedStorage = document.querySelector('.storage-option.selected')?.textContent || '';
+        const selectedSize = document.querySelector('.size-option.selected')?.textContent || '';
+        const selectedVariant = selectedColorVariant?.variants.find(variant => 
+            variant.ram === selectedRam && variant.storage === selectedStorage && variant.size === selectedSize);
 
-      isTransitioning = true;
-      indicators.forEach(ind => ind.classList.remove('active'));
-      indicators[index].classList.add('active');
-      thumbnails.forEach(thumbnail => thumbnail.classList.remove('active'));
-      thumbnails[index].classList.add('active');
-      carouselInner.style.transform = `translateX(-${index * 100}%)`;
-      currentIndex = index;
+        document.getElementById('selectedColor').value = selectedColorVariant ? selectedColorVariant.color : '';
+        document.getElementById('selectedRam').value = selectedRam;
+        document.getElementById('selectedStorage').value = selectedStorage;
+        document.getElementById('selectedSize').value = selectedSize;
+        document.getElementById('selectedPrice').value = selectedVariant ? selectedVariant.price : product.sellingPrice;
+    }
 
-      setTimeout(() => {
-        isTransitioning = false;
-      }, 500); // Assuming the transition duration is 0.5s
-    };
-
-    indicators.forEach((indicator, index) => {
-      indicator.addEventListener('click', () => {
-        moveToImage(index);
-      });
+    document.querySelector('.product-show-btn-add-to-cart').addEventListener('click', function() {
+        updateFormFields();
     });
 
-    thumbnails.forEach((thumbnail, index) => {
-      thumbnail.addEventListener('click', () => {
-        moveToImage(index);
-      });
-    });
+    // Function to update the carousel and thumbnails based on the selected color
+    function updateImages(colorIndex) {
+        const selectedColorVariant = product.colors.length > 0 ? product.colors[colorIndex] : null;
+        const selectedImages = selectedColorVariant && selectedColorVariant.images.length > 0 ? selectedColorVariant.images : product.images; // Fallback to general product images
 
-    // Touch events for swipe functionality
-    carouselInner.addEventListener('touchstart', (e) => {
-      startX = e.touches[0].clientX;
-      endX = startX; // Initialize endX to startX
-    }, { passive: true });
+        // Update carousel images
+        carouselInner.innerHTML = '';
+        selectedImages.forEach((image, index) => {
+            const div = document.createElement('div');
+            div.classList.add('show-carousel-item');
+            if (index === 0) div.classList.add('active');
+            div.innerHTML = `<img src="${image}" alt="Product Image ${index + 1}" />`;
+            carouselInner.appendChild(div);
+        });
 
-    carouselInner.addEventListener('touchmove', (e) => {
-      endX = e.touches[0].clientX;
-      e.preventDefault(); // Prevent default touch move behavior
-    }, { passive: false });
+        // Update thumbnails
+        thumbnailsContainer.innerHTML = '';
+        selectedImages.forEach((image, index) => {
+            const thumbnailDiv = document.createElement('div');
+            thumbnailDiv.classList.add('show-thumbnail');
+            if (index === 0) thumbnailDiv.classList.add('active');
+            thumbnailDiv.innerHTML = `<img src="${image}" alt="Thumbnail ${index + 1}" />`;
+            thumbnailDiv.addEventListener('click', () => moveToImage(index));
+            thumbnailsContainer.appendChild(thumbnailDiv);
+        });
 
-    carouselInner.addEventListener('touchend', () => {
-      const threshold = 50; // Minimum swipe distance
-      if (startX - endX > threshold) {
-        // Swipe left
-        if (currentIndex < indicators.length - 1) {
-          moveToImage(currentIndex + 1);
+        // Update indicators
+        indicatorsContainer.innerHTML = '';
+        selectedImages.forEach((_, index) => {
+            const indicatorSpan = document.createElement('span');
+            indicatorSpan.classList.add('show-indicator');
+            if (index === 0) indicatorSpan.classList.add('active');
+            indicatorSpan.addEventListener('click', () => moveToImage(index));
+            indicatorsContainer.appendChild(indicatorSpan);
+        });
+
+        // Reset the current index to 0
+        currentIndex = 0;
+    }
+
+    // Function to move the carousel to the specified image index
+    function moveToImage(index) {
+        const totalImages = carouselInner.children.length;
+        if (index >= 0 && index < totalImages) {
+            const percentage = -index * 100;
+            carouselInner.style.transform = `translateX(${percentage}%)`;
+
+            // Update the active class for indicators and thumbnails
+            indicatorsContainer.querySelectorAll('.show-indicator').forEach(ind => ind.classList.remove('active'));
+            indicatorsContainer.children[index].classList.add('active');
+
+            thumbnailsContainer.querySelectorAll('.show-thumbnail').forEach(thumbnail => thumbnail.classList.remove('active'));
+            thumbnailsContainer.children[index].classList.add('active');
+
+            currentIndex = index;
         }
-      } else if (endX - startX > threshold) {
-        // Swipe right
-        if (currentIndex > 0) {
-          moveToImage(currentIndex - 1);
+    }
+
+    // Function to update RAM, Storage, and Size options based on the selected color
+    function updateOptions(colorIndex) {
+        const selectedColorVariant = product.colors.length > 0 ? product.colors[colorIndex] : null;
+        const variants = selectedColorVariant?.variants || [];
+
+        const hasRam = variants.some(variant => variant.ram);
+        const hasSize = variants.some(variant => variant.size);
+
+        // Show or hide the RAM options container based on availability
+        if (hasRam) {
+            ramSection.style.display = 'flex';
+            ramLabel.style.display = 'inline';
+            ramOptionsContainer.style.display = 'flex';
+            const availableRamOptions = [...new Set(variants.map(variant => variant.ram))];
+            ramOptionsContainer.innerHTML = '';
+            availableRamOptions.forEach(ram => {
+                const div = document.createElement('div');
+                div.classList.add('ram-option');
+                div.textContent = ram;
+                div.addEventListener('click', function () {
+                    document.querySelectorAll('.ram-option').forEach(btn => btn.classList.remove('selected'));
+                    this.classList.add('selected');
+                    updateStorageOptions(ram); // Update storage options based on selected RAM
+                    updatePrice();
+                });
+                ramOptionsContainer.appendChild(div);
+            });
+        } else {
+            ramSection.style.display = 'none';
         }
-      }
+
+        // Hide storage options initially
+        storageSection.style.display = 'none';
+
+        // Show or hide the Size options container based on availability
+        if (hasSize) {
+            sizeSection.style.display = 'flex';
+            sizeLabel.style.display = 'inline';
+            sizeOptionsContainer.style.display = 'flex';
+            const availableSizeOptions = [...new Set(variants.map(variant => variant.size))];
+            sizeOptionsContainer.innerHTML = '';
+            availableSizeOptions.forEach(size => {
+                const div = document.createElement('div');
+                div.classList.add('size-option');
+                div.textContent = size;
+                div.addEventListener('click', function () {
+                    document.querySelectorAll('.size-option').forEach(btn => btn.classList.remove('selected'));
+                    this.classList.add('selected');
+                    updatePrice();
+                });
+                sizeOptionsContainer.appendChild(div);
+            });
+        } else {
+            sizeSection.style.display = 'none';
+        }
+
+        // Function to update Storage options based on selected RAM
+        function updateStorageOptions(selectedRam) {
+            const filteredVariants = variants.filter(variant => variant.ram === selectedRam);
+            const availableStorageOptions = [...new Set(filteredVariants.map(variant => variant.storage))];
+
+            if (availableStorageOptions.length > 0) {
+                storageSection.style.display = 'flex';
+                storageLabel.style.display = 'inline';
+                storageOptionsContainer.style.display = 'flex';
+                storageOptionsContainer.innerHTML = '';
+                availableStorageOptions.forEach(storage => {
+                    const div = document.createElement('div');
+                    div.classList.add('storage-option');
+                    div.textContent = storage;
+                    div.addEventListener('click', function () {
+                        document.querySelectorAll('.storage-option').forEach(btn => btn.classList.remove('selected'));
+                        this.classList.add('selected');
+                        updatePrice();
+                    });
+                    storageOptionsContainer.appendChild(div);
+                });
+            } else {
+                storageSection.style.display = 'none';
+            }
+        }
+    }
+
+    // Function to update the price based on selected color, RAM, Storage, or Size
+    function updatePrice() {
+        const selectedColorVariant = product.colors.length > 0 ? product.colors[selectedColorIndex] : null;
+        const selectedRam = document.querySelector('.ram-option.selected')?.textContent;
+        const selectedStorage = document.querySelector('.storage-option.selected')?.textContent;
+        const selectedSize = document.querySelector('.size-option.selected')?.textContent;
+
+        let selectedVariant;
+        if (selectedRam && selectedStorage) {
+            selectedVariant = selectedColorVariant?.variants.find(
+                variant => variant.ram === selectedRam && variant.storage === selectedStorage
+            );
+        } else if (selectedSize) {
+            selectedVariant = selectedColorVariant?.variants.find(
+                variant => variant.size === selectedSize
+            );
+        } else {
+            selectedVariant = selectedColorVariant?.variants[0]; // Default to the first variant if no selection is made
+        }
+
+        if (selectedVariant) {
+            priceElement.textContent = `₹${selectedVariant.price}`;
+        } else {
+            priceElement.textContent = `₹${product.sellingPrice}`; // Fallback to general product selling price
+        }
+    }
+
+    // Event listeners for color selection
+    if (colorOptions.length > 0) {
+        colorOptions.forEach((colorOption, index) => {
+            colorOption.addEventListener('click', () => {
+                selectedColorIndex = index;
+
+                // Update the active class
+                colorOptions.forEach(option => option.classList.remove('active'));
+                colorOption.classList.add('active');
+
+                // Update images, options, and price
+                updateImages(index);
+                updateOptions(index);
+                updatePrice();
+            });
+        });
+    } else {
+        // Fallback to default product images and price if no color options are available
+        updateImages(0);
+        updatePrice();
+        colorSection.style.display = 'none';
+    }
+
+    // Initialize with the first color's RAM, Storage, or Size options or fallback to general images and price
+    updateImages(0);
+    updateOptions(0);
+    updatePrice();
+
+    // Modal functionality
+    const openModalButton = document.getElementById('openModal');
+    const closeModalButton = document.querySelector('.close');
+    const reviewModal = document.getElementById('reviewModal');
+
+    openModalButton.addEventListener('click', function () {
+        reviewModal.classList.add('show');
     });
-  });
-  document.addEventListener('DOMContentLoaded', function () {
+
+    closeModalButton.addEventListener('click', function () {
+        reviewModal.classList.remove('show');
+    });
+
+    // Handle star rating
     const stars = document.querySelectorAll('.star');
     const ratingInput = document.getElementById('review-rating');
     let selectedRating = 0;
 
     stars.forEach((star, index) => {
-      star.addEventListener('mouseover', function () {
-        highlightStars(index + 1);
-      });
+        star.addEventListener('mouseover', function () {
+            highlightStars(index + 1);
+        });
 
-      star.addEventListener('mouseout', function () {
-        highlightStars(selectedRating);
-      });
+        star.addEventListener('mouseout', function () {
+            highlightStars(selectedRating);
+        });
 
-      star.addEventListener('click', function () {
-        selectedRating = index + 1;
-        ratingInput.value = selectedRating;
-        highlightStars(selectedRating);
-      });
+        star.addEventListener('click', function () {
+            selectedRating = index + 1;
+            ratingInput.value = selectedRating;
+            highlightStars(selectedRating);
+        });
     });
 
     function highlightStars(rating) {
-      stars.forEach((star, index) => {
-        star.classList.toggle('hover', index < rating);
-        star.classList.toggle('selected', index < selectedRating);
-      });
+        stars.forEach((star, index) => {
+            star.classList.toggle('hover', index < rating);
+            star.classList.toggle('selected', index < selectedRating);
+        });
     }
-  });
-</script>
+
+    function updateBuyNowFormFields() {
+        const selectedColorVariant = product.colors.length > 0 ? product.colors[selectedColorIndex] : null;
+        const selectedRam = document.querySelector('.ram-option.selected')?.textContent || '';
+        const selectedStorage = document.querySelector('.storage-option.selected')?.textContent || '';
+        const selectedSize = document.querySelector('.size-option.selected')?.textContent || '';
+
+        let selectedVariant;
+
+        if (selectedRam && selectedStorage && selectedSize) {
+            selectedVariant = selectedColorVariant?.variants.find(variant => 
+                variant.ram === selectedRam && variant.storage === selectedStorage && variant.size === selectedSize);
+        } else if (selectedRam && selectedStorage) {
+            selectedVariant = selectedColorVariant?.variants.find(variant => 
+                variant.ram === selectedRam && variant.storage === selectedStorage);
+        } else if (selectedSize) {
+            selectedVariant = selectedColorVariant?.variants.find(variant => 
+                variant.size === selectedSize);
+        } else {
+            selectedVariant = selectedColorVariant?.variants[0]; // Default to the first variant if no specific selection is made
+        }
+
+        document.getElementById('selectedBuyColor').value = selectedColorVariant ? selectedColorVariant.color : '';
+        document.getElementById('selectedBuyRam').value = selectedRam;
+        document.getElementById('selectedBuyStorage').value = selectedStorage;
+        document.getElementById('selectedBuySize').value = selectedSize;
+
+        if (selectedVariant) {
+            document.getElementById('selectedBuyPrice').value = selectedVariant.price;
+        } else {
+            document.getElementById('selectedBuyPrice').value = product.sellingPrice; // Fallback to general product selling price
+        }
+    }
+
+    document.querySelector('.product-show-btn-buy-now').addEventListener('click', function(event) {
+        if (!validateSelection()) {
+            event.preventDefault(); // Prevent the form submission if validation fails
+            alert("Please select all required options.");
+            return;
+        }
+        updateBuyNowFormFields();
+    });
+
+    function validateSelection() {
+        const hasRam = document.querySelectorAll('.ram-option').length > 0;
+        const hasStorage = document.querySelectorAll('.storage-option').length > 0;
+        const hasSize = document.querySelectorAll('.size-option').length > 0;
+
+        if (hasRam && !document.querySelector('.ram-option.selected')) return false;
+        if (hasStorage && !document.querySelector('.storage-option.selected')) return false;
+        if (hasSize && !document.querySelector('.size-option.selected')) return false;
+
+        return true;
+    }
+
+    document.querySelector('.product-show-btn-add-to-cart').addEventListener('click', function(event) {
+        if (!validateSelection()) {
+            event.preventDefault(); // Prevent the form submission if validation fails
+            alert("Please select all required options.");
+            return;
+        }
+        updateFormFields();
+    });
+
+});
+
+  </script>
