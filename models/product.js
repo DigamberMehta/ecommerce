@@ -32,7 +32,7 @@ const productSchema = new mongoose.Schema({
   specifications: mongoose.Schema.Types.Mixed,
   tags: [String],
   additionalImages: [String], 
-  slug: { type: String, required: true, unique: true },
+  slug: { type: String, required: true },
   discount: { type: Number, default: 0 },
   featured: { type: Boolean, default: false },
   bestseller: { type: Boolean, default: false },

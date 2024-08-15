@@ -213,8 +213,9 @@
     
         // Initialize Cashfree SDK in sandbox mode for testing
         const cashfree = Cashfree({
-            mode: "sandbox" // Change to "production" for live transactions
-        });
+    mode: "production" // Switch to production for live transactions
+});
+
     
         // Handle the "Use this address" button click
         document.getElementById('useAddressBtn').addEventListener('click', function() {

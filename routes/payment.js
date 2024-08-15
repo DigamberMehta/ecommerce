@@ -124,7 +124,7 @@ router.post('/create-order', async (req, res) => {
                 customer_email: req.user.email
             },
             order_meta: {
-                return_url: `http://localhost:3000/payment/callback`
+                return_url: `http://urbanmart.live/payment/callback`
             }
         };
 
@@ -147,5 +147,3 @@ router.post('/create-order', async (req, res) => {
 
 module.exports = router;
 
-
-module.exports = router;
