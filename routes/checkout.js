@@ -225,7 +225,7 @@ router.post('/create-order', isLoggedIn, async (req, res) => {
                 customer_email: req.user.email
             },
             order_meta: {
-                return_url: `http://urbanmart.live/payment/callback` // No need to pass order_id here
+                return_url: `https://urbanmart.live/payment/callback` // No need to pass order_id here
             }
         };
 

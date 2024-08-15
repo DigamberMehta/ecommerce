@@ -10,6 +10,8 @@ const passport = require('passport');
 const User = require('./models/user');
 const session = require('express-session');
 const flash = require('connect-flash');
+const MongoStore = require('connect-mongo'); // Import connect-mongo
+
 const userRouter = require('./routes/user');
 const cartRoutes = require('./routes/cart');
 const homeRoutes = require('./routes/home');
@@ -30,6 +32,7 @@ const paymentRoutes = require('./routes/payment');
 const paymentCallbackRoutes = require('./routes/paymentCallback');
 const cashOnDeliveryRoutes = require('./routes/cashOnDelivery');
 const orderRoutes = require('./routes/orders');
+
 app.use(express.json());
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -40,10 +43,8 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-const dbUrl = process.env.ATLAS_URL ;
-//  const dbUrl =  "mongodb://localhost:27017/ecommerce";
- 
-
+const dbUrl = process.env.ATLAS_URL;
+// const dbUrl =  "mongodb://localhost:27017/ecommerce";
 
 main()
   .then(() => console.log("Connected to MongoDB"))
@@ -56,13 +57,19 @@ async function main() {
 const sessionOptions = {
   secret: "dsdsdsdsdsds",
   resave: false,
-  saveUninitialized: true,
+  saveUninitialized: false,
+  store: MongoStore.create({
+    mongoUrl: dbUrl,
+    collectionName: 'sessions',
+    ttl: 14 * 24 * 60 * 60, // Sessions expire after 14 days
+  }),
   cookie: {
     httpOnly: true,
     expires: Date.now() + 1000 * 60 * 60 * 24 * 30, // 30 days
     maxAge: 1000 * 60 * 60 * 24 * 30
   }
 };
+
 app.use(session(sessionOptions));
 app.use(flash());
 
@@ -109,6 +116,7 @@ passport.use('custom', new CustomStrategy(
     }
   }
 ));
+
 passport.use(new GoogleStrategy({
   clientID: process.env.GOOGLE_CLIENT_ID,
   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
@@ -177,19 +185,12 @@ app.use('/', wishlistRoutes);
 app.use('/', contactRoutes);
 app.use('/orders', orderRoutes);
 
-
-
-
-
 // payment routes
 app.use('/payment', paymentRoutes);
 app.use('/payment', paymentCallbackRoutes);
 app.use('/', cashOnDeliveryRoutes);
 
-
-
-
-//admin routes
+// admin routes
 app.use('/admin', adminRoutes);
 app.get('/dashboard', (req, res) => {
   res.render('dashboard/dashboard');
