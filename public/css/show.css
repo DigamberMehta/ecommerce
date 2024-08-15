@@ -10,7 +10,7 @@ ul{
 }
 .show-page {
   font-family: Inter, -apple-system, Helvetica, Arial, sans-serif;
-  background-color: #f1f3f6;
+  background-color: white;
   margin-top: -0.9rem;
   padding: 0;
   display: flex;
@@ -23,8 +23,8 @@ ul{
   display: flex;
   width: 85%;
   max-width: 1800px;
-  background-color: #fff;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  /* background-color: #fff; */
+  /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
   /* border-radius: 1rem; */
   overflow: hidden;
   /* padding: 2rem; */

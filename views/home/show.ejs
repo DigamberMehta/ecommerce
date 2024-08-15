@@ -145,6 +145,9 @@
       font-weight: bold;
       margin-right: 10px;
     }
+    .full-width-preview{
+      background-color: white;
+    }
   </style>
 
   <div class="show-page">
@@ -385,100 +388,104 @@
         </div>
       </div>
 
-      <div class="full-width-preview">
-        <div class="review-section">
-          <div class="write-review">
-            <button id="openModal" class="review-heading">Write a Review</button>
-          </div>
-          <div id="reviewModal" class="modal">
-            <div class="modal-content">
-              <span class="close">&times;</span>
-              <h2>Write a Review</h2>
+     
+    </div>
+    
+  </div>
+  <div class="full-width-preview">
+    <div class="review-section">
+      <div class="write-review">
+        <button id="openModal" class="review-heading">Write a Review</button>
+      </div>
+      <div id="reviewModal" class="modal">
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <h2>Write a Review</h2>
 
-              <form action="/products/<%= product._id %>/<%= product.slug %>/reviews" method="POST"
-                enctype="multipart/form-data">
-                <div class="form-group">
-                  <label for="review-title">Title</label>
-                  <input type="text" id="review-title" name="review[title]"
-                    placeholder="Enter the title of your review" />
+          <form action="/products/<%= product._id %>/<%= product.slug %>/reviews" method="POST"
+            enctype="multipart/form-data">
+            <div class="form-group">
+              <label for="review-title">Title</label>
+              <input type="text" id="review-title" name="review[title]"
+                placeholder="Enter the title of your review" />
+            </div>
+            <div class="form-group">
+              <label for="review-body">Review</label>
+              <textarea id="review-body" name="review[comment]" placeholder="Write your review here"
+                rows="5"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="review-rating">Rating</label>
+              <div class="star-rating" id="star-rating">
+                <span class="star" data-value="1">&#9733;</span>
+                <span class="star" data-value="2">&#9733;</span>
+                <span class="star" data-value="3">&#9733;</span>
+                <span class="star" data-value="4">&#9733;</span>
+                <span class="star" data-value="5">&#9733;</span>
+              </div>
+              <input type="hidden" id="review-rating" name="review[rating]" />
+            </div>
+            <div class="form-group">
+              <label for="review-images">Upload Images</label>
+              <input type="file" id="review-images" name="images" multiple />
+            </div>
+            <button type="submit" class="review-submit">Submit Review</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="reviews-container">
+        <h2 class="all-reviews-section">Rating & Reviews</h2>
+
+        <% product.reviews.forEach(review=> { %>
+          <div class="review">
+            <h3 class="customer-review-tittle">
+              <%= review.title %>
+            </h3>
+            <div class="review-rating">
+              <% for (let i=0; i < review.rating; i++) { %>
+                <i class="fa fa-star"></i>
+                <% } %>
+            </div>
+            <div class="review-images">
+              <% if (review.image && review.image.length> 0) { %>
+                <div class="review-images-show-container">
+                  <% review.image.forEach(imageUrl=> { %>
+                    <img src="<%= imageUrl %>" alt="Review Image" class="review-image user-review-image"
+                      onclick="showOpenPreview('<%= imageUrl %>')" />
+                    <% }) %>
                 </div>
-                <div class="form-group">
-                  <label for="review-body">Review</label>
-                  <textarea id="review-body" name="review[comment]" placeholder="Write your review here"
-                    rows="5"></textarea>
-                </div>
-                <div class="form-group">
-                  <label for="review-rating">Rating</label>
-                  <div class="star-rating" id="star-rating">
-                    <span class="star" data-value="1">&#9733;</span>
-                    <span class="star" data-value="2">&#9733;</span>
-                    <span class="star" data-value="3">&#9733;</span>
-                    <span class="star" data-value="4">&#9733;</span>
-                    <span class="star" data-value="5">&#9733;</span>
-                  </div>
-                  <input type="hidden" id="review-rating" name="review[rating]" />
-                </div>
-                <div class="form-group">
-                  <label for="review-images">Upload Images</label>
-                  <input type="file" id="review-images" name="images" multiple />
-                </div>
-                <button type="submit" class="review-submit">Submit Review</button>
-              </form>
+                <% } %>
+            </div>
+            <p>
+              <%= review.comment %>
+            </p>
+            <div class="user-review-action">
+              <small><i style="color: black">Reviewed by </i>: <%= review.user.name %></small>
+              <div class="product-review-option">
+                <form
+                  action="/products/<%= product._id %>/<%= product.slug %>/reviews/<%= review._id %>?_method=DELETE"
+                  method="POST">
+                  <button type="submit">Delete |</button>
+                </form>
+                <button class="edit-button" data-review-id="<%= review._id %>">
+                  Edit
+                </button>
+              </div>
             </div>
           </div>
-
-          <div class="reviews-container">
-            <h2 class="all-reviews-section">Rating & Reviews</h2>
-
-            <% product.reviews.forEach(review=> { %>
-              <div class="review">
-                <h3 class="customer-review-tittle">
-                  <%= review.title %>
-                </h3>
-                <div class="review-rating">
-                  <% for (let i=0; i < review.rating; i++) { %>
-                    <i class="fa fa-star"></i>
-                    <% } %>
-                </div>
-                <div class="review-images">
-                  <% if (review.image && review.image.length> 0) { %>
-                    <div class="review-images-show-container">
-                      <% review.image.forEach(imageUrl=> { %>
-                        <img src="<%= imageUrl %>" alt="Review Image" class="review-image user-review-image"
-                          onclick="showOpenPreview('<%= imageUrl %>')" />
-                        <% }) %>
-                    </div>
-                    <% } %>
-                </div>
-                <p>
-                  <%= review.comment %>
-                </p>
-                <div class="user-review-action">
-                  <small><i style="color: black">Reviewed by </i>: <%= review.user.name %></small>
-                  <div class="product-review-option">
-                    <form
-                      action="/products/<%= product._id %>/<%= product.slug %>/reviews/<%= review._id %>?_method=DELETE"
-                      method="POST">
-                      <button type="submit">Delete |</button>
-                    </form>
-                    <button class="edit-button" data-review-id="<%= review._id %>">
-                      Edit
-                    </button>
-                  </div>
-                </div>
-              </div>
-              <% }) %>
-          </div>
-        </div>
-
-        <div id="show-image-preview-modal" class="show-image-preview-modal">
-          <span class="show-close-button" onclick="showClosePreview()">&times;</span>
-          <img class="show-preview-content" id="show-preview-image" />
-        </div>
-
-        <%- include('../partials/browsingHistory.ejs') %>
+          <% }) %>
       </div>
     </div>
+
+    <div id="show-image-preview-modal" class="show-image-preview-modal">
+      <span class="show-close-button" onclick="showClosePreview()">&times;</span>
+      <img class="show-preview-content" id="show-preview-image" />
+    </div>
+
+    <div class="browsering-history-search-page" style="margin-left: 1rem;">
+    <%- include('../partials/browsingHistory.ejs') %>
+  </div>
   </div>
   <script>
    document.addEventListener("DOMContentLoaded", function () {

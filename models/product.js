@@ -21,17 +21,17 @@ const productSchema = new mongoose.Schema({
   title: { type: String, required: true },
   description: String,
   sellingPrice: { type: Number, required: true },
-  mrpPrice: { type: Number },
+  mrpPrice: Number,
   categories: [String],
   brand: String,
   stock: Number,
-  images: [String], // General product images
-  colors: [colorSchema], // Array of color variants
+  images: [String], 
+  colors: [colorSchema], 
   reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Review' }],
   rating: Number,
   specifications: mongoose.Schema.Types.Mixed,
   tags: [String],
-  additionalImages: [String], // Additional general images
+  additionalImages: [String], 
   slug: { type: String, required: true, unique: true },
   discount: { type: Number, default: 0 },
   featured: { type: Boolean, default: false },
@@ -41,5 +41,22 @@ const productSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now }
 });
+
+// Add text index with weights for full-text search
+productSchema.index({
+  title: 'text',
+  brand: 'text',
+  description: 'text',
+  categories: 'text'
+}, {
+  weights: {
+    title: 5,
+    brand: 3,
+    description: 2,
+    categories: 1
+  },
+  name: 'TextIndex'
+});
+
 
 module.exports = mongoose.model('Product', productSchema);

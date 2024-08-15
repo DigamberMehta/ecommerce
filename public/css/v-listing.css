@@ -1,5 +1,5 @@
 
-.container {
+.container-search {
     display: flex;
     margin: 0 auto;
     width: 98%;
@@ -100,7 +100,11 @@
     opacity: 0.6;
 }
 
-.add-to-cart-btn {
+
+
+
+
+.add-to-cart-btn-search{
     padding: 0.425rem 1.1rem;
     font-size: 1rem;
     color: #fff;
@@ -110,11 +114,6 @@
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
-
-.add-to-cart-btn:hover {
-    opacity: 0.8;
-}
-
 ul {
     list-style-type: none;
     padding: 0;

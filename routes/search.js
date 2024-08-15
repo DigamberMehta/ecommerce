@@ -3,6 +3,24 @@ const router = express.Router();
 const Product = require('../models/product');
 const Fuse = require('fuse.js');
 
+// Function to expand search terms using a synonym map
+function expandSearchTerm(term) {
+    const synonymMap = {
+        'smartphone': ['mobile', 'cellphone'],
+        'mobile': ['smartphone', 'cellphone'],
+        'cellphone': ['mobile', 'smartphone'],
+        'laptop': ['notebook', 'computer'],
+    };
+    let terms = [term];
+    for (const [key, synonyms] of Object.entries(synonymMap)) {
+        if (key === term.toLowerCase() || synonyms.includes(term.toLowerCase())) {
+            terms = terms.concat([key, ...synonyms]);
+            break;
+        }
+    }
+    return terms.join(' ');
+}
+
 // Route to handle search suggestions
 router.get('/search/suggestions', async (req, res) => {
     try {
@@ -11,78 +29,144 @@ router.get('/search/suggestions', async (req, res) => {
         if (searchTerm.length < 1) {
             return res.json([]);
         }
+
         const products = await Product.find({}, 'title slug images sellingPrice brand');
         const fuse = new Fuse(products, {
             keys: ['title', 'brand'],
             includeScore: true,
             threshold: 0.3
         });
+
         const results = fuse.search(searchTerm).map(result => result.item);
         return res.json(results.slice(0, 5));
     } catch (err) {
+        console.error('Error fetching search suggestions:', err);
         return res.status(500).send('Server Error');
     }
 });
 
-// Route to handle search with filters
+// Main search route
 router.get('/search', async (req, res) => {
     try {
         const searchTerm = req.query.query || '';
-        const categoryFilters = Array.isArray(req.query.category) ? req.query.category : [req.query.category];
-        const minPrice = parseInt(req.query.minPrice) || 0;
-        const maxPrice = parseInt(req.query.maxPrice) || Number.MAX_SAFE_INTEGER;
-        const sortBy = req.query.sort || 'relevance';
-        const ratingFilters = Array.isArray(req.query.rating) ? req.query.rating : [req.query.rating];
-        const brandFilters = Array.isArray(req.query.brand) ? req.query.brand : [req.query.brand];
+        const expandedTerm = expandSearchTerm(searchTerm);
 
-        let filter = {
-            sellingPrice: { $gte: minPrice, $lte: maxPrice }
-        };
+        // Perform the initial full-text search
+        let products = await Product.find({
+            $text: { $search: expandedTerm }
+        }, { score: { $meta: "textScore" } })
+        .sort({ score: { $meta: "textScore" } });
 
-        if (categoryFilters.length > 0 && categoryFilters[0]) {
-            filter.categories = { $in: categoryFilters };
+        console.log(`Initial products found: ${products.length}`);
+
+        // Extract the maximum price for slider range
+        const maxProductPrice = products.reduce((max, product) => Math.max(max, product.sellingPrice), 0);
+
+        // Filter by Category if provided
+        if (req.query.category) {
+            products = products.filter(product => product.categories.includes(req.query.category));
+            console.log(`Products after category filter: ${products.length}`);
         }
 
-        if (ratingFilters.length > 0 && ratingFilters[0]) {
-            filter.rating = { $in: ratingFilters };
+        // Ensure price range values are valid numbers and filter by Price Range
+        const minPrice = parseFloat(req.query.minPrice) || 0;
+        const maxPrice = parseFloat(req.query.maxPrice) || maxProductPrice;
+
+        products = products.filter(product => 
+            product.sellingPrice >= minPrice && product.sellingPrice <= maxPrice
+        );
+        console.log(`Products after price filter (minPrice: ${minPrice}, maxPrice: ${maxPrice}): ${products.length}`);
+
+        // Filter by Rating
+        const rating = Math.min(Math.max(parseInt(req.query.rating), 1), 5) || 0;
+        if (rating > 0) {
+            products = products.filter(product => product.rating >= rating);
+            console.log(`Products after rating filter: ${products.length}`);
         }
 
-        if (brandFilters.length > 0 && brandFilters[0]) {
-            filter.brand = { $in: brandFilters };
+        // Filter by Brand if provided
+        if (req.query.brand) {
+            const selectedBrands = Array.isArray(req.query.brand) ? req.query.brand : [req.query.brand];
+            products = products.filter(product => selectedBrands.includes(product.brand));
+            console.log(`Products after brand filter: ${products.length}`);
         }
 
-        const products = await Product.find(filter);
-        const fuse = new Fuse(products, {
-            keys: ['title', 'brand'],
-            includeScore: true,
-            threshold: 0.3
+        // Filter by Color if provided
+        if (req.query.color) {
+            products = products.filter(product => 
+                product.colors.some(color => color.color === req.query.color)
+            );
+            console.log(`Products after color filter: ${products.length}`);
+        }
+
+        // Filter by Size, RAM, Storage if provided
+        if (req.query.size) {
+            products = products.filter(product => 
+                product.colors.some(color => 
+                    color.variants.some(variant => variant.size === req.query.size)
+                )
+            );
+            console.log(`Products after size filter: ${products.length}`);
+        }
+
+        if (req.query.ram) {
+            products = products.filter(product => 
+                product.colors.some(color => 
+                    color.variants.some(variant => variant.ram === req.query.ram)
+                )
+            );
+            console.log(`Products after RAM filter: ${products.length}`);
+        }
+
+        if (req.query.storage) {
+            products = products.filter(product => 
+                product.colors.some(color => 
+                    color.variants.some(variant => variant.storage === req.query.storage)
+                )
+            );
+            console.log(`Products after storage filter: ${products.length}`);
+        }
+
+        // Sort by Price
+        if (req.query.sort === 'price-asc') {
+            products.sort((a, b) => a.sellingPrice - b.sellingPrice);
+        } else if (req.query.sort === 'price-desc') {
+            products.sort((a, b) => b.sellingPrice - a.sellingPrice);
+        }
+        console.log(`Products after sorting: ${products.length}`);
+
+        // Extract unique categories, brands, colors, sizes, RAM, and storage for the filters
+        const categories = [...new Set(products.flatMap(product => product.categories))];
+        const brands = [...new Set(products.map(product => product.brand))];
+        const colors = [...new Set(products.flatMap(product => product.colors.map(color => color.color)))];
+        const sizes = [...new Set(products.flatMap(product => product.colors.flatMap(color => color.variants.map(variant => variant.size))))];
+        const rams = [...new Set(products.flatMap(product => product.colors.flatMap(color => color.variants.map(variant => variant.ram))))];
+        const storages = [...new Set(products.flatMap(product => product.colors.flatMap(color => color.variants.map(variant => variant.storage))))];
+
+        // Render the results with the available filters
+        res.render('home/searchResult', {
+            products,
+            categories,
+            brands,
+            colors,
+            sizes,
+            rams,
+            storages,
+            query: searchTerm,
+            minPrice: req.query.minPrice || 0,
+            maxPrice: req.query.maxPrice || maxProductPrice,
+            maxProductPrice,
+            selectedCategory: req.query.category || '',
+            selectedBrand: req.query.brand || [],
+            selectedColor: req.query.color || '',
+            selectedSize: req.query.size || '',
+            selectedRAM: req.query.ram || '',
+            selectedStorage: req.query.storage || '',
+            selectedRating: req.query.rating || 0,
+            selectedSort: req.query.sort || ''
         });
-
-        let results = fuse.search(searchTerm).map(result => result.item);
-
-        if (sortBy === 'price-asc') {
-            results = results.sort((a, b) => a.sellingPrice - b.sellingPrice);
-        } else if (sortBy === 'price-desc') {
-            results = results.sort((a, b) => b.sellingPrice - a.sellingPrice);
-        } else if (sortBy === 'popularity') {
-            results = results.sort((a, b) => b.rating - a.rating);
-        }
-
-        if (req.xhr || req.headers.accept.indexOf('json') > -1) {
-            return res.render('partials/productList', { products: results });
-        } else {
-            return res.render('home/searchResult', { 
-                products: results, 
-                query: searchTerm,
-                categoryFilters,
-                minPrice,
-                maxPrice,
-                sortBy,
-                ratingFilters,
-                brandFilters
-            });
-        }
     } catch (err) {
+        console.error('Error during search:', err);
         return res.status(500).send('Server Error');
     }
 });

@@ -1,78 +1,459 @@
 <% layout('layouts/boilerplate') %>
-<div class="container">
+<style>
+    #clear-filters {
+        background-color: #007bff; /* Bootstrap primary color */
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        font-size: 14px;
+        font-weight: bold;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.2s;
+        width: 50%;
+        display: inline-block;
+        text-align: center;
+    }
+
+    #clear-filters:hover {
+        background-color: #0056b3; /* Darker shade of the primary color */
+    }
+
+    #clear-filters:active {
+        background-color: #004085; /* Even darker shade when button is active */
+        transform: translateY(1px); /* Slight push down on click */
+    }
+
+    .container-search {
+        display: flex;
+        margin: 0 auto;
+        width: 98%;
+        box-sizing: border-box;
+    }
+
+    .main-content {
+        flex: 1 0 60%;
+        display: flex;
+        justify-content: center;
+    }
+
+    .content-wrapper {
+        width: 100%;
+        padding: 0.2rem;
+        box-sizing: border-box;
+    }
+
+    .card {
+        display: flex;
+        height: fit-content;
+        border: 0.0625rem solid #f3f2f2;
+        padding: 0.6rem;
+        border-radius: 0.5rem;
+        overflow: hidden;
+        background-color: #fff;
+    }
+
+    .card-image {
+    flex: 1;
+    max-width: 250px;
+    min-width: 175px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+    .card-image img {
+        width: 100%;
+        height: 12rem;
+        object-fit: contain;
+    }
+
+    .card-content {
+        flex: 2;
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .card-title {
+        font-size: 1rem;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+    }
+
+    .card-bought,
+    .card-price,
+    .card-delivery {
+        margin-bottom: 0.5rem;
+        font-size: 1rem;
+    }
+
+    .card-price {
+        display: flex;
+        align-items: baseline;
+    }
+
+    .main-price {
+        font-size: 1.5rem;
+        margin-right: 0.5rem;
+    }
+
+    .mrp {
+        font-size: 0.80rem;
+        text-decoration: line-through;
+        vertical-align: sub;
+        margin-left: 0.25rem;
+        opacity: 0.6;
+    }
+
+    .discount {
+        font-size: 1rem;
+        margin-left: 0.25rem;
+    }
+
+    .card-bought {
+        opacity: 0.6;
+    }
+
+    .card-card-discount {
+        margin-bottom: 0.5rem;
+        font-size: 1rem;
+        opacity: 0.6;
+    }
+
+    .add-to-cart-btn-search {
+        padding: 0.425rem 1.1rem;
+        font-size: 1rem;
+        color: #fff;
+        background-color: #ff9f00;
+        border: none;
+        border-radius: 100px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .category-title {
+        padding: 0.5rem 1rem;
+        font-size: 18px;
+        font-weight: 600;
+    }
+
+    .filter {
+        flex: 0 1 20%;
+        margin-top: 4px;
+        padding: 1rem;
+        background-color: white;
+        border-radius: 5px;
+        /* border: 1px solid #e4e7ed; */
+    }
+
+    .filter-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .filter-title {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .filter-item {
+        padding: 0.5rem 0;
+        margin-bottom: 0.5rem;
+        background-color: #fff;
+        border-bottom: 1px solid #e4e7ed;
+        cursor: pointer;
+    }
+
+    .filter-item input {
+        margin-right: 0.5rem;
+    }
+
+    .price-labels {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 0.5rem;
+        font-size: 0.9rem;
+        color: #666;
+    }
+
+    .apply-filters {
+        display: block;
+        width: 100%;
+        padding: 0.75rem;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: bold;
+    }
+
+    .apply-filters:hover {
+        background-color: #0056b3;
+    }
+
+
+.search-filter-option{
+    display: flex;
+    justify-content: space-between;
+    background-color: white;
+    padding: 10px;
+    display: none;
+    /* width: 94%; */
+    border-radius: 5px;
+    /* margin: 0 auto; */
+  
+}
+
+    #filter-button {
+        display: none; /* Hidden by default */
+        background-color: white;
+        border: none;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.2s;;
+        text-align: center;
+        /* margin-bottom: 10px; */
+    }
+
+    .sort-option{
+        font-size: 16px;
+        cursor: pointer;
+    }
+
+  
+
+    #close-filter {
+      
+        color: rgb(0, 0, 0);
+        border: none;
+        background-color: white;
+        font-size: 14px;
+        font-weight: bold;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.2s;
+        width: fit-content;
+        display: inline-block;
+        text-align: center;
+        margin-bottom: 1rem;
+    }
+
+ 
+
+
+    .filter-close-container{
+        display: none;
+    }
+
+    @media (max-width: 750px) {
+        .filter-close-container{
+            display: block;
+        }
+        .container-search {
+            flex-direction: column;
+            position: relative;
+        }
+
+        .main-content {
+            flex: 1 0 100%;
+            width: 100%;
+        }
+
+        #filter-button {
+            display: block;
+        }
+
+        .filter {
+            display: none; /* Initially hide the filter on smaller screens */
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            margin-top: 0;
+            padding: 1rem;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            border: 1px solid #e4e7ed;
+            z-index: 1000; /* Ensure filter dropdown appears over the content */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add some shadow for better visibility */
+        }
+
+        .filter.visible {
+            display: block; /* Show the filter when visible class is added */
+        }
+        .search-filter-option{
+            display: flex;
+        }
+        .filter-open-container{
+            display: flex;
+            align-items: center;
+        }
+    }
+</style>
+
+<div class="container-search">
+    <!-- Filter button for small screens -->
+     <div class="search-filter-option">
+        <div class="sort-option">
+            <i class="fa-sharp fa-thin fa-bars-sort"></i>   <span style="cursor: pointer;">Sort</span>
+        </div>
+   <div class="filter-open-container">
+    <i class="fa-light fa-filter"></i>   <button id="filter-button">Filter Options</button>
+    </div>
+
+  
+</div>
+    
+
+
     <div class="filter">
+       
+        <div class="filter-close-container">
+            <button id="close-filter"><i class="fa-solid fa-x"></i></button>
+        </div>
+
         <div class="filter-option">
             <form id="filter-form" action="/search" method="GET">
                 <input type="hidden" name="query" value="<%= query %>">
-                
+
+                <!-- Category Filter -->
                 <div class="filter-group">
                     <label class="filter-title">Categories</label>
                     <ul>
-                        <% ['Mobile', 'Electronics', 'Laptops'].forEach((category, index) => { %>
-                            <li class="filter-item">
-                                <input type="checkbox" id="category<%= index + 1 %>" name="category" value="<%= category %>" <%= (categoryFilters.includes(category)) ? 'checked' : '' %> onchange="submitFilterForm()">
-                                <label for="category<%= index + 1 %>"><%= category %></label>
+                        <% categories.forEach(category => { %>
+                            <li>
+                                <input type="checkbox" name="category" value="<%= category %>" <%= category === selectedCategory ? 'checked' : '' %>>
+                                <label><%= category %></label>
                             </li>
                         <% }); %>
                     </ul>
                 </div>
 
+                <!-- Price Range Filter -->
                 <div class="filter-group">
                     <label class="filter-title" for="price-range">Price Range</label>
                     <div class="price-range">
-                        <input type="range" id="minPrice" name="minPrice" min="0" max="1000" value="<%= minPrice %>" oninput="updatePriceLabel(this.value, 'minPriceLabel')" onchange="submitFilterForm()">
+                        <input type="range" id="minPrice" name="minPrice" min="0" max="<%= maxProductPrice %>" value="<%= minPrice %>">
                         <span id="minPriceLabel">₹<%= minPrice %></span>
                         <span>to</span>
-                        <input type="range" id="maxPrice" name="maxPrice" min="0" max="1000" value="<%= maxPrice %>" oninput="updatePriceLabel(this.value, 'maxPriceLabel')" onchange="submitFilterForm()">
+                        <input type="range" id="maxPrice" name="maxPrice" min="0" max="<%= maxProductPrice %>" value="<%= maxPrice %>">
                         <span id="maxPriceLabel">₹<%= maxPrice %></span>
                     </div>
                 </div>
 
+                <!-- Rating Filter -->
                 <div class="filter-group">
                     <label class="filter-title">Ratings</label>
                     <ul>
-                        <% [1, 2, 3, 4, 5].forEach(rating => { %>
-                            <li class="filter-item">
-                                <input type="checkbox" id="rating<%= rating %>" name="rating" value="<%= rating %>" <%= (ratingFilters.includes(String(rating))) ? 'checked' : '' %> onchange="submitFilterForm()">
-                                <label for="rating<%= rating %>"><%= rating %> Star</label>
+                        <% for (let i = 4; i <= 5; i++) { %>
+                            <li>
+                                <input type="checkbox" name="rating" value="<%= i %>" <%= selectedRating >= i ? 'checked' : '' %>>
+                                <label> <%= i %>  <i class="fa-duotone fa-solid fa-star-sharp"></i> & Above<%= i > 1 ? 's' : '' %></label>
                             </li>
-                        <% }); %>
+                        <% } %>
                     </ul>
                 </div>
 
+                <!-- Brand Filter -->
                 <div class="filter-group">
                     <label class="filter-title">Brands</label>
                     <ul>
-                        <% ['BrandZ', 'BrandA', 'BrandB', 'BrandX', 'BrandY', 'Acer', 'Dell', 'HP'].forEach((brand, index) => { %>
-                            <li class="filter-item">
-                                <input type="checkbox" id="brand<%= index + 1 %>" name="brand" value="<%= brand %>" <%= (brandFilters.includes(brand)) ? 'checked' : '' %> onchange="submitFilterForm()">
-                                <label for="brand<%= index + 1 %>"><%= brand %></label>
+                        <% brands.forEach(brand => { %>
+                            <li>
+                                <input type="checkbox" name="brand" value="<%= brand %>" <%= selectedBrand.includes(brand) ? 'checked' : '' %>>
+                                <label><%= brand %></label>
                             </li>
                         <% }); %>
                     </ul>
                 </div>
 
+                <!-- Color Filter -->
+                <div class="filter-group">
+                    <label class="filter-title">Color</label>
+                    <ul>
+                        <% colors.forEach(color => { %>
+                            <li>
+                                <input type="checkbox" name="color" value="<%= color %>" <%= selectedColor === color ? 'checked' : '' %>>
+                                <label><%= color %></label>
+                            </li>
+                        <% }); %>
+                    </ul>
+                </div>
+
+                <!-- Size Filter -->
+                <div class="filter-group">
+                    <label class="filter-title">Size</label>
+                    <ul>
+                        <% sizes.forEach(size => { %>
+                            <li>
+                                <input type="checkbox" name="size" value="<%= size %>" <%= selectedSize === size ? 'checked' : '' %>>
+                                <label><%= size %></label>
+                            </li>
+                        <% }); %>
+                    </ul>
+                </div>
+
+                <!-- RAM Filter -->
+                <div class="filter-group">
+                    <label class="filter-title">RAM</label>
+                    <ul>
+                        <% rams.forEach(ram => { %>
+                            <li>
+                                <input type="checkbox" name="ram" value="<%= ram %>" <%= selectedRAM === ram ? 'checked' : '' %>>
+                                <label><%= ram %></label>
+                            </li>
+                        <% }); %>
+                    </ul>
+                </div>
+
+                <!-- Storage Filter -->
+                <div class="filter-group">
+                    <label class="filter-title">Storage</label>
+                    <ul>
+                        <% storages.forEach(storage => { %>
+                            <li>
+                                <input type="checkbox" name="storage" value="<%= storage %>" <%= selectedStorage === storage ? 'checked' : '' %>>
+                                <label><%= storage %></label>
+                            </li>
+                        <% }); %>
+                    </ul>
+                </div>
+
+                <!-- Sort By Filter -->
                 <div class="filter-group">
                     <label class="filter-title">Sort By</label>
                     <ul>
                         <li class="filter-item">
-                            <input type="radio" id="sort1" name="sort" value="price-asc" <%= sortBy === 'price-asc' ? 'checked' : '' %> onchange="submitFilterForm()">
+                            <input type="radio" id="sort1" name="sort" value="price-asc" <%= selectedSort === 'price-asc' ? 'checked' : '' %>>
                             <label for="sort1">Price: Low to High</label>
                         </li>
                         <li class="filter-item">
-                            <input type="radio" id="sort2" name="sort" value="price-desc" <%= sortBy === 'price-desc' ? 'checked' : '' %> onchange="submitFilterForm()">
+                            <input type="radio" id="sort2" name="sort" value="price-desc" <%= selectedSort === 'price-desc' ? 'checked' : '' %>>
                             <label for="sort2">Price: High to Low</label>
-                        </li>
-                        <li class="filter-item">
-                            <input type="radio" id="sort3" name="sort" value="popularity" <%= sortBy === 'popularity' ? 'checked' : '' %> onchange="submitFilterForm()">
-                            <label for="sort3">Popularity</label>
                         </li>
                     </ul>
                 </div>
+
+                <!-- Clear All Filters Button -->
+                <div class="filter-group">
+                    <button type="button" id="clear-filters">Clear All Filters</button>
+                </div>
+
             </form>
         </div>
     </div>
-    
+
     <div class="main-content">
         <div class="content-wrapper" id="product-list">
             <% if (products.length > 0) { %>
@@ -86,16 +467,20 @@
                                 <div class="card-title"><%= product.title %></div>
                                 <div class="card-bought">5K+ bought in past month</div>
                                 <div class="card-price">
-                                    <span class="main-price">₹<%= product.mrpPrice %></span>
-                                    <span class="mrp">₹<%= product.sellingPrice %></span>
+                                    <span class="main-price">₹<%= product.sellingPrice %></span>
+                                    <span class="mrp">₹<%= product.mrpPrice %></span>
                                     <span class="discount">(10% off)</span>
                                 </div>
                                 <div class="card-card-discount">Flat INR 1000 Off on ICICI Credit Cards</div>
                                 <div class="card-delivery">FREE delivery</div>
                                 <div class="card-button">
-                                    <button class="add-to-cart-btn" data-product-id="<%= product._id %>" onclick="reloadPage()">
-                                        Add to Cart
-                                    </button>
+                                    <form action="/cart/add" method="POST">
+                                        <input type="hidden" name="productId" value="<%= product._id %>">
+                                        <input type="hidden" name="color" value="<%= product.slug %>">
+                                        <button type="submit" class="add-to-cart-btn-search">
+                                            Add to Cart
+                                        </button>
+                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -109,28 +494,53 @@
 </div>
 
 <script>
-function submitFilterForm() {
-    const form = document.getElementById('filter-form');
-    const xhr = new XMLHttpRequest();
-    const formData = new FormData(form);
-    const queryString = new URLSearchParams(formData).toString();
-    
-    xhr.open('GET', `/search?${queryString}`, true);
-    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    document.addEventListener("DOMContentLoaded", function() {
+        const filterForm = document.getElementById('filter-form');
+        const filterElement = document.querySelector('.filter');
+        const filterButton = document.getElementById('filter-button');
+        const closeFilterButton = document.getElementById('close-filter');
 
-    xhr.onload = function() {
-        if (xhr.status === 200) {
-            const parser = new DOMParser();
-            const doc = parser.parseFromString(xhr.responseText, 'text/html');
-            const productList = doc.getElementById('product-list');
-            document.getElementById('product-list').innerHTML = productList.innerHTML;
-        }
-    };
+        // Show filter dropdown when filter button is clicked
+        filterButton.addEventListener('click', function() {
+            filterElement.classList.toggle('visible');
+        });
 
-    xhr.send();
-}
+        // Hide filter dropdown when close button is clicked
+        closeFilterButton.addEventListener('click', function() {
+            filterElement.classList.remove('visible');
+        });
 
-function updatePriceLabel(value, labelId) {
-    document.getElementById(labelId).textContent = `₹${value}`;
-}
+        // Update the labels when the range inputs change
+        const minPriceInput = document.getElementById('minPrice');
+        const maxPriceInput = document.getElementById('maxPrice');
+        const minPriceLabel = document.getElementById('minPriceLabel');
+        const maxPriceLabel = document.getElementById('maxPriceLabel');
+
+        minPriceInput.addEventListener('input', function() {
+            minPriceLabel.textContent = `₹${minPriceInput.value}`;
+        });
+
+        maxPriceInput.addEventListener('input', function() {
+            maxPriceLabel.textContent = `₹${maxPriceInput.value}`;
+        });
+
+        // Automatically submit form on filter change
+        document.querySelectorAll('#filter-form input').forEach(input => {
+            input.addEventListener('change', function() {
+                filterForm.submit();
+            });
+        });
+
+        // Clear all filters
+        document.getElementById('clear-filters').addEventListener('click', function() {
+            document.querySelectorAll('#filter-form input').forEach(input => {
+                if (input.type === 'checkbox' || input.type === 'radio') {
+                    input.checked = false;
+                } else if (input.type === 'range') {
+                    input.value = input.getAttribute('min');
+                }
+            });
+            filterForm.submit();
+        });
+    });
 </script>
