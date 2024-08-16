@@ -13,7 +13,12 @@
                 <div class="accordion-content show" id="selectAddressContent">
                     <h3 class="section-title">Your addresses</h3>
                     <% if (addresses.length === 0) { %>
-                        <p id="noAddressMessage" style="color: red;">You have not added any addresses yet. <a href="/user/address/new?backUrl=<%= backUrl %>"> <span style="color: #007BFF;">Add a new address</span> </a></p>
+                        <p id="noAddressMessage" style="color: red;">
+                            You have not added any addresses yet. 
+                            <a href="/user/address/new?backUrl=<%= encodeURIComponent(backUrl) %>" id="firstAddAddressLink">
+                                <span style="color: #007BFF;">Add a new address</span>
+                            </a>
+                        </p>
                     <% } %>
                     <form id="addressForm">
                         <% addresses.forEach(function(address, index) { %>
@@ -36,7 +41,7 @@
                         <% } %>
                        
                         <span class="add-address-checkout">
-                            <a href="/user/address/new?backUrl=<%= encodeURIComponent(backUrl) %>">Add Address</a>
+                            <a href="/user/address/new?backUrl=<%= encodeURIComponent(backUrl) %>" id="secondAddAddressLink">Add Address</a>
                         </span>
                     </form>
                 </div>
@@ -395,10 +400,33 @@
                 alert("An error occurred. Please try again.");
             }
         });
-        document.getElementById('addAddressBtn').addEventListener('click', function(event) {
-    event.preventDefault();
-    window.location.href = `/user/address/new?backUrl=${encodeURIComponent(window.location.href)}`;
-});
+     
+    const firstAddAddressLink = document.getElementById('firstAddAddressLink');
+    if (firstAddAddressLink) {
+        firstAddAddressLink.addEventListener('click', function(event) {
+            event.preventDefault();
+            const currentUrl = window.location.href;
+            console.log("First link - Current URL before encoding:", currentUrl);
+            const encodedUrl = encodeURIComponent(currentUrl);
+            console.log("First link - Encoded URL:", encodedUrl);
+            window.location.href = `/user/address/new?backUrl=${encodedUrl}`;
+        });
+    }
+
+    // Handle the second Add Address link
+    const secondAddAddressLink = document.getElementById('secondAddAddressLink');
+    if (secondAddAddressLink) {
+        secondAddAddressLink.addEventListener('click', function(event) {
+            event.preventDefault();
+            const currentUrl = window.location.href;
+            console.log("Second link - Current URL before encoding:", currentUrl);
+            const encodedUrl = encodeURIComponent(currentUrl);
+            console.log("Second link - Encoded URL:", encodedUrl);
+            window.location.href = `/user/address/new?backUrl=${encodedUrl}`;
+        });
+    }
+
+
     
     });
 </script>
