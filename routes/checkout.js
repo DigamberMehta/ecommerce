@@ -245,8 +245,9 @@ router.post('/create-order', isLoggedIn, async (req, res) => {
         res.json({ paymentSessionId: response.data.payment_session_id, orderId: order._id });
 
     } catch (error) {
-        console.error('Error:', error.response ? error.response.data.message : error.message);
-        res.status(500).send('Internal Server Error');
+        console.error('Error during order creation:', error.message);
+        console.error('Stack trace:', error.stack);
+        res.status(500).json({ error: 'Internal Server Error', message: error.message });
     }
 });
 
