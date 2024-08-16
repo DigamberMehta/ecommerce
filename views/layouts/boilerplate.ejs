@@ -4,11 +4,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta property="og:title" content="<%= typeof ogTitle !== 'undefined' ? ogTitle : 'Default Title' %>">
-  <meta property="og:description" content="<%= typeof ogDescription !== 'undefined' ? ogDescription : 'Default description' %>">
-  <meta property="og:image" content="<%= typeof ogImage !== 'undefined' ? ogImage : 'https://yourdomain.com/default-image.jpg' %>">
-  <meta property="og:url" content="<%= typeof ogUrl !== 'undefined' ? ogUrl : 'https://yourdomain.com/default-url' %>">
-  <meta property="og:type" content="<%= typeof ogType !== 'undefined' ? ogType : 'website' %>">
+  <title><%= title %></title>
+
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="<%= ogTitle || title %>">
+    <meta property="og:description" content="<%= ogDescription || 'Default description' %>">
+    <meta property="og:image" content="<%= ogImage || 'https://yourdomain.com/default-image.jpg' %>">
+    <meta property="og:url" content="<%= ogUrl || 'https://yourdomain.com/default-url' %>">
+    <meta property="og:type" content="<%= ogType || 'website' %>">
   <!-- <title>UrbanMart</title> -->
   
   <link rel="stylesheet" data-purpose="Layout StyleSheet" title="Web Awesome"
