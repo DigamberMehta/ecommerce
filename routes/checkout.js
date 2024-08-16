@@ -245,10 +245,14 @@ router.post('/create-order', isLoggedIn, async (req, res) => {
         res.json({ paymentSessionId: response.data.payment_session_id, orderId: order._id });
 
     } catch (error) {
-        console.error('Error during order creation:', error.message);
-        console.error('Stack trace:', error.stack);
-        res.status(500).json({ error: 'Internal Server Error', message: error.message });
+        if (error.response) {
+            console.error('Error response from Cashfree:', error.response.data);
+        } else {
+            console.error('Error during order creation:', error.message);
+        }
+        res.status(500).send('Internal Server Error');
     }
+    
 });
 
 module.exports = router;
