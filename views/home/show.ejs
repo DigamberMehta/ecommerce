@@ -323,20 +323,32 @@
           </div>
 
           <div class="product-features">
-            <div class="highlights-section">
-              <span class="section-title-highlight">Highlights</span>
-              <span class="highlights-list">
-                <li>Gives a Matte finish look</li>
-                <li>Texture is: Liquid</li>
-                <li>Quantity: 8.8 g</li>
-              </span>
-            </div>
-            <div class="services-section">
+
+    
+              
+            <% if(product.highlights.length>0) {%>
+              
+              <div class="highlights-section">
+                <span class="section-title-highlight">Highlights</span>
+                <span class="highlights-list">
+                  <% product.highlights.forEach(highlight=> { %>
+                    <li>
+                      <%= highlight %>
+                    </li>
+                    <% }); %>
+                  
+                </span>
+              </div>
+              <% } %>
+          
+
+
+            <!-- <div class="services-section">
               <span class="section-title">Services</span>
               <div class="service-item">
                 Cash on Delivery available
               </div>
-            </div>
+            </div> -->
           </div>
           <div class="important-note">
             <span class="important-note-title">Important</span>

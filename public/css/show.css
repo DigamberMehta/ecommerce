@@ -720,6 +720,7 @@ cursor: pointer;
   list-style-type: disc;
   padding-left: 1.1rem;
   margin: 0;
+  line-height: 1.5;
   color: #212121;
 }
 

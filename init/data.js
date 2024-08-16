@@ -1585,6 +1585,12 @@ const products = [
   
     "title": "Headway 5E Upper-Intermediate SB with Online Practice Paperback",
     "description": "Headway 5th edition provides fresh, relevant English instruction needed for success today. The course retains its trusted methodology and has been updated with new texts, topics, and digital resources. The Student's Book offers all the language and skills students need to improve their English, with integrated Online Practice ensuring relevant and useful practice outside the classroom.",
+    "highlights": [
+    "Updated content with new texts and topics",
+    "Integrated Online Practice for extra learning support",
+    "Comprehensive coverage of language and skills"
+    ],
+
     "sellingPrice": 199.99,
     "mrpPrice": 499.99,
     "categories": [
@@ -1599,14 +1605,18 @@ const products = [
       "https://m.media-amazon.com/images/I/815j94JFO1L._SY342_.jpg"
     ],
     "reviews": [],
-    "rating": 4.7,
-    "specifications": {
-      "ISBN-10": "0194539695",
-      "ISBN-13": "978-0194539692",
-      "Edition": "5th",
-      "Publisher": "OUP Oxford",
-      "Publication date": "27 June 2019"
-    },
+    "rating": 4.7,   
+      "specifications": {
+        "ISBN-10": "0194539695",
+        "ISBN-13": "978-0194539692",
+        "Edition": "5th",
+        "Publisher": "OUP Oxford",
+        "Publication date": "27 June 2019",
+        "Language": "English",
+        "Item Weight": "456 g",
+        "Dimensions": "21.9 x 0.8 x 27.6 cm",
+        "Country of Origin": "United Kingdom"
+      },
     "tags": [
       "English Language",
       "Learning",

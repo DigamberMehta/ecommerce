@@ -20,6 +20,7 @@ const colorSchema = new mongoose.Schema({
 const productSchema = new mongoose.Schema({
   title: { type: String, required: true },
   description: String,
+  highlights:[String],
   sellingPrice: { type: Number, required: true },
   mrpPrice: Number,
   categories: [String],
