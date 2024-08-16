@@ -76,7 +76,7 @@
   text-align: left;
 }
 
-input {
+.input-feild-auth {
   padding: 12px;
   border: 1px solid #ccc;
   border-radius: 4px;

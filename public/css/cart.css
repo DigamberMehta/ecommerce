@@ -46,6 +46,8 @@
 .item-image {
     flex: 1;
     max-width: 20%;
+    min-width: 155px;
+    /* min-height: 220px; */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -77,6 +79,7 @@
     
     margin-right: 0.5rem;
 }
+
 
 .item-purchased,
 .item-price,
@@ -123,7 +126,7 @@
     align-items: center;
 }
 
-.quantity-selector {
+/* .quantity-selector {
     padding: 0.425rem 1.1rem;
     font-size: 1rem;
     color: #000;
@@ -159,7 +162,7 @@
 
 .quantity-button:hover {
     opacity: 0.8;
-}
+} */
 
 
 
@@ -175,7 +178,7 @@ overflow: hidden;
 .summary-card {
 border: 1px solid #e0e0e0; /* Subtle border color for a clean look */
 padding: 1.5rem; /* Increased padding for better spacing */
-background-color: #ffffff; /* Clean white background */
+background-color: #ffffff;
 }
 
 .summary-title {
@@ -293,36 +296,61 @@ margin-left: 1rem;
     font-size: 1rem;
    
 }
-.manual-quantity{
-    width: 5rem;
-       padding: 0.425rem 1.1rem;
-      font-size: 1rem;
-      color: #000;
-     background-color: #ffffff;
-     border: none;
-     border-radius: 100px;
-     border: 1px solid black;
-     cursor: pointer;
-    transition: background-color 0.3s ease;
-     margin-right: 0.5rem;
-}
-.update-button {
-    padding: 0.325rem 0.45rem;
-    font-size: 0.75rem;
-    color: #fff;
-    background-color: #ff9f00;
-    border: none;
-    border-radius: 100px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    display: none;
-    margin-left: 0.5rem;
-}
 
-.update-button:hover {
-    opacity: 0.8;
-}
 .cart-browsing-suggestion{
     margin-top: 2rem;
     
+}
+
+@media screen and  (max-width: 650px) {
+    .item-title {
+        font-size: 1rem;
+        margin-right: 0.5rem;
+    }
+    .quantity-selector-container{
+        flex-wrap: wrap;
+        
+    }
+    .cart-option-container{
+       margin-top: 0.5rem;
+       margin-left: 0;
+    }
+    .item-purchased{
+        display: none;
+    }
+    .cart-title-container{
+        flex-wrap: wrap;
+    }
+    .item-attributes{
+        margin-top: 0.5rem;
+    }
+    .card-discount{
+        display: none;
+    }
+}
+@media (max-width:500px){
+    .items-container{
+        padding: 1rem 0;
+    }
+    .cart-item{
+        padding: 0;
+    }
+    .item-image{
+        min-width: none;
+    }
+    .item-details{
+        padding: 0.5rem 0;
+    }
+    .current-price{
+        font-size: 1rem;
+    }
+    .item-attributes{
+        font-size: 0.8rem;
+    }
+    .item-details{
+        justify-content:unset;
+    }
+    .item-delivery{
+        margin-bottom: 0.2rem;
+    }
 }

@@ -588,6 +588,59 @@
         }
     }
 
+   // carsouel swiping
+    let startX = 0;
+    let isSwiping = false;
+
+    // Add touchstart event listener to detect the beginning of a swipe
+    carouselInner.addEventListener('touchstart', function (e) {
+        startX = e.touches[0].clientX;
+        isSwiping = true;
+    });
+
+    // Add touchmove event listener to detect the swipe movement
+    carouselInner.addEventListener('touchmove', function (e) {
+        if (!isSwiping) return;
+
+        let currentX = e.touches[0].clientX;
+        let diffX = startX - currentX;
+
+        // If swipe is significant enough, move to the next or previous image
+        if (Math.abs(diffX) > 50) {
+            if (diffX > 0) {
+                // Swipe left -> Next image
+                moveToImage(currentIndex + 1);
+            } else {
+                // Swipe right -> Previous image
+                moveToImage(currentIndex - 1);
+            }
+            isSwiping = false; // Reset the swiping flag after the move
+        }
+    });
+
+    // Reset swipe status on touchend
+    carouselInner.addEventListener('touchend', function () {
+        isSwiping = false;
+    });
+
+    function moveToImage(index) {
+        const totalImages = carouselInner.children.length;
+        if (index >= 0 && index < totalImages) {
+            const percentage = -index * 100;
+            carouselInner.style.transform = `translateX(${percentage}%)`;
+
+            // Update the active class for indicators and thumbnails
+            indicatorsContainer.querySelectorAll('.show-indicator').forEach(ind => ind.classList.remove('active'));
+            indicatorsContainer.children[index].classList.add('active');
+
+            thumbnailsContainer.querySelectorAll('.show-thumbnail').forEach(thumbnail => thumbnail.classList.remove('active'));
+            thumbnailsContainer.children[index].classList.add('active');
+
+            currentIndex = index;
+        }
+    }
+
+
     // Function to update RAM, Storage, and Size options based on the selected color
     function updateOptions(colorIndex) {
         const selectedColorVariant = product.colors.length > 0 ? product.colors[colorIndex] : null;

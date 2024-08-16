@@ -5,6 +5,52 @@
         justify-content: space-between;
         margin-bottom: 10px;
     }
+    .quantity-buttons {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    overflow: hidden;
+    width: fit-content;
+}
+
+.quantity-buttons {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    overflow: hidden;
+    width: fit-content;
+}
+
+.quantity-button {
+    background-color: #f5f5f5;
+    border: none;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    line-height: 30px;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.quantity-button:hover {
+    background-color: #ddd;
+}
+
+.manual-quantity {
+    width: 50px;
+    outline: none;
+    height: 30px;
+    border: none;
+    text-align: center;
+    font-size: 18px;
+    border: none;
+}
+
+/* Removed the update button styling as it's no longer needed */
+
+
 </style>
 
 <div class="cart-page">
@@ -53,30 +99,11 @@
                                 <div class="item-delivery">FREE delivery Tue, 9 Jul</div>
                                 <div class="quantity-selector-container">
                                     <div class="quantity-buttons">
-                                        <% if (item.quantity <= 10) { %>
-                                            <select class="quantity-selector">
-                                                <% for (let i = 1; i <= 10; i++) { %>
-                                                    <option value="<%= i %>" <%= item.quantity === i ? 'selected' : '' %>> Quantity: <%= i %> </option>
-                                                <% } %>
-                                                <option value="more">Add more</option>
-                                            </select>
-                                            <input type="text" class="manual-quantity" style="display: none;"
-                                                min="1" value="<%= item.quantity %>">
-                                        <% } else { %>
-                                            <select class="quantity-selector" style="display: none;">
-                                                <% for (let i = 1; i <= 10; i++) { %>
-                                                    <option value="<%= i %>"> Quantity: <%= i %> </option>
-                                                <% } %>
-                                                <option value="more">Add more</option>
-                                            </select>
-                                            <input type="text" class="manual-quantity" min="1"
-                                                value="<%= item.quantity %>">
-                                        <% } %>
                                         <button class="quantity-button decrement">-</button>
+                                        <input type="text" class="manual-quantity" min="1" value="<%= item.quantity %>">
                                         <button class="quantity-button increment">+</button>
                                     </div>
-                                    <button class="update-button">Update</button>
-
+                                
                                     <div class="cart-option-container">
                                         <ul class="remove-item save-later cart-options">
                                             <li class="remove-button"><i class="fa-light fa-trash"></i>Remove&nbsp;</li> |
@@ -87,8 +114,9 @@
                                             </li>
                                         </ul>
                                     </div>
-
                                 </div>
+                                
+                                
                             </div>
                         </div>
                     <% }); %>
