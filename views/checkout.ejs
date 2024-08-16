@@ -1,4 +1,7 @@
 <% layout('layouts/boilerplate') %>
+<% title = 'Checkout'; // Set the homepage title
+    ogTitle = title;
+ %>
 <style>
     
 </style>
@@ -392,6 +395,10 @@
                 alert("An error occurred. Please try again.");
             }
         });
+        document.getElementById('addAddressBtn').addEventListener('click', function(event) {
+    event.preventDefault();
+    window.location.href = `/user/address/new?backUrl=${encodeURIComponent(window.location.href)}`;
+});
     
     });
 </script>

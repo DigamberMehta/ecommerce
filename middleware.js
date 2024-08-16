@@ -6,15 +6,24 @@ module.exports.isLoggedIn = (req, res, next) => {
 
     // Check if user is not authenticated
     if (!req.isAuthenticated()) {
-      // Store the full URL with query parameters in session, except excluded URLs
-      if (!excludeUrls.includes(req.originalUrl)) {
-        req.session.redirectUrl = req.originalUrl;
-        console.log(`Redirect URL stored: ${req.session.redirectUrl}`);
+      let redirectUrl = req.originalUrl;
+
+      // If the original URL is an excluded URL or involves a POST request, use the referer header
+      if (excludeUrls.includes(redirectUrl) || req.method === 'POST') {
+        const refererUrl = req.get('Referer');
+        if (refererUrl) {
+          redirectUrl = refererUrl;
+        }
       }
+
+      // Store the redirect URL in the session
+      req.session.redirectUrl = redirectUrl;
+      console.log(`Redirect URL stored: ${req.session.redirectUrl}`);
 
       req.flash("error", "You must be signed in first!");
       return res.redirect("/login");
     }
+
     next();
   } catch (error) {
     console.error(`Error in isLoggedIn middleware: ${error.message}`);
@@ -22,6 +31,8 @@ module.exports.isLoggedIn = (req, res, next) => {
     res.redirect("/login");
   }
 };
+
+
 
 module.exports.savedRedirectUrl = (req, res, next) => {
   try {
