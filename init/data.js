@@ -52,7 +52,7 @@ const products = [
             ram: "6GB",
             storage: "128GB",
             stock: 30,
-            price: 3999
+            price: 17999
           },
           {
             ram: "6GB",
@@ -124,14 +124,14 @@ const products = [
   },
   
   {
-    title: "vivo X70 Pro",
+    title: "Vivo X70 Pro",
     description: "A powerful laptop with a sleek design, perfect for both work and play.",
-    sellingPrice: 149.99,
-   mrpPrice: 199.99,
+    sellingPrice: 46990,
+   mrpPrice: 51990,
     categories: ["Electronics", "Mobile"],
     brand: "BrandA",
     stock: 30,
-    images: ["https://m.media-amazon.com/images/I/41bF5rKo3CL._SY300_SX300_.jpg", "path/to/laptop2.jpg"],
+    images: ["https://rukminim2.flixcart.com/image/416/416/ku4ezrk0/mobile/u/z/i/x70-pro-v2105-vivo-original-imag7bq4eumqhgka.jpeg?q=70&crop=false", "https://rukminim2.flixcart.com/image/832/832/ku4ezrk0/mobile/j/s/b/x70-pro-v2105-vivo-original-imag7bq42mqhfzsh.jpeg?q=70&crop=false","https://rukminim2.flixcart.com/image/832/832/ku4ezrk0/mobile/4/0/u/x70-pro-v2105-vivo-original-imag7bq4ggh5dkuj.jpeg?q=70&crop=false","https://rukminim2.flixcart.com/image/832/832/ku4ezrk0/mobile/z/f/k/x70-pro-v2105-vivo-original-imag7bq4yauabq9y.jpeg?q=70&crop=false"],
     reviews: [],
     rating: 4.8,
     specifications: {
@@ -161,10 +161,10 @@ const products = [
     slug: "laptop-def"
   },
   {
-    title: "Samsung z flip 3",
+    title: "Samsung Z flip 3",
     description: "The Samsung Galaxy Z Flip 3 is a revolutionary smartphone that combines style and function. Its sleek, compact design unfolds to reveal a stunning, immersive display. Capture unforgettable moments with its advanced camera system, while enjoying lightning-fast performance and seamless multitasking. Experience the future of smartphones with the Z Flip 3's durable build, water resistance, and long-lasting battery. Whether you're on the go or relaxing, this device offers a truly unique user experience.",
-    sellingPrice: 14779.99,
-    mrpPrice: 19999.99,
+    sellingPrice: 95999,
+    mrpPrice: 39999.99,
     categories: ["Electronics", "Mobile"],
     brand: "BrandB",
     stock: 80,
@@ -201,8 +201,8 @@ const products = [
   {
     title: "iPhone 14 Pro Max",
     description: "Wireless headphones with noise cancellation and superior sound quality.",
-    sellingPrice: 149.99,
-    mrpPrice: 569.99,
+    sellingPrice: 149999,
+    mrpPrice: 119999,
     categories: ["Mobile"],
     brand: "BrandZ",
     stock: 75,
@@ -268,8 +268,8 @@ const products = [
   {
     title: "Samsung Galaxy S22 Ultra",
     description: "Wireless headphones with noise cancellation and superior sound quality.",
-    sellingPrice: 129.99,
-    mrpPrice: 499.99,
+    sellingPrice: 129999,
+    mrpPrice: 84499.99,
     categories: ["Mobile"],
     brand: "BrandX",
     stock: 50,
@@ -335,8 +335,8 @@ const products = [
   {
     title: "Google Pixel 7 Pro",
     description: "Wireless headphones with noise cancellation and superior sound quality.",
-    sellingPrice: 159.99,
-    mrpPrice: 599.99,
+    sellingPrice: 84999,
+    mrpPrice: 45999,
     categories: ["Mobile"],
     brand: "BrandY",
     stock: 60,
@@ -402,8 +402,8 @@ const products = [
   {
     title: "OnePlus 10 Pro",
     description: "Wireless headphones with noise cancellation and superior sound quality.",
-    sellingPrice: 139.99,
-    mrpPrice: 549.99,
+    sellingPrice: 71999,
+    mrpPrice: 44599,
     categories: ["Mobile"],
     brand: "BrandZ",
     stock: 70,
@@ -469,8 +469,8 @@ const products = [
   {
     title: "Acer Aspire 3",
     description: "Laptop with 14-inch Full HD display and up to 12 hours battery life.",
-    sellingPrice: 349.99,
-    mrpPrice: 699.99,
+    sellingPrice: 52000,
+    mrpPrice: 34999,
     categories: ["Laptops"],
     brand: "Acer",
     stock: 50,
@@ -513,8 +513,8 @@ const products = [
   {
     title: "Dell Inspiron 15",
     description: "Laptop with 15.6-inch Full HD display and up to 14 hours battery life.",
-    sellingPrice: 449.99,
-    mrpPrice: 799.99,
+    sellingPrice: 65000,
+    mrpPrice: 54999,
     categories: ["Laptops"],
     brand: "Dell",
     stock: 75,
@@ -557,8 +557,8 @@ const products = [
   {
     title: "HP Pavilion x360",
     description: "Laptop with 14-inch Full HD touchscreen display and up to 10 hours battery life.",
-    sellingPrice: 399.99,
-    mrpPrice: 749.99,
+    sellingPrice: 92000,
+    mrpPrice: 77499,
     categories: ["Laptops"],
     brand: "HP",
     stock: 60,
@@ -601,8 +601,8 @@ const products = [
   {
     title: "Lenovo IdeaPad 3",
     description: "Laptop with 15.6-inch Full HD display and up to 8 hours battery life.",
-    sellingPrice: 299.99,
-    mrpPrice: 599.99,
+    sellingPrice: 64000,
+    mrpPrice: 45999,
     categories: ["Laptops"],
     brand: "Lenovo",
     stock: 70,
@@ -645,8 +645,8 @@ const products = [
   {
     title: "ASUS ROG Strix G15",
     description: "Gaming laptop with 15.6-inch Full HD display and powerful performance.",
-    sellingPrice: 1299.99,
-    mrpPrice: 1599.99,
+    sellingPrice: 182990,
+    mrpPrice: 115990,
     categories: ["Laptops", "Gaming"],
     brand: "ASUS",
     stock: 20,
@@ -689,8 +689,8 @@ const products = [
   {
     title: "MSI GS66 Stealth",
     description: "Ultra-thin gaming laptop with 15.6-inch Full HD display and powerful performance.",
-    sellingPrice: 1799.99,
-    mrpPrice: 2099.99,
+    sellingPrice: 235990,
+    mrpPrice: 235990,
     categories: ["Laptops", "Gaming"],
     brand: "MSI",
     stock: 15,
@@ -733,8 +733,8 @@ const products = [
   {
     title: "Razer Blade 15",
     description: "Gaming laptop with 15.6-inch Full HD display and premium design.",
-    sellingPrice: 1599.99,
-    mrpPrice: 1899.99,
+    sellingPrice: 45599,
+    mrpPrice: 40999,
     categories: ["Laptops", "Gaming"],
     brand: "Razer",
     stock: 25,
@@ -777,8 +777,8 @@ const products = [
   {
     title: "Alienware m15 R6",
     description: "Gaming laptop with 15.6-inch Full HD display and Alienware Cryo-Tech cooling.",
-    sellingPrice: 1999.99,
-    mrpPrice: 2299.99,
+    sellingPrice: 223322,
+    mrpPrice: 142990,
     categories: ["Laptops", "Gaming"],
     brand: "Alienware",
     stock: 10,
@@ -821,8 +821,8 @@ const products = [
   {
     title: "HP Spectre x360",
     description: "Convertible laptop with 13.3-inch 4K OLED display and long battery life.",
-    sellingPrice: 1299.99,
-    mrpPrice: 1599.99,
+    sellingPrice: 116000,
+    mrpPrice: 108499,
     categories: ["Laptops"],
     brand: "HP",
     stock: 35,
@@ -864,8 +864,8 @@ const products = [
   {
     title: "Dell XPS 13",
     description: "Ultra-portable laptop with 13.4-inch InfinityEdge display and premium build quality.",
-    sellingPrice: 1199.99,
-    mrpPrice: 1499.99,
+    sellingPrice: 84499 ,
+    mrpPrice: 74999,
     categories: ["Laptops"],
     brand: "Dell",
     stock: 40,
@@ -907,8 +907,8 @@ const products = [
   {
     title: "Lenovo ThinkPad X1 Carbon",
     description: "Business laptop with 14-inch WQHD display and robust security features.",
-    sellingPrice: 1399.99,
-    mrpPrice: 1699.99,
+    sellingPrice: 44499.99,
+    mrpPrice: 40499.99,
     categories: ["Laptops"],
     brand: "Lenovo",
     stock: 30,
@@ -979,8 +979,8 @@ const products = [
   {
     "title": "Instant Pot Duo",
     "description": "7-in-1 multi-functional pressure cooker with 6-quart capacity and 14 smart programs.",
-    "sellingPrice": 79.99,
-    "mrpPrice": 99.99,
+    "sellingPrice": 749 ,
+    "mrpPrice": 999 ,
     "categories": ["Kitchen Appliances", "Pressure Cookers"],
     "brand": "Instant Pot",
     "stock": 30,
@@ -1008,8 +1008,8 @@ const products = [
   {
     "title": "Cuisinart Food Processor",
     "description": "14-cup food processor with stainless steel blades and 720-watt motor.",
-    "sellingPrice": 199.99,
-    "mrpPrice": 249.99,
+    "sellingPrice": 1999.99,
+    "mrpPrice": 1249.99,
     "categories": ["Kitchen Appliances", "Food Processors"],
     "brand": "Cuisinart",
     "stock": 25,
@@ -1037,8 +1037,8 @@ const products = [
   {
     "title": "Ninja Air Fryer",
     "description": "4-quart air fryer with 4 functions: air fry, roast, reheat, and dehydrate.",
-    "sellingPrice": 99.99,
-    "mrpPrice": 129.99,
+    "sellingPrice": 799.99,
+    "mrpPrice": 629.99,
     "categories": ["Kitchen Appliances", "Air Fryers"],
     "brand": "Ninja",
     "stock": 20,
@@ -1065,8 +1065,8 @@ const products = [
   {
     "title": "Breville Smart Oven",
     "description": "1800-watt countertop oven with 10 functions and Element IQ technology.",
-    "sellingPrice": 249.99,
-    "mrpPrice": 299.99,
+    "sellingPrice": 1349.99,
+    "mrpPrice": 879.99,
     "categories": ["Kitchen Appliances", "Toaster Ovens"],
     "brand": "Breville",
     "stock": 15,
@@ -1094,8 +1094,8 @@ const products = [
   {
     "title": "Vitamix Blender",
     "description": "Professional-grade blender with 64-ounce container and variable speed control.",
-    "sellingPrice": 399.99,
-    "mrpPrice": 449.99,
+    "sellingPrice": 3299.99,
+    "mrpPrice": 1449.99,
     "categories": ["Kitchen Appliances", "Blenders"],
     "brand": "Vitamix",
     "stock": 10,
@@ -1122,8 +1122,8 @@ const products = [
   {
     "title": "Keurig K-Elite",
     "description": "Single-serve coffee maker with iced coffee capability and programmable settings.",
-    "sellingPrice": 129.99,
-    "mrpPrice": 149.99,
+    "sellingPrice": 1229 ,
+    "mrpPrice": 1429 ,
     "categories": ["Kitchen Appliances", "Coffee Makers"],
     "brand": "Keurig",
     "stock": 20,
@@ -1150,8 +1150,8 @@ const products = [
   {
     "title": "Crock-Pot Slow Cooker",
     "description": "6-quart slow cooker with digital countdown control and automatic keep-warm setting.",
-    "sellingPrice": 49.99,
-    "mrpPrice": 59.99,
+    "sellingPrice": 1249.99,
+    "mrpPrice": 959.99,
     "categories": ["Kitchen Appliances", "Slow Cookers"],
     "brand": "Crock-Pot",
     "stock": 15,
@@ -1179,8 +1179,8 @@ const products = [
   {
     "title": "Hamilton Beach Toaster",
     "description": "2-slice toaster with extra-wide slots and bagel, defrost, and cancel functions.",
-    "sellingPrice": 24.99,
-    "mrpPrice": 29.99,
+    "sellingPrice": 1549.99,
+    "mrpPrice": 1229.99,
     "categories": ["Kitchen Appliances", "Toasters"],
     "brand": "Hamilton Beach",
     "stock": 25,
@@ -1581,7 +1581,51 @@ const products = [
     "additionalImages": ["path/to/additionalJeansImage1.jpg", "path/to/additionalJeansImage2.jpg"],
     "slug": "levis-womens-high-waisted-jeans"
   },
-
+  {
+  
+    "title": "Headway 5E Upper-Intermediate SB with Online Practice Paperback",
+    "description": "Headway 5th edition provides fresh, relevant English instruction needed for success today. The course retains its trusted methodology and has been updated with new texts, topics, and digital resources. The Student's Book offers all the language and skills students need to improve their English, with integrated Online Practice ensuring relevant and useful practice outside the classroom.",
+    "sellingPrice": 199.99,
+    "mrpPrice": 499.99,
+    "categories": [
+      "Books",
+      "Education",
+      "Language Learning"
+    ],
+    "brand": "Oxford University Press",
+    "stock": 100,
+    "images": [
+      "https://m.media-amazon.com/images/I/61oOoV3GuEL._SY342_.jpg",
+      "https://m.media-amazon.com/images/I/815j94JFO1L._SY342_.jpg"
+    ],
+    "reviews": [],
+    "rating": 4.7,
+    "specifications": {
+      "ISBN-10": "0194539695",
+      "ISBN-13": "978-0194539692",
+      "Edition": "5th",
+      "Publisher": "OUP Oxford",
+      "Publication date": "27 June 2019"
+    },
+    "tags": [
+      "English Language",
+      "Learning",
+      "Books",
+      "Upper-Intermediate"
+    ],
+    "additionalImages": [],
+    "slug": "headway-5e-upper-intermediate-sb-with-online-practice-paperback",
+    "discount": 10,
+    "featured": false,
+    "bestseller": true,
+    "active": true,
+    "metadata": {
+      "author": "Liz and John Soars",
+      "onlinePractice": true
+    },
+    "createdAt": "2024-08-16T12:00:00Z",
+    "updatedAt": "2024-08-16T12:00:00Z"
+  }
 
 ];
 

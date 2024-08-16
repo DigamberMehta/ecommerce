@@ -260,7 +260,7 @@ ul{
 .product-show-image {
   position: relative;
   max-width: 400px;
-  margin: 0 auto;
+  margin: 1rem auto;
 }
 
 .show-carousel {

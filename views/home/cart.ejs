@@ -96,7 +96,15 @@
                                     <span class="price-discount">(5% off)</span>
                                 </div>
                                 <div class="card-discount">Flat INR 1000 Off on ICICI Credit Cards</div>
-                                <div class="item-delivery">FREE delivery Tue, 9 Jul</div>
+                                <div class="item-delivery">FREE delivery 
+                                    <% 
+                                    const today = new Date();
+                                    const options = { weekday: 'long', day: 'numeric', month: 'short' };
+                                    const deliveryDate = new Date(today.getTime() + 5 * 24 * 60 * 60 * 1000);
+                                   
+                                  %>
+                                  <span><%= deliveryDate.toLocaleDateString('en-US', options) %> <span style="font-size: 10px;">(Expected )</span> </span>
+                                </div>
                                 <div class="quantity-selector-container">
                                     <div class="quantity-buttons">
                                         <button class="quantity-button decrement">-</button>

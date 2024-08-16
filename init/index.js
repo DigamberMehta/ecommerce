@@ -2,7 +2,8 @@ const mongoose = require('mongoose');
 const Product = require('../models/product');
 const { products } = require('./data');
 require ('dotenv').config();
-const dbUrl = process.env.ATLAS_URL || 'mongodb://localhost:27017/ecommerce';
+// const dbUrl = process.env.ATLAS_URL || 'mongodb://localhost:27017/ecommerce';
+const dbUrl = 'mongodb://localhost:27017/ecommerce'
 
 
 mongoose.connect(dbUrl)

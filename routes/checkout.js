@@ -16,6 +16,7 @@ router.get('/', isLoggedIn, setBackUrl, async (req, res) => {
     let orderDetails = [];
     let totalCost = 0;
     let totalSavings = 0;
+    let totalMrp = 0; // New variable to calculate total MRP
 
     try {
         if (req.session.cart) {
@@ -48,6 +49,7 @@ router.get('/', isLoggedIn, setBackUrl, async (req, res) => {
                 const savings = (item.product.mrpPrice - price) * item.quantity;
                 totalCost += subtotal;
                 totalSavings += savings;
+                totalMrp += item.product.mrpPrice * item.quantity; // Accumulate total MRP
                 orderDetails.push({
                     _id: item.product._id,
                     title: item.product.title,
@@ -86,6 +88,7 @@ router.get('/', isLoggedIn, setBackUrl, async (req, res) => {
             const savings = (product.mrpPrice - price) * quantity;
             totalCost = subtotal;
             totalSavings = savings;
+            totalMrp = product.mrpPrice * quantity; // Set total MRP for a single product scenario
             orderDetails.push({
                 _id: product._id,
                 title: product.title,
@@ -102,13 +105,14 @@ router.get('/', isLoggedIn, setBackUrl, async (req, res) => {
         const user = await User.findById(req.user._id);
         const addresses = user.address || [];
 
-        res.render('checkout', { orderDetails, totalCost, totalSavings, addresses, backUrl: res.locals.backUrl });
+        res.render('checkout', { orderDetails, totalCost, totalSavings, totalMrp, addresses, backUrl: res.locals.backUrl });
 
     } catch (error) {
         console.error('Error during checkout:', error);
         res.status(500).send('An error occurred during checkout');
     }
 });
+
 
 // Route to handle order creation
 router.post('/create-order', isLoggedIn, async (req, res) => {

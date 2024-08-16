@@ -1,4 +1,7 @@
 <% layout('layouts/boilerplate') %>
+<style>
+    
+</style>
 <div class="checkout-container">
     <div class="checkout-left">
         <div class="accordion">
@@ -39,30 +42,52 @@
             <div class="accordion-item">
                 <button class="accordion-header" id="reviewItemsHeader">Review items and delivery</button>
                 <div class="accordion-content" id="reviewItemsContent">
+                    <% 
+                        let totalSavingsPercentage = 0;
+                    %>
                     <% orderDetails.forEach(function(item) { %>
+                        <% 
+                            // Calculate the savings percentage for this item
+                            const savingsPercentage = ((item.mrp - item.price) / item.mrp) * 100;
+                            totalSavingsPercentage += savingsPercentage;
+                        %>
                         <div class="product-item">
-                            <h4 class="item-title"> <%= item.title %></h4>
+                            <!-- <h4 class="item-title-checkout"><%= item.title %></h4> -->
                             <div class="item-checkout-details" style="display: flex;">
-                                <img src="<%= item.imageUrl %>" alt="<%= item.title %>" style="width:160px; height:auto;">
-                                <p class="item-details">
+                                <img src="<%= item.imageUrl %>" alt="<%= item.title %>" style="width:160px; height:auto; margin-right: 1rem;">
+                                <p class="item-details-checkout">
+                                    <span class="item-checkout-details">
                                     <%= item.title %>
                                     <% if (item.attributes && item.attributes.color) { %> | Color: <%= item.attributes.color %><% } %>
                                     <% if (item.attributes && item.attributes.size) { %> | Size: <%= item.attributes.size %><% } %>
                                     <% if (item.attributes && item.attributes.ram) { %> | RAM: <%= item.attributes.ram %><% } %>
                                     <% if (item.attributes && item.attributes.storage) { %> | Storage: <%= item.attributes.storage %><% } %>
                                     <br>
-                                    MRP: ₹<%= item.mrp.toFixed(2) %><br>
-                                    Selling Price: ₹<%= item.price.toFixed(2) %><br>
-                                    Qty: <%= item.quantity %><br>
-                                    Subtotal: ₹<%= item.subtotal.toFixed(2) %><br>
-                                    Savings: ₹<%= item.savings.toFixed(2) %>
+                                </span>
+                                   <b> MRP:</b> ₹<%= item.mrp.toFixed(2) %><br>
+                                   <b> Selling Price:</b> ₹<%= item.price.toFixed(2) %><br>
+                                   <b> Qty:</b> <%= item.quantity %><br>
+                                   <b> Subtotal:</b> ₹<%= item.subtotal.toFixed(2) %><br>
+                                   <b> Savings:</b> ₹<%= item.savings.toFixed(2) %> (<%= savingsPercentage.toFixed(0) %>%)
                                 </p>
+                                
                             </div>
                         </div>
                     <% }); %>
-                    <p>Saturday 27 Jul<br>FREE Standard Delivery</p>
+                    <% 
+                        // Calculate average savings percentage
+                        totalSavingsPercentage = totalSavingsPercentage / orderDetails.length;
+                    %>
+                   <% 
+                   const today = new Date();
+                   const options = { weekday: 'long', day: 'numeric', month: 'short' };
+                   const deliveryDate = new Date(today.getTime() + 5 * 24 * 60 * 60 * 1000);
+                  
+                 %>
+                 <p><b> Delivery: </b> <%= deliveryDate.toLocaleDateString('en-US', options) %> (Expected ) <br>FREE Standard Delivery</p>
+                 
                     <button id="payNowBtn" class="btn primary">Pay Now</button>
-                    <button id="cashOnDeliveryBtn" class="btn primary">Cash on Delivery</button>
+                    <!-- <button id="cashOnDeliveryBtn" class="btn primary">Cash on Delivery</button> -->
                 </div>
             </div>
             
@@ -74,14 +99,23 @@
     <div class="checkout-right">
         <div class="order-summary-container">
             <h2 class="order-summary-title">Order Summary</h2>
-            <p class="order-summary-item">Items Total: ₹<%= totalCost.toFixed(2) %></p>
+            <hr>
+            <!-- Original Order Total -->
+            <p class="order-summary-item">Total Mrp: ₹<%= totalMrp.toFixed(2) %></p>
+            
             <p class="order-summary-item">Delivery: ₹0.00</p>
+            <!-- Order Total (currently displayed totalCost) -->
             <h3 class="order-total">Order Total: ₹<%= totalCost.toFixed(2) %></h3>
-            <p class="savings">Your Savings: ₹<%= totalSavings.toFixed(2) %> (69%)</p>
-            <p class="discount">Item discount</p>
+            
+            <!-- Delivery -->
+            
+            <!-- Total Savings and Percentage Difference -->
+            <p class="savings">
+                Your Savings: ₹<%= totalSavings.toFixed(2) %> (<%= ((totalSavings / totalMrp) * 100).toFixed(0) %>%)
+            </p>
         </div>
     </div>
-</div>
+    
 
 <!-- Modal for editing address -->
 <div id="editAddressModal" class="modal">
@@ -213,8 +247,8 @@
     
         // Initialize Cashfree SDK in sandbox mode for testing
         const cashfree = Cashfree({
-    mode: "production" // Switch to production for live transactions
-});
+            mode: "production" // Switch to production for live transactions
+        });
 
     
         // Handle the "Use this address" button click
@@ -360,6 +394,4 @@
         });
     
     });
-    </script>
-    
-
+</script>
