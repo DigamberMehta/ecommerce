@@ -9,38 +9,33 @@ const passport = require('passport');
 router.get("/signup", (req, res) => {
     res.render("auth/signup");
   });
-  router.post("/signup", wrapAsync(async (req, res, next) => {
+  router.post("/signup", savedRedirectUrl, wrapAsync(async (req, res, next) => {
     try {
-      // Extract data from the request body
       let { email, name, phone, password } = req.body;
   
-      // Debugging: Log original data
-      console.log("Original data:", { email, name, phone, password });
-  
-      // Convert email to lowercase and trim extra spaces
+      // Process and clean up data
       email = email.toLowerCase().trim();
       name = name.trim();
       phone = phone.trim();
   
-      // Debugging: Log processed data
-      console.log("Processed data:", { email, name, phone });
-  
-      // Create a new User instance
+      // Create and register the new user
       const user = new User({ email, name, phone });
-      console.log("Created user instance:", user);
-  
-      // Register the user
       const registeredUser = await User.register(user, password);
-      console.log("Registered user:", registeredUser);
   
-      // Log in the user
+      // Log in the user automatically after signup
       req.login(registeredUser, err => {
         if (err) {
           console.error("Login error:", err);
           return next(err);
         }
         console.log("User logged in successfully");
-        res.redirect("/home");
+  
+        // Determine the redirect URL
+        const redirectTo = res.locals.redirectUrl || "/home";
+        delete req.session.redirectUrl;
+  
+        // Redirect the user to the intended URL or the home page
+        res.redirect(redirectTo);
       });
     } catch (e) {
       req.flash("error", e.message);
