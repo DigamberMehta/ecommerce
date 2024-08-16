@@ -6,12 +6,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title><%= typeof title !== 'undefined' ? title : 'Default Title' %></title>
 
-    <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="<%= ogTitle || title %>">
-    <meta property="og:description" content="<%= ogDescription || 'Default description' %>">
-    <meta property="og:image" content="<%= ogImage || 'https://yourdomain.com/default-image.jpg' %>">
-    <meta property="og:url" content="<%= ogUrl || 'https://yourdomain.com/default-url' %>">
-    <meta property="og:type" content="<%= ogType || 'website' %>">
+  <!-- Open Graph Meta Tags -->
+  <meta property="og:title" content="<%= typeof ogTitle !== 'undefined' ? ogTitle : title %>">
+  <meta property="og:description" content="<%= typeof ogDescription !== 'undefined' ? ogDescription : 'Default description' %>">
+  <meta property="og:image" content="<%= typeof ogImage !== 'undefined' ? ogImage : 'https://yourdomain.com/default-image.jpg' %>">
+  <meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="627">
+  <meta property="og:url" content="<%= typeof ogUrl !== 'undefined' ? ogUrl : 'https://yourdomain.com/default-url' %>">
+  <meta property="og:type" content="<%= typeof ogType !== 'undefined' ? ogType : 'website' %>">
+
   <!-- <title>UrbanMart</title> -->
   
   <link rel="stylesheet" data-purpose="Layout StyleSheet" title="Web Awesome"
