@@ -13,6 +13,7 @@ function camelCaseToTitleCase(camelCase) {
 exports.showProduct = async (req, res) => {
     try {
         const { id, slug } = req.params;
+
         // Populate reviews and their user field
         const product = await Product.findOne({ _id: id, slug: slug })
             .populate({
@@ -46,8 +47,8 @@ exports.showProduct = async (req, res) => {
             }
         }
 
+        // Fetch recommended products based on user interactions
         let recommendedProducts = [];
-
         if (req.isAuthenticated()) {
             const userId = req.user._id;
             const interactions = await UserInteraction.find({ user: userId });
@@ -70,14 +71,17 @@ exports.showProduct = async (req, res) => {
             recommendedProducts = await Product.find({ categories: { $in: uniqueCategories } });
         }
         
-
-        res.render('home/show', { product, recommendedProducts, camelCaseToTitleCase, isInWishlist });
+        // Render the product show page
+        res.render('home/show', { 
+            product, 
+            recommendedProducts, 
+            camelCaseToTitleCase, 
+            isInWishlist,
+            request: req // Pass the request object to the template
+        });
     } catch (error) {
         console.error(error);
         req.flash('error', 'An error occurred. Please try again.');
         res.redirect('/'); // Redirect to a safe page on error
     }
 };
-
-
-
