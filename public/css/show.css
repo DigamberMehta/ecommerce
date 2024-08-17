@@ -552,7 +552,12 @@ ul{
   background-color: white;
   border: none;
 }
-
+.red-heart{
+  color: red;
+}
+.add-wishlist{
+  color: #8a8a8a;
+}
 .top-show-section-heading {
   display: flex;
   justify-content: space-between;

@@ -15,6 +15,9 @@
     .wishlist-title {
         text-align: center;
         color: #333;
+        display: inline-block;
+       margin-bottom: 1rem;
+       /* border-bottom: 1px solid #ddd; */
     }
 
     .wishlist-empty {
@@ -42,7 +45,9 @@
 
     .wishlist-image {
         width: 100px;
-        margin-right: 20px;
+        /* margin-right: 20px; */
+        object-fit: contain;
+        max-height: 100px;
     }
 
     .wishlist-info {
@@ -53,12 +58,13 @@
         font-size: 1.2em;
         margin: 0 0 5px;
         color: #333;
+        font-weight: 400;
     }
 
-    .wishlist-product-description {
+    /* .wishlist-product-description {
         margin: 0 0 10px;
         color: #666;
-    }
+    } */
 
     .wishlist-prices {
         display: flex;
@@ -67,7 +73,7 @@
     }
 
     .wishlist-selling-price {
-        color: #e91e63;
+        color: #212121;
         font-size: 1.2em;
     }
 
@@ -111,6 +117,10 @@
         display: flex;
         align-items: center;
     }
+    .wishlist-product-description{
+        margin-bottom:0.5rem;
+        color: #666;
+    }
 </style>
 
 <div class="wishlist-container">
@@ -120,36 +130,51 @@
     <% } else { %>
         <ul class="wishlist-list">
             <% products.forEach(item => { 
-                const discountPercentage = Math.round(((item.product.mrpPrice - item.price) / item.product.mrpPrice) * 100);
+                const discountPercentage = item.product.mrpPrice 
+                    ? Math.round(((item.product.mrpPrice - (item.price || item.product.sellingPrice)) / item.product.mrpPrice) * 100)
+                    : 0;
             %>
             <div class="wishlist-item-container">
-                <li class="wishlist-item" data-product-id="<%= item.product._id %>" data-color="<%= item.attributes.color %>" data-ram="<%= item.attributes.ram %>" data-storage="<%= item.attributes.storage %>" data-size="<%= item.attributes.size %>">
+                <li class="wishlist-item" data-product-id="<%= item.product._id %>" data-color="<%= item.attributes?.color %>" data-ram="<%= item.attributes?.ram %>" data-storage="<%= item.attributes?.storage %>" data-size="<%= item.attributes?.size %>">
+                    <a href="/products/<%=item.product._id%>/<%=item.product.slug%>">
                     <div class="wish-info-container">
-                    <img src="<%= item.product.images[0] %>" alt="<%= item.product.title %> image" class="wishlist-image">
-                    <div class="wishlist-info">
-                        <h2 class="wishlist-product-title"><%= item.product.title %></h2>
-                      
-                        <div class="wishlist-attributes">
-                            <% if (item.attributes.color) { %>
-                                <div><strong>Color:</strong> <%= item.attributes.color %></div>
-                            <% } %>
-                            <% if (item.attributes.ram) { %>
-                                <div><strong>RAM:</strong> <%= item.attributes.ram %></div>
-                            <% } %>
-                            <% if (item.attributes.storage) { %>
-                                <div><strong>Storage:</strong> <%= item.attributes.storage %></div>
-                            <% } %>
-                            <% if (item.attributes.size) { %>
-                                <div><strong>Size:</strong> <%= item.attributes.size %></div>
-                            <% } %>
-                        </div>
-                        <div class="wishlist-prices">
-                            <span class="wishlist-selling-price">₹<%= item.price %></span>
-                            <span class="wishlist-mrp-price">₹<%= item.product.mrpPrice %></span>
-                            <span class="wishlist-discount"><%= discountPercentage %>% off</span>
+                        <img src="<%= item.product.images[0] %>" alt="<%= item.product.title %> image" class="wishlist-image">
+                        <div class="wishlist-info">
+                            <h2 class="wishlist-product-title"><%= item.product.title %></h2>
+
+
+                            <%const truncateDescription=(description)=> {
+                                const words = description.split(' ');
+                                return words.length > 15 ? words.slice(0, 30).join(' ') + '...' : description; };
+                                %>
+                                <div class="wishlist-product-description">
+                                    <%= truncateDescription(item.product.description) %>
+                                </div>
+
+                            <div class="wishlist-attributes">
+                                <% if (item.attributes?.color) { %>
+                                    <div><strong>Color:</strong> <%= item.attributes.color %></div>
+                                <% } %>
+                                <% if (item.attributes?.ram) { %>
+                                    <div><strong>RAM:</strong> <%= item.attributes.ram %></div>
+                                <% } %>
+                                <% if (item.attributes?.storage) { %>
+                                    <div><strong>Storage:</strong> <%= item.attributes.storage %></div>
+                                <% } %>
+                                <% if (item.attributes?.size) { %>
+                                    <div><strong>Size:</strong> <%= item.attributes.size %></div>
+                                <% } %>
+                            </div>
+                            <div class="wishlist-prices">
+                                <span class="wishlist-selling-price">₹<%= item.price || item.product.sellingPrice %></span>
+                                <span class="wishlist-mrp-price">₹<%= item.product.mrpPrice || '' %></span>
+                                <% if (discountPercentage > 0) { %>
+                                    <span class="wishlist-discount"><%= discountPercentage %>% off</span>
+                                <% } %>
+                            </div>
                         </div>
                     </div>
-                    </div>
+                </a>
                     <div style="margin: 1rem 0;">
                         <button class="wishlist-remove-btn">Remove</button>
                         <button class="wishlist-move-to-cart-btn">Move to Cart</button>
@@ -157,6 +182,7 @@
                 </li>
             </div>
             <% }); %>
+            
         </ul>
     <% } %>
 </div>

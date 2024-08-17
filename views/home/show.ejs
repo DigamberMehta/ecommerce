@@ -163,6 +163,12 @@
     .full-width-preview{
       background-color: white;
     }
+    .wishlist-btn-show {
+    display: inline-block;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
   </style>
 
   <div class="show-page">
@@ -190,6 +196,24 @@
                   <% }); %>
               </div>
               <% } %>
+
+              <div class="wishlist-btn-show">
+
+                <form id="wishlist-form" data-product-id="<%= product._id %>" data-in-wishlist="<%= isInWishlist %>">
+                  <input type="hidden" name="productId" value="<%= product._id %>" />
+                  <button type="submit" class="product-show-btn-wishlist <%= isInWishlist ? 'wishlist-active' : '' %>">
+                      <span class="heart-icon" id="wishlist-heart-icon">
+                          <% if (isInWishlist) { %>
+                              <i class="fa-solid fa-heart red-heart"></i>
+                          <% } else { %>
+                              <i class="fa-light fa-heart add-wishlist"></i>
+                          <% } %>
+                      </span>
+                  </button>
+              </form>
+              
+  
+              </div>
           </div>
           <% if (imagesToShow.length> 1) { %>
             <div class="show-thumbnails">
@@ -211,16 +235,7 @@
                 </span>
               </h1>
             </div>
-            <div class="wishlist-btn-show">
-              <form action="/wishlist/<%= isInWishlist ? 'remove' : 'add' %>" method="POST">
-                <input type="hidden" name="productId" value="<%= product._id %>" />
-                <button type="submit" class="product-show-btn-wishlist <%= isInWishlist ? 'wishlist-active' : '' %>">
-                  <span class="heart-icon">
-                    <%= isInWishlist ? '❤️' : '🤍' %>
-                  </span>
-                </button>
-              </form>
-            </div>
+
           </div>
           <p class="product-show-ratings">
             <span class="show-rating">
@@ -909,6 +924,49 @@
         }
         updateFormFields();
     });
+
+
+
+    document.getElementById('wishlist-form').addEventListener('submit', function(event) {
+    event.preventDefault(); // Prevent the form from submitting the traditional way
+
+    const form = event.target;
+    const productId = form.getAttribute('data-product-id');
+    const isInWishlist = form.getAttribute('data-in-wishlist') === 'true';
+
+    const url = `/wishlist/${isInWishlist ? 'remove' : 'add'}`;
+    const method = 'POST';
+    const headers = {
+        'Content-Type': 'application/json'
+    };
+    const body = JSON.stringify({ productId });
+
+    fetch(url, { method, headers, body })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Toggle the wishlist state
+                form.setAttribute('data-in-wishlist', !isInWishlist);
+
+                // Update the heart icon
+                const heartIcon = document.getElementById('wishlist-heart-icon');
+                heartIcon.innerHTML = !isInWishlist 
+                    ? '<i class="fa-solid fa-heart red-heart"></i>'
+                    : '<i class="fa-light fa-heart add-wishlist"></i>';
+                    
+                // Toggle the active class
+                form.querySelector('.product-show-btn-wishlist').classList.toggle('wishlist-active');
+            } else {
+                alert(data.message || 'An error occurred while updating your wishlist.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while updating your wishlist.');
+        });
+});
+
+
 
 });
 

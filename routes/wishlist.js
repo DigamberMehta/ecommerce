@@ -5,55 +5,63 @@ const CartItem = require('../models/cartItem');
 const { isLoggedIn } = require('../middleware');
 
 // Add product to wishlist
+// Add product to wishlist
 router.post('/wishlist/add', async (req, res) => {
     if (!req.user) {
-      req.flash('error', 'You must be logged in to add items to your wishlist.');
-      return res.redirect('/login');
+        return res.status(401).json({ success: false, message: 'You must be logged in to add items to your wishlist.' });
     }
-  
+
     try {
-      let wishlist = await Wishlist.findOne({ user: req.user._id });
-      if (!wishlist) {
-        wishlist = new Wishlist({ user: req.user._id, products: [] });
-      }
-  
-      if (!wishlist.products.includes(req.body.productId)) {
-        wishlist.products.push(req.body.productId);
-        await wishlist.save();
-      }
-      req.flash('success', 'Product added to your wishlist.');
-      res.redirect('back');
+        let wishlist = await Wishlist.findOne({ user: req.user._id });
+        if (!wishlist) {
+            wishlist = new Wishlist({ user: req.user._id, products: [] });
+        }
+
+        // Create a new wishlist item object without attributes
+        const wishlistItem = {
+            product: req.body.productId,
+            price: req.body.price // Assuming the price is sent in the request body
+        };
+
+        // Check if the product already exists in the wishlist (ignoring attributes)
+        const productExists = wishlist.products.some(item => item.product.toString() === req.body.productId);
+
+        if (!productExists) {
+            wishlist.products.push(wishlistItem);
+            await wishlist.save();
+        }
+
+        res.json({ success: true, message: 'Product added to your wishlist.' });
     } catch (error) {
-      req.flash('error', 'An error occurred while adding the product to your wishlist.');
-      res.redirect('back');
+        console.error('Error adding product to wishlist:', error);
+        res.status(500).json({ success: false, message: 'An error occurred while adding the product to your wishlist.' });
     }
-  });
-  
-  
+});
+
+
+
+
+
 // Remove product from wishlist
 router.post('/wishlist/remove', async (req, res) => {
-  if (!req.user) {
-      return res.status(401).json({ success: false, message: 'You must be logged in to remove items from your wishlist.' });
-  }
+    if (!req.user) {
+        return res.status(401).json({ success: false, message: 'You must be logged in to remove items from your wishlist.' });
+    }
 
-  try {
-      let wishlist = await Wishlist.findOne({ user: req.user._id });
-      if (wishlist) {
-          // Remove the specific product with matching attributes from the wishlist
-          wishlist.products = wishlist.products.filter(item => 
-              item.product.toString() !== req.body.productId ||
-              item.attributes.color !== req.body.color ||
-              item.attributes.ram !== req.body.ram ||
-              item.attributes.storage !== req.body.storage ||
-              item.attributes.size !== req.body.size
-          );
-          await wishlist.save();
-      }
-      res.json({ success: true });
-  } catch (error) {
-      res.status(500).json({ success: false, message: 'An error occurred while removing the product from your wishlist.' });
-  }
+    try {
+        let wishlist = await Wishlist.findOne({ user: req.user._id });
+        if (wishlist) {
+            // Filter out the product that matches the provided productId
+            wishlist.products = wishlist.products.filter(item => item.toString() !== req.body.productId);
+            await wishlist.save();
+        }
+        res.json({ success: true, message: 'Product removed from your wishlist.' });
+    } catch (error) {
+        console.error('Error removing product from wishlist:', error);
+        res.status(500).json({ success: false, message: 'An error occurred while removing the product from your wishlist.' });
+    }
 });
+
 
 // Get user's wishlist products
 router.get('/wishlist', isLoggedIn, async (req, res) => {
