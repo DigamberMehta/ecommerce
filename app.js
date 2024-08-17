@@ -19,7 +19,7 @@ const searchRoutes = require('./routes/search');
 const showRoutes = require('./routes/show');
 const browsingHistoryRoutes = require('./routes/browsingHistory');
 const authGoogleRoutes = require('./routes/authGoogle');
-const nodemailerRoutes = require('./routes/nodemailer');
+// const nodemailerRoutes = require('./routes/nodemailer');
 const CustomStrategy = require('passport-custom').Strategy;
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const reviewRoutes = require('./routes/review');
@@ -177,7 +177,10 @@ app.use('/', showRoutes);
 app.use('/', searchRoutes);
 app.use('/', browsingHistoryRoutes);
 app.use('/auth', authGoogleRoutes);
-app.use('/', nodemailerRoutes);
+// app.use('/', nodemailerRoutes);
+app.get('/forgot', (req, res) => {
+  res.send('Server error 500, this service is temporarily unavailable');
+});
 app.use('/', reviewRoutes);
 app.use('/', addressRoutes);
 app.use('/checkout', checkoutRoutes);
@@ -210,7 +213,13 @@ app.get('/privacy', (req, res) => {
 app.get('/test', (req, res) => {
   res.render('paymentSuccess');
 });
+app.get('/robots.txt', (req, res) => {
+  res.type('text/plain');
+  res.send(`User-agent: *
+Disallow: /admin`);
+});
 
+ 
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
