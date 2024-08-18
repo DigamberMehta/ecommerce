@@ -1,3 +1,5 @@
+document.addEventListener('DOMContentLoaded', () => {
+
 function slide(rowId, direction) {
     const row = document.getElementById(rowId);
     const scrollAmount = direction * 400;
@@ -36,4 +38,6 @@ showSlide(currentIndex);
 setInterval(() => {
     nextSlide();
 }, 5000);
+});
+
 });
