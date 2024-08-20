@@ -8,7 +8,7 @@
 }
 
 .footer {
-    margin-top:3rem;
+    /* margin-top:3rem; */
     background-color: #ffffff;
     color: var(--text-color);
     padding: var(--footer-padding) 0;

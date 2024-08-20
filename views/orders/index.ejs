@@ -1,117 +1,330 @@
 <% layout('layouts/boilerplate') %>
-<% title = 'Orders'; // Set the homepage title
-    ogTitle = title;
- %>
+<% title = 'Orders'; %>
 
 <style>
+  .order-container-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    background-color: white;
+    margin-top: -20px;
+  }
+  .orders-container {
+    width: 55%;
+    margin: 0 auto;
+    padding: 20px;
+    margin-top: 50px;
+    font-family: "Amazon Ember", Arial, sans-serif;
+  }
+
+  .order-item {
+    background-color: #ffffff;
+    border: 1px solid #e3e3e3;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    cursor: pointer; /* Make the item look clickable */
+  }
+
+  .order-header {
+    background-color: #f1f2f2;
+    display: flex;
+    padding: 12px;
+    justify-content: space-between;
+    font-size: 12px;
+    color: #555;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #e3e3e3;
+    padding-bottom: 8px;
+  }
+
+  .order-header div {
+    margin-right: 20px;
+  }
+
+  .order-details {
+    display: flex;
+    align-items: flex-start;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 12px;
+  }
+
+  .order-image {
+    padding: 8px 0;
+    flex-shrink: 0;
+    width: 100px;
+    height: 100px;
+    border: 1px solid #e3e3e3;
+    margin-right: 20px;
+    border-radius: 5px;
+  }
+
+  .order-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .order-info {
+    flex-grow: 1;
+    color: #333;
+  }
+
+  .order-info p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .order-info p.order-title {
+    margin-bottom: 5px;
+    color: #007185;
+  }
+  .order-info p.order-title:hover {
+    text-decoration: underline;
+    cursor: pointer;
+    color: #ed8a4c;
+  }
+
+  .order-status {
+    font-weight: bold;
+    color: #b12704;
+    margin-bottom: 5px;
+  }
+
+  .order-actions {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-top: 10px;
+  }
+
+  .order-actions button {
+    padding: 8px 12px;
+    margin-right: 10px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    background-color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    color: #111;
+  }
+
+  .order-buy button {
+    background-color: #ffd814;
+    border-color: #fcd200;
+    border-radius: 30px;
+  }
+
+  .order-buy button:hover {
+    background-color: #f7ca00;
+  }
+
+  .order-preview button{
+    border-radius: 30px;
+  }
+
+  .archive-order {
+    font-size: 12px;
+    color: #007185;
+    margin-top: 10px;
+    cursor: pointer;
+  }
+
+  .archive-order:hover {
+    text-decoration: underline;
+  }
+
+  .show-more {
+    color: #007185;
+    cursor: pointer;
+  }
+
+  .order-header-right {
+    display: flex;
+  }
+
+  @media screen and (max-width: 600px) {
     .orders-container {
-      width: 70%;
-      margin: 0 auto;
-      padding: 20px;
-      background-color: #fff;
-      /* box-shadow: 0 0 15px rgba(0, 0, 0, 0.1); */
-      /* border-radius: 10px; */
-      margin-top: 50px;
+      width: 100%;
+      padding: 10px;
+      margin-top:0px;
     }
-    
-    .orders-title {
-     
-      font-size: 28px;
-      margin-bottom: 20px;
-      color: #212121;
-      font-weight: 500;
-    }
-    
-    .no-orders {
-      text-align: center;
-      font-size: 1.2em;
-      color: #777;
-    }
-    
-    .orders-list {
-      list-style-type: none;
-      padding: 0;
-    }
-    
+
     .order-item {
-      margin-bottom: 20px;
-      padding: 20px;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      /* background-color: #f5f5f5; */
       display: flex;
       align-items: center;
-      transition: background-color 0.3s ease;
+      padding: 10px;
+      margin-bottom: 10px;
+      box-shadow: none;
+      border-radius: 0;
+      border: none;
     }
-    
-    .order-item a {
-      text-decoration: none;
-      color: inherit;
+
+    .order-header {
+      display: none;
+    }
+
+    .order-details {
       display: flex;
-      width: 100%;
-      justify-content: space-between;
+      align-items: center;
+      padding: 0;
+      margin-top: 0;
+      margin-bottom: 0;
+      flex-direction: row;
     }
-    
-    .order-item:hover {
-      background-color: #eaeaea;
-    }
-    
+
     .order-image {
-      flex-shrink: 0;
-      width: 100px;
-      height: 100px;
-      border-radius: 10px;
-      overflow: hidden;
-      margin-right: 20px;
+      width: 50px;
+      height: 50px;
+      margin-right: 10px;
+      border-radius: 0;
+      border: none;
     }
-    
-    .order-image img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
+
+    .order-info {
+      flex-grow: 1;
+      font-size: 12px;
     }
-    
-  
-    .order-title, .order-date, .order-status {
-     
-      color: #555;
-      margin: 5px 0;
+
+    .order-info p {
+      margin-bottom: 5px;
+      font-size: 14px;
     }
-    
-    .order-title {
-     
-      color: #333;
-    }
-    
+
     .order-status {
-      font-weight: 500;
-      color: #888;
+      font-size: 12px;
+      color: #555;
+      margin-bottom: 2px;
     }
-    </style>
-    
-    <% layout('layouts/boilerplate') %>
-    <div class="orders-container">
-      <h1 class="orders-title">Your Orders</h1>
-    
-      <% if (orders.length === 0) { %>
-        <p class="no-orders">You have no orders.</p>
-      <% } else { %>
-        <ul class="orders-list">
-          <% orders.forEach(order => { %>
-            <li class="order-item">
-              <a href="/orders/<%= order._id %>">
-                <div class="order-image">
-                  <img src="<%= order.products[0].product.images[0] %>" alt="<%= order.products[0].product.title %>">
+
+    .order-title {
+      font-size: 14px;
+      margin-bottom: 2px;
+      font-weight: bold;
+      color: #007185;
+    }
+
+    .order-actions,
+    .archive-order,
+    .order-description, 
+    .show-more {
+      display: none; /* Hide these elements on mobile */
+    }
+    .order-item:not(:last-child) {
+  border-bottom: 1px solid #e3e3e3;
+  /* margin-bottom: 20px; */
+  padding-bottom: 20px;
+}
+.order-info {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .order-info p.order-status {
+    order: 2; /* Move the status below the title */
+  }
+
+  .order-info p.order-title {
+    order: 1; /* Ensure the title stays on top */
+    color: #212121;
+
+  }
+.order-status{
+  font-weight: 400;
+}
+ 
+
+  }
+</style>
+
+<div class="order-container-wrapper">
+  <div class="orders-container">
+    <% if (orders.length === 0) { %>
+      <p class="no-orders">You have no orders.</p>
+    <% } else { %>
+      <ul class="orders-list">
+        <% orders.forEach(order => { %>
+          <li class="order-item" data-order-id="<%= order._id %>">
+            <div class="order-header">
+              <div class="order-header-right">
+                <div>ORDER PLACED<br><%= order.createdAt.toDateString() %></div>
+                <div>TOTAL<br>₹<%= order.totalAmount %></div>
+                <div>SHIP TO<br><%= order.shippingAddress.name %></div>
+              </div>
+              <div>ORDER # <%= order._id %></div>
+            </div>
+
+            <div class="order-details">
+              <div class="order-image">
+                <img src="<%= order.products[0].product.images[0] %>" alt="<%= order.products[0].product.title %>">
+              </div>
+              <div class="order-info">
+                <p class="order-status">Delivery: <%= order.status %></p>
+                <p class="order-title"><%= order.products[0].product.title %></p>
+                <p class="order-description">
+                  <% 
+                    const description = order.products[0].product.description; 
+                    const words = description.split(" ");
+                    const truncatedDescription = words.slice(0, 15).join(" ");
+                  %>
+                  <span class="truncated"><%= truncatedDescription %><% if (words.length > 15) { %>...<% } %></span>
+                  <% if (words.length > 15) { %>
+                    <span class="full" style="display:none;"><%= description %></span>
+                    <a href="#" class="show-more">View more</a>
+                  <% } %>
+                </p>
+                <div class="order-actions">
+                  <div class="order-buy">
+                    <button class="Buy-it-again">Buy it again</button>
+                  </div>
+                  <a href="/orders/<%= order._id %>" class="order-preview">
+                    <button>View your item</button>
+                  </a>
                 </div>
-                <div class="order-list-summary">
-                  <p class="order-title"><%= order.products[0].product.title %></p>
-                  <p class="order-date"><strong>Date:</strong> <%= order.createdAt.toDateString() %></p>
-                  <p class="order-status"><strong>Delivery:</strong> <%= order.status %></p>
-                </div>
-              </a>
-            </li>
-          <% }); %>
-        </ul>
-      <% } %>
-    </div>
-    
+                <div class="archive-order">Archive order</div>
+              </div>
+            </div>
+          </li>
+        <% }); %>
+      </ul>
+    <% } %>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const showMoreLinks = document.querySelectorAll('.show-more');
+
+    showMoreLinks.forEach(link => {
+      link.addEventListener('click', function(event) {
+        event.preventDefault();
+        const parent = this.parentElement;
+        const truncated = parent.querySelector('.truncated');
+        const full = parent.querySelector('.full');
+
+        if (truncated.style.display === 'none') {
+          truncated.style.display = 'inline';
+          full.style.display = 'none';
+          this.textContent = 'more...';
+        } else {
+          truncated.style.display = 'none';
+          full.style.display = 'inline';
+          this.textContent = 'View less';
+        }
+      });
+    });
+
+    const orderItems = document.querySelectorAll('.order-item');
+
+    orderItems.forEach(item => {
+      item.addEventListener('click', function() {
+        const orderId = this.getAttribute('data-order-id');
+        window.location.href = `/orders/${orderId}`;
+      });
+    });
+  });
+</script>

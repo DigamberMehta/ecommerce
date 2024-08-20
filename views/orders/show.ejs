@@ -1,124 +1,528 @@
-<% layout('layouts/boilerplate') %>
-<% title = 'Order'; // Set the homepage title
-    ogTitle = title;
- %>
+<% layout('layouts/boilerplate') %> <% title='Order' ; // Set the homepage title
+ogTitle=title; %>
 <style>
+  .order-details-container-wrapper {
+    display: flex;
+    justify-content: center;
+    padding: 0 20px;
+    margin-top: -20px;
+    align-items: center;
+    height: 100%;
+    background-color: white;
+  }
+
+  .order-details-container {
+    width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    /* margin-top: 20px; */
+    font-family: "Amazon Ember", Arial, sans-serif;
+  }
+
+  .order-details-title {
+    font-size: 2rem;
+    font-weight: 500;
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    color: #111;
+  }
+
+  .order-summary-container-show {
+    display: flex;
+    justify-content: space-between;
+    /* background-color: #F8F8F8; */
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    margin: 10px 0;
+  }
+
+  /* .order-summary-container-show div {
+        width: 30%;
+    } */
+
+  .order-summary-container-show h2 {
+    margin-top: 0;
+    font-size: 1rem;
+    color: #333;
+    margin-bottom: 10px;
+  }
+
+  .order-summary-container-show p {
+    font-size: 0.9rem;
+    color: #212121;
+    margin-bottom: 5px;
+  }
+
+  .order-product-container {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+  }
+
+  .order-product-container h2 {
+    margin-top: 0;
+    font-size: 1rem;
+    color: #333;
+    margin-bottom: 10px;
+  }
+
+  /* .order-product-container p {
+        font-size: 0.9rem;
+        color: #555;
+        margin-bottom: 5px;
+    } */
+
+  .order-product-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    /* border-top: 1px solid #DDD; */
+  }
+
+  .order-product-image img {
+    max-width: 100px;
+    margin-right: 20px;
+  }
+
+  .order-product-details {
+    flex-grow: 1;
+    align-self: baseline;
+  }
+
+  .order-product-title {
+    font-size: 1rem;
+    color: #0066c0;
+    margin-bottom: 5px;
+  }
+
+  .order-product-price {
+    font-size: 0.9rem;
+    color: #b12704;
+  }
+
+  .order-buttons {
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 10px;
+  }
+
+  .order-buttons button {
+    padding: 5px 15px;
+    margin-right: 10px;
+    border-radius: 20px;
+    border: 1px solid #ddd;
+    font-size: 0.9rem;
+    cursor: pointer;
+  }
+
+  .order-buttons .support-btn {
+    background-color: #ffd814;
+    border-color: #fcd200;
+  }
+
+  .order-product-title {
+    font-size: 1rem;
+    color: #007185;
+    margin-bottom: 5px;
+  }
+
+  .order-product-title:hover {
+    text-decoration: underline;
+    color: #ed8a4c;
+    cursor: pointer;
+  }
+
+  .order-product-preview-show-more {
+    font-size: 0.9rem;
+    color: #007185;
+    margin-bottom: 5px;
+  }
+
+  .order-show-details {
+    width: 920px;
+    height: fit-content;
+    margin: 0 auto;
+  }
+
+  .order-details-header-show {
+    font-size: 14px;
+  }
+
+  @media (max-width: 1200px) {
     .order-details-container {
-      width: 80%;
-      margin: 0 auto;
-      padding: 20px;
-      background-color: #fff;
-      /* background-color: #f9f9f9; */
-      /* box-shadow: 0 0 15px rgba(0, 0, 0, 0.2); */
-      /* border-radius: 10px; */
-      margin-top: 50px;
+      margin: 0;
     }
-    
+
+    .order-show-details {
+      width: auto;
+    }
+  }
+
+  .order-details-preview-page {
+    display: flex;
+    align-items: center;
+  }
+
+  @media (max-width: 600px) {
+    .order-details-container-wrapper {
+      padding: 10px;
+    }
+
+    .order-details-container {
+      width: 100%;
+      padding: 15px;
+    }
+
     .order-details-title {
-      /* text-align: center; */
       font-size: 1.5rem;
-      margin-bottom: 2rem;
-      color: #212121;
-      font-weight:500;
-    }
-    
-    .order-show-summary, .shipping-address, .order-products {
-      margin-bottom: 30px;
-      padding: 20px;
-      background-color: #fff;
-      border: 1px solid rgb(231, 228, 228)
-      /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
-    }
-    
-    .order-show-summary-title, .shipping-address-title, .order-products-title {
-      font-size: 1rem;
-      border-bottom: 1px solid #ddd;
-      padding-bottom: 10px;
-      margin-bottom: 20px;
-      color: #212121;
-    }
-    
-    .order-summary-item, .shipping-address-item, .order-product-title, .order-product-quantity, .order-product-price {
-      font-size:12px;
-      color: #212121;
       margin-bottom: 10px;
     }
-    
-    .order-products-list {
-      list-style-type: none;
+
+    .order-card {
+      background-color: #fff;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      margin-bottom: 15px;
+    }
+
+    .order-summary-container-show,
+    .order-summary-show,
+    .shipping-address,
+    .payment-methods {
+      margin-bottom: 0;
+    }
+
+    /* .order-summary-container-show div {
+        width: 100%;
+        margin-bottom: 10px;
+    } */
+    .order-summary-container-show {
+      flex-direction: column;
+      border: none;
       padding: 0;
     }
-    
-    .order-product-item {
-      display: flex;
-      align-items: center;
-      margin-bottom: 20px;
-      padding: 10px;
-      /* border-bottom: 1px solid #ddd; */
-      /* background-color: #f5f5f5; */
-      border-radius: 5px;
-    }
-    
-    .order-product-image img {
-      max-width: 100px;
-      margin-right: 20px;
-      border-radius: 5px;
-    }
-    
-    .order-product-details {
-      flex-grow: 1;
-    }
-    
-    .order-product-title {
-      font-size: 1.3em;
-      margin: 0;
-      font-weight: 600;
-    }
-    
-    .order-product-quantity, .order-product-price {
-      margin-top: 10px;
-      font-weight: 500;
-    }
-    </style>
-    
-    <% layout('layouts/boilerplate') %>
-    <div class="order-details-container">
-      <h1 class="order-details-title">Order Details</h1>
 
-      <div class="order-products">
-        <h2 class="order-products-title">Products</h2>
-        <ul class="order-products-list">
-          <% order.products.forEach(productItem => { %>
-            <li class="order-product-item">
-              <div class="order-product-image">
-                <img src="<%= productItem.product.images[0] %>" alt="<%= productItem.product.title %>">
-              </div>
-              <div class="order-product-details">
-                <p class="order-product-title"><%= productItem.product.title %></p>
-                <p class="order-product-quantity"><strong>Quantity:</strong> <%= productItem.quantity %></p>
-                <p class="order-product-price"><strong>Price:</strong> ₹<%= productItem.price.toFixed(2) %></p>
-              </div>
-            </li>
-          <% }); %>
-        </ul>
-      </div>
-    
-      <div class="order-show-summary">
-        <h2 class="order-show-summary-title">Order Summary</h2>
-        <p class="order-summary-item"><strong>Order ID:</strong> <%= order._id %></p>
-        <p class="order-summary-item"><strong>Status:</strong> <%= order.status %></p>
-        <p class="order-summary-item"><strong>Payment Status:</strong> <%= order.paymentStatus %></p>
-        <p class="order-summary-item"><strong>Total Amount:</strong> ₹<%= order.totalAmount.toFixed(2) %></p>
-        <p class="order-summary-item"><strong>Payment Method:</strong> <%= order.paymentMethod %></p>
-      </div>
-    
-      <div class="shipping-address">
-        <h2 class="shipping-address-title">Shipping Address</h2>
-        <p class="shipping-address-item"><strong>Name:</strong> <%= order.shippingAddress.name %></p>
-        <p class="shipping-address-item"><strong>Phone:</strong> <%= order.shippingAddress.phone %></p>
-        <p class="shipping-address-item"><strong>Address:</strong> <%= order.shippingAddress.houseNumber %>, <%= order.shippingAddress.street %>, <%= order.shippingAddress.city %>, <%= order.shippingAddress.state %>, <%= order.shippingAddress.pincode %>, <%= order.shippingAddress.country %></p>
-      </div>
-    
+    .order-summary-show p,
+    .shipping-address p,
+    .payment-methods p {
+      margin: 0;
+      font-size: 0.9rem;
+      color: #212121;
+    }
+
+    .order-product-container {
+      /* order: 1; */
+      padding: 15px;
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      margin-bottom: 15px;
+    }
+
+    .order-product-item {
+      /* flex-direction: column; */
+      align-items: flex-start;
+    }
+
+    .order-product-image img {
+      max-width: 80px;
+      margin-bottom: 10px;
+    }
+
  
+
+    .order-product-title {
+      font-size: 1rem;
+      margin-bottom: 5px;
+    }
+
+    .order-product-price {
+      font-size: 1rem;
+      color: #b12704;
+      margin-top: 5px;
+    }
+
+    .order-buttons {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    .order-buttons button {
+      width: 100%;
+      margin-bottom: 10px;
+      text-align: center;
+      padding: 10px;
+      font-size: 1rem;
+    }
+
+    .order-buttons button:last-child {
+      margin-bottom: 0;
+    }
+
+    .order-buttons .support-btn {
+      background-color: #ffd814;
+      border-color: #fcd200;
+    }
+
+    .order-details-seprator {
+      display: none;
+    }
+
+    .order-details-preview-page {
+      flex-direction: column;
+      border: 1px solid #ddd;
+      padding: 10px;
+      border-radius: 10px;
+      margin-bottom: 15px;
+    }
+
+    .inner-order-details-preview-page {
+      flex-direction: column;
+      align-self: flex-start;
+    }
+
+    .order-details-header-show {
+      align-self: flex-start;
+    }
+
+    .ordered-on-orders {
+      display: block;
+      color: #fff;
+    }
+  }
+
+  .inner-order-details-preview-page {
+    display: flex;
+    /* justify-content: space-between; */
+    align-items: center;
+  }
+
+  @media (max-width: 450px) {
+    .order-details-container {
+      padding: 0;
+    }
+  }
+
+  .mobile-view {
+    display: none;
+  }
+
+  @media screen and (max-width: 600px) {
+    .desktop-view {
+      display: none;
+    }
+
+    .mobile-view {
+      display: block;
+      border-radius: 5px;
+      background-color: #f9f9f9;
+      font-size: 14px;
+      align-self: self-start;
+      width: 100%;
+      height: 100%;
+    }
+
+    .mobile-view p {
+      margin: 5px 0;
+    }
+
+    .order-details-card {
+      background-color: #fff;
+    }
+
+    .order-date,
+    .order-number,
+    .order-total {
+      color: #333;
+    }
+
+    .order-summary-title-mobile {
+      color: #827f7f;
+      width: 100px;
+      /* Set a fixed width for the titles */
+      display: inline-block;
+      /* font-weight: bold; */
+    }
+
+    .order-summary-value {
+      text-align: left;
+      margin-left: 10px;
+      /* Add some space between title and value */
+      display: inline-block;
+    }
+    .order-product-container{
+      order: 1;
+    }
+    .order-summary-container-show{
+      order: 2;
+    }
+    .order-summary-container-wrapper-show{
+      display: flex;
+      flex-direction: column;
+    }
+  }
+</style>
+<div class="order-details-container-wrapper">
+  <div class="order-details-container">
+    <div class="order-show-details">
+      <h1 class="order-details-title">Order Details</h1>
+      <div class="order-details-preview-page">
+        <div class="inner-order-details-preview-page desktop-view">
+          <p class="order-details-header-show">
+            <span>Ordered on</span>
+            <%= order.createdAt.toLocaleDateString('en-GB', { day: 'numeric' ,
+            month: 'short' , year: 'numeric' }) %>
+          </p>
+          <p style="margin: 0 1rem" class="order-details-seprator">|</p>
+          <p>Order# <%= order._id %></p>
+        </div>
+
+        <div class="order-details-card mobile-view">
+          <p class="order-date">
+            <span class="order-summary-title-mobile">Order date:</span>
+            <%= order.createdAt.toLocaleDateString('en-GB', { day: 'numeric' ,
+            month: 'short' , year: 'numeric' }) %>
+          </p>
+          <p class="order-number">
+            <span class="order-summary-title-mobile">Order #:</span>
+            <%= order._id %>
+          </p>
+          <p class="order-total">
+            <span class="order-summary-title-mobile">Order total:</span> Rs.
+            <%= order.totalAmount.toFixed(2) %> (1 Item)
+          </p>
+        </div>
+      </div>
+<div class="order-summary-container-wrapper-show">
+      <div class="order-summary-container-show">
+        <div class="order-card">
+          <div class="shipping-address">
+            <h2>Shipping Address</h2>
+            <p>
+              <%= order.shippingAddress.name.charAt(0).toUpperCase() +
+              order.shippingAddress.name.slice(1) %>
+            </p>
+            <p>
+              <%= order.shippingAddress.houseNumber %>, <%=
+              order.shippingAddress.street.charAt(0).toUpperCase() +
+              order.shippingAddress.street.slice(1) %>
+            </p>
+            <p>
+              <%= order.shippingAddress.city.charAt(0).toUpperCase() +
+              order.shippingAddress.city.slice(1) %>, <%=
+              order.shippingAddress.state.charAt(0).toUpperCase() +
+              order.shippingAddress.state.slice(1) %> - <%=
+              order.shippingAddress.pincode %>
+            </p>
+            <p>
+              <%= order.shippingAddress.country.charAt(0).toUpperCase() +
+              order.shippingAddress.country.slice(1) %>
+            </p>
+          </div>
+        </div>
+
+        <div class="order-card">
+          <div class="payment-methods">
+            <h2>Payment Methods</h2>
+            <p><%= order.paymentMethod %></p>
+          </div>
+        </div>
+
+        <div class="order-card">
+          <div class="order-summary-show">
+            <h2>Order Summary</h2>
+            <p>Item(s) Subtotal: ₹900</p>
+            <p>Shipping: ₹40</p>
+            <p>Promotion Applied: ₹40</p>
+            <p>
+              Grand Total: ₹<%= order.totalAmount.toFixed(2) %>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="order-product-container">
+        <h2>Delivery <%= order.createdAt.toDateString() %></h2>
+        <!-- <p>Package was handed to resident</p> -->
+        <div class="order-product-item">
+          <div class="order-product-image">
+            <img
+              src="<%= order.products[0].product.images[0] %>"
+              alt="<%= order.products[0].product.title %>"
+            />
+          </div>
+          <div class="order-product-details">
+            <a
+              href="/products/<%= order.products[0].product._id %>/<%=order.products[0].product.slug %>"
+            >
+              <p class="order-product-title">
+                <%= order.products[0].product.title %>
+              </p>
+            </a>
+            <p class="order-product-preview-description">
+              <% const description=order.products[0].product.description; const
+              words=description.split(" "); const truncatedDescription =
+              words.slice(0, 15).join(" "); %>
+              <span class="order-product-preview-truncated">
+                <%= truncatedDescription %> <% if (words.length> 15) { %>...<% }
+                %></span
+              >
+              <% if (words.length> 15) { %>
+              <span class="order-product-preview-full" style="display: none">
+                <%= description %>
+              </span>
+              <a href="#" class="order-product-preview-show-more">View more</a>
+              <% } %>
+            </p>
+
+            <p class="order-product-price">
+              ₹<%= order.products[0].price.toFixed(2) %>
+            </p>
+          </div>
+        </div>
+        <div class="order-buttons">
+          <button class="support-btn">Get product support</button>
+          <button>Leave seller feedback</button>
+          <button>Write a product review</button>
+        </div>
+      </div>
     </div>
-    
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const showMoreLinks = document.querySelectorAll(
+      ".order-product-preview-show-more"
+    );
+
+    showMoreLinks.forEach((link) => {
+      link.addEventListener("click", function (event) {
+        event.preventDefault();
+        const parent = this.parentElement;
+        const truncated = parent.querySelector(
+          ".order-product-preview-truncated"
+        );
+        const full = parent.querySelector(".order-product-preview-full");
+
+        if (truncated.style.display === "none") {
+          truncated.style.display = "inline";
+          full.style.display = "none";
+          this.textContent = "View more";
+        } else {
+          truncated.style.display = "none";
+          full.style.display = "inline";
+          this.textContent = "View less";
+        }
+      });
+    });
+  });
+</script>

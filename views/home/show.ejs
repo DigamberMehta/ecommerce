@@ -169,6 +169,9 @@
     top: 5px;
     right: 5px;
 }
+.show-carousel-inner{
+  margin-right: 1px;
+}
   </style>
 
   <div class="show-page">
@@ -928,7 +931,7 @@
 
 
     document.getElementById('wishlist-form').addEventListener('submit', function(event) {
-    event.preventDefault(); // Prevent the form from submitting the traditional way
+    event.preventDefault(); 
 
     const form = event.target;
     const productId = form.getAttribute('data-product-id');
