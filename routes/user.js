@@ -83,14 +83,22 @@ router.get("/signup", (req, res) => {
       res.redirect("/home");
     });
   });
+
+ router.get('/profile', wrapAsync(async (req, res) => {
+  if (!req.isAuthenticated()) {
+    req.flash('error', 'You need to be logged in to view this page.');
+    return res.redirect('/login');
+  }
+  res.render('user/profile');
+}));
 // Render profile page
-router.get('/profile', wrapAsync(async (req, res) => {
+router.get('/profile/user', wrapAsync(async (req, res) => {
   if (!req.isAuthenticated()) {
     req.flash('error', 'You need to be logged in to view this page.');
     return res.redirect('/login');
   }
   const user = await User.findById(req.user._id);
-  res.render('profile', { user }); 
+  res.render('user/user_profile', { user }); 
 }));
 
 // Update user profile
