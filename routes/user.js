@@ -31,7 +31,7 @@ router.get("/signup", (req, res) => {
         console.log("User logged in successfully");
   
         // Determine the redirect URL
-        const redirectTo = res.locals.redirectUrl || "/home";
+        const redirectTo = res.locals.redirectUrl || "/";
         delete req.session.redirectUrl;
   
         // Redirect the user to the intended URL or the home page
@@ -80,7 +80,7 @@ router.get("/signup", (req, res) => {
     req.logout((err) => {
       if (err) return next(err);
       req.flash("success", `Logout from, ${user}!`);
-      res.redirect("/home");
+      res.redirect("/");
     });
   });
 
