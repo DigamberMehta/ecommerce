@@ -33,6 +33,11 @@
     .wishlist-item {
         padding: 10px 0;
         position: relative;
+        
+    display: flex;
+    align-items: normal;
+    justify-content: space-between;
+
     }
 
     .wishlist-item-container {
@@ -91,35 +96,38 @@
     }
 
     .wishlist-remove-btn {
-        background-color: #ed2828;
-        color: #fff;
+        background-color: white;
+        font-size: 16px;
         border: none;
-        padding: 5px 10px;
-        border-radius: 4px;
+        padding: 0;
+ 
         cursor: pointer;
         margin-left: 10px;
     }
 
     .wishlist-move-to-cart-btn {
-        background-color: #f16e3e;
-        color: #fff;
+        background-color: white;
+        font-size: 16px;
         border: none;
-        padding: 5px 10px;
-        border-radius: 4px;
+        padding: 0;
+ 
         cursor: pointer;
         margin-left: 10px;
     }
 
-    .wishlist-remove-btn:hover, .wishlist-move-to-cart-btn:hover {
-        background-color: #c2185b;
-    }
+  
     .wish-info-container{
         display: flex;
         align-items: center;
+       
     }
     .wishlist-product-description{
         margin-bottom:0.5rem;
         color: #666;
+        font-size: 12px;
+    }
+    .product-detail-container-wishlist{
+        width: 65%;
     }
 </style>
 
@@ -136,7 +144,7 @@
             %>
             <div class="wishlist-item-container">
                 <li class="wishlist-item" data-product-id="<%= item.product._id %>" data-color="<%= item.attributes?.color %>" data-ram="<%= item.attributes?.ram %>" data-storage="<%= item.attributes?.storage %>" data-size="<%= item.attributes?.size %>">
-                    <a href="/products/<%=item.product._id%>/<%=item.product.slug%>">
+                    <a href="/products/<%=item.product._id%>/<%=item.product.slug%>" class="product-detail-container-wishlist">
                     <div class="wish-info-container">
                         <img src="<%= item.product.images[0] %>" alt="<%= item.product.title %> image" class="wishlist-image">
                         <div class="wishlist-info">
@@ -175,10 +183,10 @@
                         </div>
                     </div>
                 </a>
-                    <div style="margin: 1rem 0;">
-                        <button class="wishlist-remove-btn">Remove</button>
-                        <button class="wishlist-move-to-cart-btn">Move to Cart</button>
-                    </div>
+                    <span>
+                        <button class="wishlist-remove-btn"><i class="fa-duotone fa-solid fa-trash"></i></button>
+                        <button class="wishlist-move-to-cart-btn"><i class="fa-light fa-cart-circle-plus"></i></button>
+                    </span>
                 </li>
             </div>
             <% }); %>
