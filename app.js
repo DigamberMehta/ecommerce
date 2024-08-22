@@ -32,6 +32,7 @@ const paymentRoutes = require('./routes/payment');
 const paymentCallbackRoutes = require('./routes/paymentCallback');
 const cashOnDeliveryRoutes = require('./routes/cashOnDelivery');
 const orderRoutes = require('./routes/orders');
+const recommendationRoutes = require('./routes/recommendation');
 
 app.use(express.json());
 app.set("view engine", "ejs");
@@ -186,7 +187,7 @@ app.use('/checkout', checkoutRoutes);
 app.use('/', wishlistRoutes);
 app.use('/', contactRoutes);
 app.use('/orders', orderRoutes);
-
+app.use('/', recommendationRoutes);
 // payment routes
 app.use('/payment', paymentRoutes);
 app.use('/payment', paymentCallbackRoutes);

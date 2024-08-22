@@ -9,6 +9,7 @@ const Payment = require('./payment');
 const Shipping = require('./shipping');
 const Coupon = require('./coupon');
 const Wishlist = require('./wishlist');
+const Recommendation = require('./recommendation');
 
 module.exports = {
   User,
@@ -21,5 +22,6 @@ module.exports = {
   Payment,
   Shipping,
   Coupon,
-  Wishlist
+  Wishlist,
+  Recommendation,
 };
