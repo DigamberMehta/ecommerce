@@ -3,10 +3,11 @@ const router = express.Router();
 const Wishlist = require('../models/wishlist');
 const CartItem = require('../models/cartItem');
 const { isLoggedIn } = require('../middleware');
-
+const UserInteraction = require('../models/UserInteraction');
+const logUserInteraction = require('../utils/logInteraction');
+const Product = require('../models/product');
 // Add product to wishlist
-// Add product to wishlist
-router.post('/wishlist/add', async (req, res) => {
+router.post('/wishlist/add', isLoggedIn, async (req, res) => {
     if (!req.user) {
         return res.status(401).json({ success: false, message: 'You must be logged in to add items to your wishlist.' });
     }
@@ -17,18 +18,29 @@ router.post('/wishlist/add', async (req, res) => {
             wishlist = new Wishlist({ user: req.user._id, products: [] });
         }
 
-        // Create a new wishlist item object without attributes
-        const wishlistItem = {
-            product: req.body.productId,
-            price: req.body.price // Assuming the price is sent in the request body
-        };
-
         // Check if the product already exists in the wishlist (ignoring attributes)
         const productExists = wishlist.products.some(item => item.product.toString() === req.body.productId);
 
         if (!productExists) {
-            wishlist.products.push(wishlistItem);
+            // Add the product to the wishlist
+            wishlist.products.push({
+                product: req.body.productId,
+                price: req.body.price // Assuming the price is sent in the request body
+            });
             await wishlist.save();
+
+            // Fetch the product details
+            const product = await Product.findById(req.body.productId);
+
+            // Update the 'view' interaction to 'wishlist' if it exists
+            await UserInteraction.findOneAndUpdate(
+                { user: req.user._id, product: req.body.productId, action: 'view' },
+                { 
+                    action: 'wishlist',
+                    category: product.categories[0]
+                },
+                { upsert: true, new: true }
+            );
         }
 
         res.json({ success: true, message: 'Product added to your wishlist.' });
@@ -40,10 +52,9 @@ router.post('/wishlist/add', async (req, res) => {
 
 
 
-
-
 // Remove product from wishlist
-router.post('/wishlist/remove', async (req, res) => {
+// Remove product from wishlist
+router.post('/wishlist/remove', isLoggedIn, async (req, res) => {
     if (!req.user) {
         return res.status(401).json({ success: false, message: 'You must be logged in to remove items from your wishlist.' });
     }
@@ -52,7 +63,7 @@ router.post('/wishlist/remove', async (req, res) => {
         let wishlist = await Wishlist.findOne({ user: req.user._id });
         if (wishlist) {
             // Filter out the product that matches the provided productId
-            wishlist.products = wishlist.products.filter(item => item.toString() !== req.body.productId);
+            wishlist.products = wishlist.products.filter(item => item.product.toString() !== req.body.productId);
             await wishlist.save();
         }
         res.json({ success: true, message: 'Product removed from your wishlist.' });
@@ -61,6 +72,7 @@ router.post('/wishlist/remove', async (req, res) => {
         res.status(500).json({ success: false, message: 'An error occurred while removing the product from your wishlist.' });
     }
 });
+
 
 
 // Get user's wishlist products
@@ -83,56 +95,65 @@ router.get('/wishlist', isLoggedIn, async (req, res) => {
 });
 
 // Move product from wishlist to cart
+// Move product from wishlist to cart
 router.post('/wishlist/move-to-cart', async (req, res) => {
-  if (!req.user) {
-      return res.status(401).json({ success: false, message: 'You must be logged in to move items to your cart.' });
-  }
+    if (!req.user) {
+        return res.status(401).json({ success: false, message: 'You must be logged in to move items to your cart.' });
+    }
 
-  try {
-      const productId = req.body.productId;
-      const { color, ram, storage, size } = req.body;
+    try {
+        const productId = req.body.productId;
+        const { color, ram, storage, size } = req.body;
 
-      let wishlist = await Wishlist.findOne({ user: req.user._id });
-      let cartItem = await CartItem.findOne({
-          user: req.user._id,
-          product: productId,
-          'attributes.color': color,
-          'attributes.ram': ram,
-          'attributes.storage': storage,
-          'attributes.size': size
-      });
+        // Find the wishlist for the user
+        let wishlist = await Wishlist.findOne({ user: req.user._id });
 
-      if (wishlist) {
-          // Remove the specific product with matching attributes from the wishlist
-          wishlist.products = wishlist.products.filter(item => 
-              item.product.toString() !== productId ||
-              item.attributes.color !== color ||
-              item.attributes.ram !== ram ||
-              item.attributes.storage !== storage ||
-              item.attributes.size !== size
-          );
-          await wishlist.save();
-      }
+        // Construct the query for finding a cart item with the matching attributes
+        let cartQuery = {
+            user: req.user._id,
+            product: productId
+        };
 
-      if (cartItem) {
-          // If the item with the same attributes is already in the cart, increase the quantity
-          cartItem.quantity += 1;
-          await cartItem.save();
-      } else {
-          // If the item is not in the cart, add it with the correct attributes and price
-          await CartItem.create({
-              user: req.user._id,
-              product: productId,
-              quantity: 1,
-              attributes: { color, ram, storage, size },
-              price: req.body.price // Use the price passed in the request
-          });
-      }
+        if (color) cartQuery['attributes.color'] = color;
+        if (ram) cartQuery['attributes.ram'] = ram;
+        if (storage) cartQuery['attributes.storage'] = storage;
+        if (size) cartQuery['attributes.size'] = size;
 
-      res.json({ success: true });
-  } catch (error) {
-      res.status(500).json({ success: false, message: 'An error occurred while moving the product to your cart.' });
-  }
+        let cartItem = await CartItem.findOne(cartQuery);
+
+        if (wishlist) {
+            // Remove the specific product from the wishlist, checking only the relevant attributes
+            wishlist.products = wishlist.products.filter(item => {
+                return item.product.toString() !== productId || 
+                       (color && item.attributes?.color !== color) ||
+                       (ram && item.attributes?.ram !== ram) ||
+                       (storage && item.attributes?.storage !== storage) ||
+                       (size && item.attributes?.size !== size);
+            });
+            await wishlist.save(); // Save the wishlist after removing the item
+        }
+
+        if (cartItem) {
+            // If the item with the same attributes is already in the cart, increase the quantity
+            cartItem.quantity += 1;
+            await cartItem.save();
+        } else {
+            // If the item is not in the cart, add it with the correct attributes and price
+            await CartItem.create({
+                user: req.user._id,
+                product: productId,
+                quantity: 1,
+                attributes: { color, ram, storage, size },
+                price: req.body.price // Use the price passed in the request
+            });
+        }
+
+        res.json({ success: true });
+    } catch (error) {
+        res.status(500).json({ success: false, message: 'An error occurred while moving the product to your cart.' });
+    }
 });
+
+
 
 module.exports = router;

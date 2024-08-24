@@ -2,23 +2,22 @@ const mongoose = require('mongoose');
 const Review = mongoose.model('Review');
 const Product = mongoose.model('Product');
 const User = mongoose.model('User');
+ 
 const { cloudinary } = require('../cloudinary');
 const calculateAverageRating = require('../utils/calculateAverageRating');
+
 
 // Create a new review
 exports.createReview = async (req, res) => {
   try {
-    console.log('Incoming Review Data:', req.body.review);
-    console.log('Uploaded Files:', req.files);
+    const { productId } = req.params;
+    const { title, rating, comment } = req.body.review;
+    const user = req.user._id;
 
     if (!req.body.review) {
       console.error('Review data is missing');
       return res.status(400).send('Review data is missing');
     }
-
-    const { productId } = req.params;
-    const { title, rating, comment } = req.body.review;
-    const user = req.user._id;
 
     if (rating === undefined || comment === undefined) {
       console.error('Rating or comment is missing');
@@ -48,12 +47,19 @@ exports.createReview = async (req, res) => {
       return res.status(404).send('User not found');
     }
 
+    
+
     res.redirect(`/products/${productId}/${req.params.productSlug}`);
   } catch (err) {
     console.error('Error creating review:', err);
     res.status(500).send('Internal Server Error');
   }
 };
+
+
+
+// Update a review
+
 
 // Edit a review
 exports.editReviewForm = async (req, res) => {
@@ -77,8 +83,8 @@ exports.editReviewForm = async (req, res) => {
 // Update a review
 exports.updateReview = async (req, res) => {
   try {
-    console.log('Request Body:', req.body);
-    console.log('Uploaded Files:', req.files);
+    // console.log('Request Body:', req.body);
+    // console.log('Uploaded Files:', req.files);
 
     if (!req.body.review) {
       console.error('Review data is missing');
@@ -126,6 +132,8 @@ exports.updateReview = async (req, res) => {
     }
     product.rating = await calculateAverageRating(product._id); // Calculate and update the rating
     await product.save();
+
+
 
     res.redirect(`/products/${product._id}/${product.slug}`);
   } catch (err) {

@@ -11,7 +11,7 @@ const User = require('./models/user');
 const session = require('express-session');
 const flash = require('connect-flash');
 const MongoStore = require('connect-mongo'); // Import connect-mongo
-
+const log = require('trace-log');
 const userRouter = require('./routes/user');
 const cartRoutes = require('./routes/cart');
 const homeRoutes = require('./routes/home');

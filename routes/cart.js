@@ -6,78 +6,80 @@ const Product = require('../models/product');
 const User = require('../models/user');
 const Wishlist = require('../models/wishlist');
 
+
 // Route to add a product to the cart
 router.post('/add', isLoggedIn, async (req, res) => {
   const { productId, color, ram, storage, size, quantity } = req.body;
   const userId = req.user._id;
 
   try {
-    const product = await Product.findById(productId);
-    if (!product) {
-      return res.status(404).json({ success: false, message: 'Product not found' });
-    }
-
-    // Initialize the price with the product's sellingPrice as the fallback
-    let selectedPrice = product.sellingPrice;
-
-    // Find the color variant selected by the user
-    const selectedColorVariant = product.colors.find(c => c.color === color);
-
-    if (selectedColorVariant) {
-      // Find the specific variant based on RAM, storage, and size
-      const selectedVariant = selectedColorVariant.variants.find(variant =>
-        (!variant.ram || variant.ram === ram) &&
-        (!variant.storage || variant.storage === storage) &&
-        (!variant.size || variant.size === size)
-      );
-
-      // If a specific variant is found, use its price
-      if (selectedVariant) {
-        selectedPrice = selectedVariant.price;
+      const product = await Product.findById(productId);
+      if (!product) {
+          return res.status(404).json({ success: false, message: 'Product not found' });
       }
-    }
 
-    // Create or update the cart item with the selected price
-    let cartItem = await CartItem.findOne({ 
-      user: userId, 
-      product: productId, 
-      'attributes.color': color, 
-      'attributes.ram': ram, 
-      'attributes.storage': storage, 
-      'attributes.size': size 
-    });
+      // Initialize the price with the product's sellingPrice as the fallback
+      let selectedPrice = product.sellingPrice;
 
-    if (cartItem) {
-      cartItem.quantity += parseInt(quantity, 10);
-    } else {
-      cartItem = new CartItem({
-        user: userId,
-        product: productId,
-        quantity: parseInt(quantity, 10) || 1,
-        attributes: {
-          color: color,
-          ram: ram,
-          storage: storage,
-          size: size
-        },
-        price: selectedPrice
+      // Find the color variant selected by the user
+      const selectedColorVariant = product.colors.find(c => c.color === color);
+
+      if (selectedColorVariant) {
+          const selectedVariant = selectedColorVariant.variants.find(variant =>
+              (!variant.ram || variant.ram === ram) &&
+              (!variant.storage || variant.storage === storage) &&
+              (!variant.size || variant.size === size)
+          );
+
+          if (selectedVariant) {
+              selectedPrice = selectedVariant.price;
+          }
+      }
+
+      let cartItem = await CartItem.findOne({ 
+          user: userId, 
+          product: productId, 
+          'attributes.color': color, 
+          'attributes.ram': ram, 
+          'attributes.storage': storage, 
+          'attributes.size': size 
       });
-    }
 
-    await cartItem.save();
+      if (cartItem) {
+          cartItem.quantity += parseInt(quantity, 10);
+      } else {
+          cartItem = new CartItem({
+              user: userId,
+              product: productId,
+              quantity: parseInt(quantity, 10) || 1,
+              attributes: {
+                  color: color,
+                  ram: ram,
+                  storage: storage,
+                  size: size
+              },
+              price: selectedPrice
+          });
+      }
 
-    const user = await User.findById(userId);
-    if (!user.cart.includes(cartItem._id)) {
-      user.cart.push(cartItem._id);
-      await user.save();
-    }
+      await cartItem.save();
 
-    return res.redirect(req.get('referer'));
+      const user = await User.findById(userId);
+      if (!user.cart.includes(cartItem._id)) {
+          user.cart.push(cartItem._id);
+          await user.save();
+      }
+
+      return res.redirect(req.get('referer'));
   } catch (error) {
-    console.error('Error adding product to cart:', error);
-    return res.status(500).json({ success: false, message: 'An error occurred. Please try again.' });
+      console.error('Error adding product to cart:', error);
+      return res.status(500).json({ success: false, message: 'An error occurred. Please try again.' });
   }
 });
+
+
+
+
 
 // Route to view cart items
 router.get('/view', isLoggedIn, async (req, res) => {

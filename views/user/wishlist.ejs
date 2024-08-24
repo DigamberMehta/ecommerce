@@ -194,7 +194,6 @@
         </ul>
     <% } %>
 </div>
-
 <script>
 document.querySelectorAll('.wishlist-remove-btn').forEach(button => {
     button.addEventListener('click', async (e) => {
@@ -228,10 +227,10 @@ document.querySelectorAll('.wishlist-move-to-cart-btn').forEach(button => {
     button.addEventListener('click', async (e) => {
         const wishlistItem = e.target.closest('.wishlist-item');
         const productId = wishlistItem.getAttribute('data-product-id');
-        const color = wishlistItem.getAttribute('data-color');
-        const ram = wishlistItem.getAttribute('data-ram');
-        const storage = wishlistItem.getAttribute('data-storage');
-        const size = wishlistItem.getAttribute('data-size');
+        const color = wishlistItem.getAttribute('data-color') || null;
+        const ram = wishlistItem.getAttribute('data-ram') || null;
+        const storage = wishlistItem.getAttribute('data-storage') || null;
+        const size = wishlistItem.getAttribute('data-size') || null;
         const price = wishlistItem.querySelector('.wishlist-selling-price').textContent.replace('₹', '');
 
         const response = await fetch('/wishlist/move-to-cart', {
@@ -244,12 +243,11 @@ document.querySelectorAll('.wishlist-move-to-cart-btn').forEach(button => {
 
         const result = await response.json();
         if (result.success) {
-            wishlistItem.remove();
-            // Optionally, show a success message to the user
-          
+            wishlistItem.remove(); // Remove from DOM
         } else {
             alert('Failed to move item to cart');
         }
     });
 });
+
 </script>

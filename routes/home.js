@@ -8,10 +8,7 @@ router.get('/', async (req, res) => {
   try {
     const products = await Product.find();
     
-    // Recommended products logic
-    let recommendedProducts = [];
-
-    res.render('home/home', { products, recommendedProducts });
+    res.render('home/home', { products});
     
   } catch (err) {
     console.error(err);

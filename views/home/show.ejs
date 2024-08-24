@@ -201,22 +201,21 @@
               <% } %>
 
               <div class="wishlist-btn-show">
-
                 <form id="wishlist-form" data-product-id="<%= product._id %>" data-in-wishlist="<%= isInWishlist %>">
-                  <input type="hidden" name="productId" value="<%= product._id %>" />
-                  <button type="submit" class="product-show-btn-wishlist <%= isInWishlist ? 'wishlist-active' : '' %>">
-                      <span class="heart-icon" id="wishlist-heart-icon">
-                          <% if (isInWishlist) { %>
-                              <i class="fa-solid fa-heart red-heart"></i>
-                          <% } else { %>
-                              <i class="fa-light fa-heart add-wishlist"></i>
-                          <% } %>
-                      </span>
-                  </button>
-              </form>
-              
-  
-              </div>
+                    <input type="hidden" name="productId" value="<%= product._id %>" />
+                    <button type="submit" class="product-show-btn-wishlist <%= isInWishlist ? 'wishlist-active' : '' %>">
+                        <span class="heart-icon" id="wishlist-heart-icon">
+                            <% if (isInWishlist) { %>
+                                <i class="fa-solid fa-heart red-heart"></i>
+                            <% } else { %>
+                                <i class="fa-light fa-heart add-wishlist"></i>
+                            <% } %>
+                        </span>
+                    </button>
+                </form>
+            </div>
+            
+            
           </div>
           <% if (imagesToShow.length> 1) { %>
             <div class="show-thumbnails">
@@ -479,6 +478,7 @@
         </div>
       </div>
 
+      
       <div class="reviews-container">
         <h2 class="all-reviews-section">Rating & Reviews</h2>
 
@@ -521,6 +521,8 @@
           </div>
           <% }) %>
       </div>
+
+
     </div>
 
     <div id="show-image-preview-modal" class="show-image-preview-modal">
@@ -543,7 +545,7 @@
     const ramOptionsContainer = document.getElementById("ram-options-container");
     const storageOptionsContainer = document.getElementById("storage-options-container");
     const sizeOptionsContainer = document.getElementById("size-options-container");
-
+ 
     const ramSection = document.querySelector(".ram-options");
     const storageSection = document.querySelector(".storage-options");
     const sizeSection = document.querySelector(".size-options");
@@ -929,7 +931,6 @@
     });
 
 
-
     document.getElementById('wishlist-form').addEventListener('submit', function(event) {
     event.preventDefault(); 
 
@@ -949,16 +950,17 @@
         .then(data => {
             if (data.success) {
                 // Toggle the wishlist state
-                form.setAttribute('data-in-wishlist', !isInWishlist);
+                const newWishlistState = !isInWishlist;
+                form.setAttribute('data-in-wishlist', newWishlistState);
 
                 // Update the heart icon
                 const heartIcon = document.getElementById('wishlist-heart-icon');
-                heartIcon.innerHTML = !isInWishlist 
+                heartIcon.innerHTML = newWishlistState 
                     ? '<i class="fa-solid fa-heart red-heart"></i>'
                     : '<i class="fa-light fa-heart add-wishlist"></i>';
                     
                 // Toggle the active class
-                form.querySelector('.product-show-btn-wishlist').classList.toggle('wishlist-active');
+                form.querySelector('.product-show-btn-wishlist').classList.toggle('wishlist-active', newWishlistState);
             } else {
                 alert(data.message || 'An error occurred while updating your wishlist.');
             }
@@ -968,8 +970,12 @@
             alert('An error occurred while updating your wishlist.');
         });
 });
-
-
+document.querySelectorAll('.edit-button').forEach(button => {
+              button.addEventListener('click', function () {
+                  const reviewId = this.getAttribute('data-review-id');
+                  window.location.href = `/products/<%= product._id %>/reviews/${reviewId}/edit`;
+              });
+          });
 
 });
 
