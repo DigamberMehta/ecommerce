@@ -4,7 +4,6 @@ const Wishlist = require('../models/wishlist');
 const CartItem = require('../models/cartItem');
 const { isLoggedIn } = require('../middleware');
 const UserInteraction = require('../models/UserInteraction');
-const logUserInteraction = require('../utils/logInteraction');
 const Product = require('../models/product');
 // Add product to wishlist
 router.post('/wishlist/add', isLoggedIn, async (req, res) => {
