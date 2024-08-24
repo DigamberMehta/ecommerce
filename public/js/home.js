@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+ 
 
 function slide(rowId, direction) {
     const row = document.getElementById(rowId);
@@ -40,4 +40,4 @@ setInterval(() => {
 }, 5000);
 });
 
-});
+ 

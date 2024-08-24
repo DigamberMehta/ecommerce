@@ -977,6 +977,43 @@ document.querySelectorAll('.edit-button').forEach(button => {
               });
           });
 
+
+
+          
+///////////////////////////////////////////////
+let entryTime = new Date(); // Record the entry time when the user views the product
+
+// Function to send exit time to the server
+function sendExitTime() {
+  const exitTime = new Date(); // Record the exit time when the user leaves the page
+  fetch('/products/exit', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      productId: '<%= product._id %>',  // Ensure this is set correctly
+      exitTime: exitTime
+    })
+  }).catch(err => console.error('Error sending exit time:', err)); // Add error handling
+}
+
+// Listen for page unload event (when user leaves or closes the page)
+window.addEventListener('beforeunload', sendExitTime);
+
+// Also send exit time when user navigates to another page within the app
+document.querySelectorAll('a').forEach(link => {
+  link.addEventListener('click', sendExitTime);
 });
 
+// Send exit time if the user switches to another tab or minimizes the window
+document.addEventListener('visibilitychange', function() {
+  if (document.visibilityState === 'hidden') {
+    sendExitTime();
+  }
+});
+
+  });
+
   </script>
+

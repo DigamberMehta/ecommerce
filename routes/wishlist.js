@@ -17,29 +17,73 @@ router.post('/wishlist/add', isLoggedIn, async (req, res) => {
             wishlist = new Wishlist({ user: req.user._id, products: [] });
         }
 
-        // Check if the product already exists in the wishlist (ignoring attributes)
         const productExists = wishlist.products.some(item => item.product.toString() === req.body.productId);
 
         if (!productExists) {
-            // Add the product to the wishlist
             wishlist.products.push({
                 product: req.body.productId,
-                price: req.body.price // Assuming the price is sent in the request body
+                price: req.body.price 
             });
             await wishlist.save();
 
-            // Fetch the product details
             const product = await Product.findById(req.body.productId);
 
-            // Update the 'view' interaction to 'wishlist' if it exists
-            await UserInteraction.findOneAndUpdate(
-                { user: req.user._id, product: req.body.productId, action: 'view' },
-                { 
-                    action: 'wishlist',
-                    category: product.categories[0]
-                },
-                { upsert: true, new: true }
-            );
+            // Retrieve existing 'view' interaction to calculate cumulative duration
+            let viewInteraction = await UserInteraction.findOne({ user: req.user._id, product: req.body.productId, action: 'view' });
+
+            if (viewInteraction) {
+                const currentTime = new Date();
+                let currentSessionDuration = 0;
+
+                if (viewInteraction.entryTime) {
+                    currentSessionDuration = (currentTime - viewInteraction.entryTime) / 1000; // Duration in seconds
+                    viewInteraction.duration += currentSessionDuration; // Accumulate total viewing duration
+                }
+
+                viewInteraction.exitTime = currentTime; // Set the exit time for view
+                await viewInteraction.save();
+
+                // Calculate cumulative wishlist duration (previous duration + current session)
+                const cumulativeWishlistDuration = viewInteraction.wishlistDuration + viewInteraction.duration;
+
+                // Create or update the 'wishlist_add' interaction to reflect cumulative duration
+                let wishlistInteraction = await UserInteraction.findOne({ user: req.user._id, product: req.body.productId, action: 'wishlist_add' });
+
+                if (wishlistInteraction) {
+                    wishlistInteraction.wishlistDuration = cumulativeWishlistDuration; // Use the cumulative wishlist duration
+                    wishlistInteraction.exitTime = new Date(); // Set the exit time
+                    await wishlistInteraction.save();
+                } else {
+                    wishlistInteraction = new UserInteraction({
+                        user: req.user._id,
+                        product: req.body.productId,
+                        action: 'wishlist_add',
+                        entryTime: null,
+                        exitTime: new Date(),
+                        duration: 0, // Set this to zero if we're using separate fields
+                        cartDuration: 0, // Not applicable here
+                        wishlistDuration: cumulativeWishlistDuration, // Use the cumulative wishlist duration
+                        timestamp: new Date()
+                    });
+
+                    await wishlistInteraction.save();
+                }
+
+                console.log(`Created or updated interaction for wishlist_add:`, wishlistInteraction); // Debugging
+            } else {
+                // If no view interaction exists, create a new one
+                viewInteraction = new UserInteraction({
+                    user: req.user._id,
+                    product: req.body.productId,
+                    action: 'view',
+                    entryTime: null,
+                    exitTime: new Date(),
+                    duration: 0,
+                    cartDuration: 0,
+                    wishlistDuration: 0
+                });
+                await viewInteraction.save();
+            }
         }
 
         res.json({ success: true, message: 'Product added to your wishlist.' });
@@ -48,6 +92,11 @@ router.post('/wishlist/add', isLoggedIn, async (req, res) => {
         res.status(500).json({ success: false, message: 'An error occurred while adding the product to your wishlist.' });
     }
 });
+
+
+
+
+
 
 
 

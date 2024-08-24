@@ -5,6 +5,7 @@ const CartItem = require('../models/cartItem');
 const Product = require('../models/product');
 const User = require('../models/user');
 const Wishlist = require('../models/wishlist');
+const UserInteraction = require('../models/UserInteraction');
 
 
 // Route to add a product to the cart
@@ -18,10 +19,8 @@ router.post('/add', isLoggedIn, async (req, res) => {
           return res.status(404).json({ success: false, message: 'Product not found' });
       }
 
-      // Initialize the price with the product's sellingPrice as the fallback
       let selectedPrice = product.sellingPrice;
 
-      // Find the color variant selected by the user
       const selectedColorVariant = product.colors.find(c => c.color === color);
 
       if (selectedColorVariant) {
@@ -70,12 +69,71 @@ router.post('/add', isLoggedIn, async (req, res) => {
           await user.save();
       }
 
+      // Retrieve existing 'view' interaction to calculate cumulative duration
+      let viewInteraction = await UserInteraction.findOne({ user: userId, product: productId, action: 'view' });
+
+      if (viewInteraction) {
+          const currentTime = new Date();
+          let currentSessionDuration = 0;
+
+          if (viewInteraction.entryTime) {
+              currentSessionDuration = (currentTime - viewInteraction.entryTime) / 1000; // Duration in seconds
+              viewInteraction.duration += currentSessionDuration; // Accumulate total viewing duration
+          }
+
+          viewInteraction.exitTime = currentTime; // Set the exit time for view
+          await viewInteraction.save();
+
+          // Calculate cumulative cart duration (previous duration + current session)
+          const cumulativeCartDuration = viewInteraction.cartDuration + viewInteraction.duration;
+          
+          // Create or update the 'add_to_cart' interaction to reflect cumulative duration
+          let addToCartInteraction = await UserInteraction.findOne({ user: userId, product: productId, action: 'add_to_cart' });
+
+          if (addToCartInteraction) {
+              addToCartInteraction.cartDuration = cumulativeCartDuration; // Use the cumulative cart duration
+              addToCartInteraction.exitTime = new Date(); // Set the exit time
+              await addToCartInteraction.save();
+          } else {
+              addToCartInteraction = new UserInteraction({
+                  user: userId,
+                  product: productId,
+                  action: 'add_to_cart',
+                  entryTime: null,
+                  exitTime: new Date(),
+                  duration: 0, // Set this to zero if we're using separate fields
+                  cartDuration: cumulativeCartDuration, // Use the cumulative cart duration
+                  wishlistDuration: 0, // Not applicable here
+                  timestamp: new Date()
+              });
+
+              await addToCartInteraction.save();
+          }
+
+          console.log(`Created or updated interaction for add_to_cart:`, addToCartInteraction); // Debugging
+      } else {
+          // If no view interaction exists, create a new one
+          viewInteraction = new UserInteraction({
+              user: userId,
+              product: productId,
+              action: 'view',
+              entryTime: null,
+              exitTime: new Date(),
+              duration: 0,
+              cartDuration: 0,
+              wishlistDuration: 0
+          });
+          await viewInteraction.save();
+      }
+
       return res.redirect(req.get('referer'));
   } catch (error) {
       console.error('Error adding product to cart:', error);
       return res.status(500).json({ success: false, message: 'An error occurred. Please try again.' });
   }
 });
+
+
 
 
 
