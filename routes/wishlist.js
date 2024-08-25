@@ -69,7 +69,7 @@ router.post('/wishlist/add', isLoggedIn, async (req, res) => {
                     await wishlistInteraction.save();
                 }
 
-                console.log(`Created or updated interaction for wishlist_add:`, wishlistInteraction); // Debugging
+            
             } else {
                 // If no view interaction exists, create a new one
                 viewInteraction = new UserInteraction({

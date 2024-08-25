@@ -79,20 +79,35 @@
   left: 0; /* Align to the left edge of the search input */
   width: 100%; /* Ensure the width matches the search input */
   background-color: white;
-  border: 1px solid #ccc;
   max-height: 350px;
   overflow-y: auto;
   z-index: 1000;
   border-radius: 0 0 4px 4px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add shadow instead of border */
 }
+
 
 .suggestions-dropdown li {
   display: flex;
   align-items: center;
+  /* justify-content: space-between; */
   padding: 10px;
   cursor: pointer;
 }
-
+.search-history-container{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  /* padding: 10px; */
+}
+.remove-link{
+  color: rgb(0, 76, 255);
+  cursor: pointer;
+}
+.remove-link:hover{
+  text-decoration: underline;
+}
 .suggestions-dropdown li:hover {
   background-color: #f1f1f1;
 }
@@ -170,7 +185,9 @@
 .menu-item {
   margin: 0 1rem;
 }
-
+.profile-currentUser{
+  cursor: pointer;
+}
 .menu-link {
   text-decoration: none;
   color: #000000; /* Adjust color as needed */
@@ -423,4 +440,8 @@
 /* Disable body scroll when side menu is open */
 body.no-scroll {
   overflow: hidden;
+}
+.history-icon{
+  /* font-size: 1.5rem; */
+  margin-right: 0.4rem;
 }

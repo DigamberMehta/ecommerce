@@ -43,7 +43,7 @@ router.get('/products/:id/:slug', async (req, res) => {
                 existingInteraction.entryTime = currentTime; // Set entryTime to current time for new session
                 existingInteraction.exitTime = null; // Reset exitTime for a new session
 
-                console.log(`Updating existing interaction entry time:`, existingInteraction); // Debugging
+             
 
                 await existingInteraction.save();
             } else {
@@ -57,7 +57,7 @@ router.get('/products/:id/:slug', async (req, res) => {
                     duration: 0 // Initial duration is 0
                 });
 
-                console.log(`Created new interaction for product view:`, newInteraction); // Debugging
+               
             }
         }
 
@@ -88,7 +88,7 @@ router.post('/products/entry', isLoggedIn, async (req, res) => {
         if (interaction) {
             interaction.entryTime = new Date(entryTime); // Update entry time to the current time
 
-            console.log(`Updating interaction with new entry time:`, interaction); // Debugging
+           
 
             await interaction.save();
         }
@@ -120,7 +120,7 @@ router.post('/products/exit', isLoggedIn, async (req, res) => {
 
             interaction.exitTime = exitDate; // Set exit time to the current time
 
-            console.log(`Updating interaction with exit time:`, interaction); // Debugging
+          
 
             await interaction.save();
         }

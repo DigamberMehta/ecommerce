@@ -1,7 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const Product = require('../models/product');
+const User = require('../models/user'); // Import User model
 const Fuse = require('fuse.js');
+const UserInteraction = require('../models/UserInteraction');
 
 // Function to expand search terms using a synonym map
 function expandSearchTerm(term) {
@@ -58,6 +60,46 @@ router.get('/search', async (req, res) => {
         .sort({ score: { $meta: "textScore" } });
 
         console.log(`Initial products found: ${products.length}`);
+
+        // Save the top 3-5 most relevant products for the user's browsing history
+        const numberOfProductsToSave = Math.min(products.length, 5); // Save up to 5 products, or fewer if less are available
+        const topProducts = products.slice(0, numberOfProductsToSave); // Select top relevant products
+        const topProductIds = topProducts.map(product => product._id); // Get IDs of top products
+
+        // Debugging: Check if user and products are valid before saving
+        console.log('User ID:', req.user ? req.user._id : 'No user');
+        console.log('Search term:', searchTerm);
+        console.log('Top product IDs:', topProductIds);
+
+        // Save search term and top product IDs to user's browsing history if user is authenticated
+        if (req.user) {
+            try {
+                await User.findByIdAndUpdate(req.user._id, {
+                    $push: { 
+                        browsingHistory: { 
+                            term: searchTerm, 
+                            products: topProductIds, 
+                            timestamp: new Date() 
+                        } 
+                    }
+                });
+                console.log('Search history saved successfully.');
+
+                // Add UserInteraction tracking for search
+                await UserInteraction.create({
+                    user: req.user._id,
+                    action: 'search',
+                    searchQuery: searchTerm, // Only store search query
+                    timestamp: new Date()
+                });
+
+                console.log('User interaction for search saved successfully.');
+            } catch (saveErr) {
+                console.error('Error saving search history or user interaction:', saveErr);
+            }
+        } else {
+            console.log('Search history not saved. User not authenticated.');
+        }
 
         // Extract the maximum price for slider range
         const maxProductPrice = products.reduce((max, product) => Math.max(max, product.sellingPrice), 0);
@@ -170,5 +212,51 @@ router.get('/search', async (req, res) => {
         return res.status(500).send('Server Error');
     }
 });
+
+
+
+// Route to fetch the last 10 search terms from the browsing history
+router.get('/search/history', async (req, res) => {
+    try {
+        if (!req.user) {
+            return res.json([]); // If the user is not authenticated, return an empty array
+        }
+
+        const user = await User.findById(req.user._id, 'browsingHistory');
+        if (user && user.browsingHistory) {
+            // Get the last 10 unique search terms
+            const uniqueTerms = [...new Set(user.browsingHistory.map(item => item.term))];
+            const last10Terms = uniqueTerms.slice(-10).reverse();
+            return res.json(last10Terms);
+        }
+
+        return res.json([]);
+    } catch (err) {
+        console.error('Error fetching browsing history:', err);
+        return res.status(500).send('Server Error');
+    }
+});
+
+// Route to remove a search term from browsing history
+router.delete('/search/history/remove', async (req, res) => {
+    try {
+        if (!req.user) {
+            return res.status(401).json({ message: 'Unauthorized' }); // If the user is not authenticated
+        }
+
+        const { term } = req.body;
+
+        // Remove the search term from the user's browsing history
+        await User.findByIdAndUpdate(req.user._id, {
+            $pull: { browsingHistory: { term: term } }
+        });
+
+        return res.json({ message: 'Search term removed successfully.' });
+    } catch (err) {
+        console.error('Error removing search term:', err);
+        return res.status(500).send('Server Error');
+    }
+});
+
 
 module.exports = router;

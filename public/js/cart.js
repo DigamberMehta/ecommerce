@@ -4,6 +4,7 @@ document.querySelectorAll('.manual-quantity').forEach(input => {
         if (updateButton) {
             updateButton.style.display = 'inline-block';
         }
+       
     });
 
     input.addEventListener('change', async (event) => {
@@ -122,6 +123,7 @@ document.querySelectorAll('.remove-button').forEach(button => {
             alert('An error occurred. Please try again.');
         }
     });
+   
 });
 
 function updateSubtotal(newSubtotal) {

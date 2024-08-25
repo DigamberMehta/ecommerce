@@ -2,7 +2,7 @@ const Review = require('./models/review');
 
 module.exports.isLoggedIn = (req, res, next) => {
   try {
-    const excludeUrls = ['/buy-now', '/cart/quantity'];
+    const excludeUrls = ['/buy-now'];
 
     // Check if user is not authenticated
     if (!req.isAuthenticated()) {

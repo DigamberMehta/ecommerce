@@ -17,7 +17,7 @@ const cartRoutes = require('./routes/cart');
 const homeRoutes = require('./routes/home');
 const searchRoutes = require('./routes/search');
 const showRoutes = require('./routes/show');
-const browsingHistoryRoutes = require('./routes/browsingHistory');
+// const browsingHistoryRoutes = require('./routes/browsingHistory');
 const authGoogleRoutes = require('./routes/authGoogle');
 // const nodemailerRoutes = require('./routes/nodemailer');
 const CustomStrategy = require('passport-custom').Strategy;
@@ -32,8 +32,7 @@ const paymentRoutes = require('./routes/payment');
 const paymentCallbackRoutes = require('./routes/paymentCallback');
 const cashOnDeliveryRoutes = require('./routes/cashOnDelivery');
 const orderRoutes = require('./routes/orders');
-const recommendationRoutes = require('./routes/recommendation');
-
+const recommendationRoutes = require('./routes/recommendations');
 app.use(express.json());
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -175,7 +174,7 @@ app.use('/cart', cartRoutes);
 app.use('/', homeRoutes);
 app.use('/', showRoutes);
 app.use('/', searchRoutes);
-app.use('/', browsingHistoryRoutes);
+// app.use('/', browsingHistoryRoutes);
 app.use('/auth', authGoogleRoutes);
 // app.use('/', nodemailerRoutes);
 app.get('/forgot', (req, res) => {
@@ -187,7 +186,7 @@ app.use('/checkout', checkoutRoutes);
 app.use('/', wishlistRoutes);
 app.use('/', contactRoutes);
 app.use('/orders', orderRoutes);
-app.use('/', recommendationRoutes);
+app.use('/', recommendationRoutes); 
 // payment routes
 app.use('/payment', paymentRoutes);
 app.use('/payment', paymentCallbackRoutes);

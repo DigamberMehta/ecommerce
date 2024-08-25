@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const passLocalMongoose = require('passport-local-mongoose');
 
-
 // Define the user schema
 const userSchema = new mongoose.Schema({
   googleId: String,
@@ -32,8 +31,9 @@ const userSchema = new mongoose.Schema({
   },
   browsingHistory: [
     {
-      product: { type: mongoose.Schema.Types.ObjectId, ref: 'Product' },
-      viewedAt: { type: Date, default: Date.now }
+      term: String,  // Store search terms
+      products: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Product' }], // Array of product IDs matching the search term
+      timestamp: { type: Date, default: Date.now }
     }
   ],
   resetPasswordToken: String, // For password reset token
@@ -42,8 +42,10 @@ const userSchema = new mongoose.Schema({
   updatedAt: { type: Date, default: Date.now }
 });
 
+// Add passport-local-mongoose plugin to handle hashing and salting of passwords and to handle user authentication with email
 userSchema.plugin(passLocalMongoose, { usernameField: 'email' });
 
+// Custom serialize and deserialize functions for Passport
 userSchema.statics.serializeUser = function() {
   return function(user, done) {
     done(null, user.id);

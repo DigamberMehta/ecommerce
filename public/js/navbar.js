@@ -66,7 +66,7 @@ document.addEventListener('click', (event) => {
 //       console.error('Error fetching cart quantity:', error);
 //   }
 // }
-
+// fetchCartQuantity();
 document.addEventListener('DOMContentLoaded', function() {
   const burger = document.getElementById('burger');
   const sideMenu = document.getElementById('side-menu');
@@ -89,4 +89,4 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // Fetch the cart quantity on page load
-// fetchCartQuantity();
+

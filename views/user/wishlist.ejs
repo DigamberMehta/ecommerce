@@ -4,19 +4,21 @@
  %>
 <style>
     .wishlist-container {
-        max-width: 94%;
+        max-width: 1000px;
         margin: 2rem auto;
         background-color: #fff;
         padding: 20px;
-        border-radius: 8px;
+        /* border-radius: 8px; */
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
 
     .wishlist-title {
         text-align: center;
-        color: #333;
+        color: #212121;
         display: inline-block;
-       margin-bottom: 1rem;
+        font-weight: 400;
+        font-size: 24px;
+      margin: 0;
        /* border-bottom: 1px solid #ddd; */
     }
 
@@ -50,20 +52,25 @@
 
     .wishlist-image {
         width: 100px;
-        /* margin-right: 20px; */
+        margin-right: 20px;
         object-fit: contain;
         max-height: 100px;
     }
 
     .wishlist-info {
         flex: 1;
+        /* align-self: baseline; */
+        height: 100%;
     }
 
+
     .wishlist-product-title {
-        font-size: 1.2em;
-        margin: 0 0 5px;
-        color: #333;
         font-weight: 400;
+    font-size: 15px;
+    display: block;
+    cursor: pointer;
+    margin: 0;
+    margin-right: 0.5rem;
     }
 
     /* .wishlist-product-description {
@@ -75,6 +82,8 @@
         display: flex;
         align-items: center;
         gap: 10px;
+        font-weight: 500;
+        color: #212121;
     }
 
     .wishlist-selling-price {
@@ -129,10 +138,29 @@
     .product-detail-container-wishlist{
         width: 65%;
     }
+    @media (max-width:900px){
+        .wishlist-product-description{
+            display: none;
+        }
+    }
+    .wishlist-product-title-container{
+        display: flex;
+        align-items: center;
+    }
+    .wishlist-attributes{
+        display: flex;
+        flex-wrap: wrap;
+        /* margin-right: 0.4rem; */
+    }
+    .wishlist-item-attributes-list{
+       
+        margin-right: 0.4rem;
+       
+    }
 </style>
 
 <div class="wishlist-container">
-    <h1 class="wishlist-title">My Wishlist</h1>
+    <h1 class="wishlist-title">My Wishlist (<%= products.length %>)</h1>
     <% if (products.length === 0) { %>
         <p class="wishlist-empty">Your wishlist is empty.</p>
     <% } else { %>
@@ -148,31 +176,28 @@
                     <div class="wish-info-container">
                         <img src="<%= item.product.images[0] %>" alt="<%= item.product.title %> image" class="wishlist-image">
                         <div class="wishlist-info">
-                            <h2 class="wishlist-product-title"><%= item.product.title %></h2>
-
-
-                            <%const truncateDescription=(description)=> {
-                                const words = description.split(' ');
-                                return words.length > 15 ? words.slice(0, 30).join(' ') + '...' : description; };
-                                %>
-                                <div class="wishlist-product-description">
-                                    <%= truncateDescription(item.product.description) %>
-                                </div>
-
+                            <div class="wishlist-product-title-container">
+                            <h2 class="wishlist-product-title"><%= item.product.title %></h2> 
+                            <% if (item.attributes.color || item.attributes.ram || item.attributes.storage || item.attributes.size) { %>
                             <div class="wishlist-attributes">
                                 <% if (item.attributes?.color) { %>
-                                    <div><strong>Color:</strong> <%= item.attributes.color %></div>
+                                    <div class="wishlist-item-attributes-list">  <%= item.attributes.color %></div>
                                 <% } %>
                                 <% if (item.attributes?.ram) { %>
-                                    <div><strong>RAM:</strong> <%= item.attributes.ram %></div>
+                                    <div class="wishlist-item-attributes-list"> | <%= item.attributes.ram %></div>
                                 <% } %>
                                 <% if (item.attributes?.storage) { %>
-                                    <div><strong>Storage:</strong> <%= item.attributes.storage %></div>
+                                    <div class="wishlist-item-attributes-list"> | <%= item.attributes.storage %></div>
                                 <% } %>
                                 <% if (item.attributes?.size) { %>
-                                    <div><strong>Size:</strong> <%= item.attributes.size %></div>
+                                    <div class="wishlist-item-attributes-list"> | <%= item.attributes.size %></div>
                                 <% } %>
                             </div>
+                        <% } %>
+
+                        </div>
+                        
+                       
                             <div class="wishlist-prices">
                                 <span class="wishlist-selling-price">₹<%= item.price || item.product.sellingPrice %></span>
                                 <span class="wishlist-mrp-price">₹<%= item.product.mrpPrice || '' %></span>
@@ -180,6 +205,7 @@
                                     <span class="wishlist-discount"><%= discountPercentage %>% off</span>
                                 <% } %>
                             </div>
+                          
                         </div>
                     </div>
                 </a>
@@ -193,6 +219,7 @@
             
         </ul>
     <% } %>
+
 </div>
 <script>
 document.querySelectorAll('.wishlist-remove-btn').forEach(button => {

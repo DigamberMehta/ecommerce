@@ -634,8 +634,9 @@ cursor: pointer;
 
 .product-specifications-table th,
 .product-specifications-table td {
-  padding: 8px;
+  padding: 4px;
   text-align: left;
+  font-size: 12px;
 }
 
 .product-specifications-table th {
@@ -646,11 +647,11 @@ cursor: pointer;
 
 .product-specifications-table td {
   color: #212121;
-  border-top: 1px solid #f0f0f0;
+  /* border-top: 1px solid #f0f0f0; */
 }
 
 .show-table-key-heading {
-  font-weight: 500;
+  /* font-weight: 500; */
   color: #878787;
 }
 

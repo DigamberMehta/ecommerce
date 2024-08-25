@@ -110,7 +110,7 @@ router.post('/add', isLoggedIn, async (req, res) => {
               await addToCartInteraction.save();
           }
 
-          console.log(`Created or updated interaction for add_to_cart:`, addToCartInteraction); // Debugging
+        
       } else {
           // If no view interaction exists, create a new one
           viewInteraction = new UserInteraction({

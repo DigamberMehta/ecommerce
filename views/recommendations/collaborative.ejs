@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Collaborative-Based Recommendations</title>
+    <link rel="stylesheet" href="/stylesheets/style.css"> <!-- Adjust the path as needed -->
+</head>
+<body>
+    <div class="container">
+        <h1>Recommended Products for You (Collaborative-Based)</h1>
+
+        <% if (recommendedProducts && recommendedProducts.length > 0) { %>
+            <ul class="recommended-products">
+                <% recommendedProducts.forEach(productId => { %>
+                    <li class="product-item">
+                        <!-- Render product details here. Currently showing product ID as a placeholder -->
+                        <h2>Product ID: <%= productId %></h2>
+                        <!-- Assuming you have a route or function to fetch and display detailed product info -->
+                        <p><a href="/products/<%= productId %>">View Product Details</a></p>
+                    </li>
+                <% }); %>
+            </ul>
+        <% } else { %>
+            <p>No recommendations available at this time. Please check back later.</p>
+        <% } %>
+    </div>
+</body>
+</html>
