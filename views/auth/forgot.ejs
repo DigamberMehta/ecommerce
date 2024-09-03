@@ -1,0 +1,60 @@
+<% layout('layouts/boilerplate') %>
+<%- include('../flash/flash.ejs') %> 
+
+
+
+
+    <div class="authentication-container">
+    <div class="container-auth">
+      <h1 class="heading">Forgot Password</h1>
+      <div class="box">
+        <div class="main">
+          <div class="third-party-login">
+            <button
+              class="auto-signin google"
+              onclick="window.location.href='/auth/google'"
+            >
+              <span class="Google-auth">
+                <img
+                  src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg"
+                  class="auto-signin-icon"
+                  alt="Google logo"
+                />
+                Sign in with Google
+              </span>
+            </button>
+          </div>
+          <div class="divider"></div>
+
+        
+          <form action="/forgot" class="details" method="POST">
+            <div>
+              <label class="auth-label" for="email">Email:</label>
+              <input class="input-feild-auth" type="email" name="email" id="email" required style="width: 100%;">
+            </div>
+            <button type="submit" class="auth-submit">Submit</button>
+          </form>
+            <!-- 
+                    <label class="auth-label" for="confirmPassword">Confirm Password:</label>
+                    <input class="input-feild-auth" type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm your password"> -->
+          </form>
+
+          <div class="other-options">
+            <a href="/login" class="sign-in"
+              >Already have an account? Sign in</a
+            >
+          
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+    <script>
+      function animateButton(button) {
+        button.classList.add("button-clicked");
+        setTimeout(() => {
+          button.classList.remove("button-clicked");
+        }, 300); // Adjust the duration to match the transition duration
+      }
+    </script>
+

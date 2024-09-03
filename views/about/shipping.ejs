@@ -1,0 +1,169 @@
+<% layout('layouts/boilerplate') %>
+<style>
+
+    
+    .shipping-policy-container {
+        font-family: 'Arial', sans-serif;
+        background-color: #f4f4f4;
+        color: #333;
+        line-height: 1.6;
+        padding: 40px;
+        max-width: 900px;
+        margin: 50px auto;
+        background-color: #fff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+    }
+
+    .shipping-policy-title {
+        font-size: 2em;
+        margin-bottom: 10px;
+        color: #2c3e50;
+        border-bottom: 2px solid #2c3e50;
+        padding-bottom: 10px;
+    }
+
+    .shipping-policy-last-updated {
+        color: #7f8c8d;
+        font-size: 0.9em;
+        margin-bottom: 30px;
+    }
+
+    .shipping-policy-section {
+        margin-bottom: 30px;
+    }
+
+    .shipping-policy-subtitle {
+        font-size: 1.8em;
+        margin-bottom: 10px;
+        color: #34495e;
+        border-left: 4px solid #34495e;
+        padding-left: 10px;
+    }
+
+    .shipping-policy-text {
+        font-size: 1em;
+        margin-bottom: 15px;
+    }
+
+    .shipping-policy-options {
+        margin-left: 20px;
+    }
+
+    .shipping-policy-option-title {
+        font-size: 1.2em;
+        margin-top: 10px;
+        color: #2980b9;
+    }
+
+    .shipping-policy-note {
+        font-style: italic;
+        color: #999;
+        margin-top: 10px;
+    }
+
+    .shipping-policy-thank-you {
+        font-size: 1.2em;
+        font-weight: bold;
+        margin-top: 30px;
+        color: #27ae60;
+        text-align: center;
+    }
+
+    .contact-info {
+        margin-top: 20px;
+        padding: 15px;
+        background-color: #ecf0f1;
+        border-radius: 5px;
+    }
+
+    .contact-info p {
+        margin: 5px 0;
+    }
+
+    .contact-info strong {
+        color: #2980b9;
+    }
+</style>
+
+<div class="shipping-policy-container">
+    <h1 class="shipping-policy-title">Urban Mart Shipping Policy</h1>
+    <!-- <p class="shipping-policy-last-updated">Last Updated: [Date]</p> -->
+
+    <section class="shipping-policy-section">
+        <h2 class="shipping-policy-subtitle">Shipping Destinations</h2>
+        <p class="shipping-policy-text">Urban Mart ships to addresses across India, including all major cities, towns, and rural areas.</p>
+    </section>
+
+    <section class="shipping-policy-section">
+        <h2 class="shipping-policy-subtitle">Shipping Rates and Delivery Times</h2>
+        <div class="shipping-policy-options">
+            <h3 class="shipping-policy-option-title">Standard Shipping</h3>
+            <p class="shipping-policy-text">
+                <strong>Rate:</strong> Free for orders above ₹500. For orders below ₹500, a nominal charge of ₹50 applies.<br>
+                <strong>Delivery Time:</strong> 5-7 business days.
+            </p>
+            <h3 class="shipping-policy-option-title">Expedited Shipping</h3>
+            <p class="shipping-policy-text">
+                <strong>Rate:</strong> Calculated at checkout based on order weight and destination.<br>
+                <strong>Delivery Time:</strong> 2-3 business days.
+            </p>
+            <h3 class="shipping-policy-option-title">Express Shipping</h3>
+            <p class="shipping-policy-text">
+                <strong>Rate:</strong> Calculated at checkout based on order weight and destination.<br>
+                <strong>Delivery Time:</strong> 1-2 business days.
+            </p>
+        </div>
+        <p class="shipping-policy-note">Note: Delivery times are estimates and may vary due to unforeseen circumstances such as weather conditions, carrier delays, or high order volumes during peak seasons.</p>
+    </section>
+
+    <section class="shipping-policy-section">
+        <h2 class="shipping-policy-subtitle">Order Processing</h2>
+        <p class="shipping-policy-text">
+            Orders are processed and shipped within 1-2 business days after payment is received.<br>
+            Orders placed on weekends or public holidays will be processed on the next business day.<br>
+            Once your order is shipped, you will receive a confirmation email with tracking information.
+        </p>
+    </section>
+
+    <section class="shipping-policy-section">
+        <h2 class="shipping-policy-subtitle">Shipping Restrictions</h2>
+        <p class="shipping-policy-text">
+            We do not ship to P.O. Boxes.<br>
+            Certain products may have restrictions due to size, weight, or destination. Any such restrictions will be noted on the product page.
+        </p>
+    </section>
+
+    <section class="shipping-policy-section">
+        <h2 class="shipping-policy-subtitle">Tracking Your Order</h2>
+        <p class="shipping-policy-text">
+            After your order has been shipped, you will receive an email with a tracking number and a link to track your package. You can also track your order by logging into your Urban Mart account and viewing your order history.
+        </p>
+    </section>
+
+    <section class="shipping-policy-section">
+        <h2 class="shipping-policy-subtitle">Damaged or Lost Shipments</h2>
+        <p class="shipping-policy-text">
+            If your order arrives damaged, please contact our Customer Service team within 48 hours of receipt with your order number and photos of the damaged items.<br>
+            If your order is lost in transit, please contact our Customer Service team so we can assist you in locating your package or arranging for a replacement.
+        </p>
+    </section>
+
+    <section class="shipping-policy-section">
+        <h2 class="shipping-policy-subtitle">Shipping Address Changes</h2>
+        <p class="shipping-policy-text">
+            If you need to change your shipping address after placing an order, please contact our Customer Service team as soon as possible. We will do our best to accommodate your request, but we cannot guarantee changes once an order has been processed and shipped.
+        </p>
+    </section>
+
+    <section class="shipping-policy-section">
+        <h2 class="shipping-policy-subtitle">Contact Us</h2>
+        <div class="contact-info">
+            <p><strong>Email:</strong> support@urbanmart.live</p>
+            <!-- <p><strong>Phone:</strong> +91-123-456-7890</p> -->
+            <p><strong>Hours:</strong> Monday - Friday, 10 AM - 6 PM (IST)</p>
+        </div>
+    </section>
+
+    <p class="shipping-policy-thank-you">Thank you for shopping with Urban Mart!</p>
+</div>

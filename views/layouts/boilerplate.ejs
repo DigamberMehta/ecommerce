@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="google-site-verification" content="Np_iSFILlMyov0SU1lOMmwOjFCf8f-9OOzAVj2103nM" />
+  <title><%= typeof title !== 'undefined' ? title : 'UrbanMart - Your One-Stop Online Shop for Electronics, Laptops, and Kitchen Appliances' %></title>
+  <link rel="icon" href="/img/favicon.ico" type="image/x-icon" sizes="32x32">
+  
+  <!-- Open Graph Meta Tags -->
+  <meta property="og:title" content="<%= typeof ogTitle !== 'undefined' ? ogTitle : title %>">
+  <meta property="og:description" content="<%= typeof ogDescription !== 'undefined' ? ogDescription : 'Discover top-quality electronics, laptops, and kitchen appliances at UrbanMart. Shop now and enjoy unbeatable prices and service.' %>">
+  <meta property="og:image" content="<%= typeof ogImage !== 'undefined' ? ogImage : 'https://yourdomain.com/default-image.jpg' %>">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="627">
+  <meta property="og:url" content="<%= typeof ogUrl !== 'undefined' ? ogUrl : 'https://urbanmart.live' %>">
+  <meta property="og:type" content="<%= typeof ogType !== 'undefined' ? ogType : 'website' %>">
+  
+  <!-- Meta Description -->
+  <meta name="description" content="UrbanMart is your ultimate destination for electronics, laptops, kitchen appliances, and more. Shop with us for high-quality products and great deals.">
+  
+  <!-- Structured Data (Schema.org) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "UrbanMart",
+    "url": "https://urbanmart.live",
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "email": "support@urbanmart.live",
+      "contactType": "Customer Service"
+    }
+  }
+  </script>
+  <link
+  rel="stylesheet"
+  data-purpose="Layout StyleSheet"
+  title="Web Awesome"
+  href="/css/app-wa-09b459cf485d4b1f3304947240314c05.css?vsn=d"
+>
+
+  <link
+    rel="stylesheet"
+    href="https://site-assets.fontawesome.com/releases/v6.6.0/css/all.css"
+  >
+
+  <link
+    rel="stylesheet"
+    href="https://site-assets.fontawesome.com/releases/v6.6.0/css/sharp-duotone-solid.css"
+  >
+
+  <link
+    rel="stylesheet"
+    href="https://site-assets.fontawesome.com/releases/v6.6.0/css/sharp-thin.css"
+  >
+
+  <link
+    rel="stylesheet"
+    href="https://site-assets.fontawesome.com/releases/v6.6.0/css/sharp-solid.css"
+  >
+
+  <link
+    rel="stylesheet"
+    href="https://site-assets.fontawesome.com/releases/v6.6.0/css/sharp-regular.css"
+  >
+
+  <link
+    rel="stylesheet"
+    href="https://site-assets.fontawesome.com/releases/v6.6.0/css/sharp-light.css"
+  >
+  <!-- CSS Files -->
+  <link rel="stylesheet" href="/css/auth.css">
+  <link rel="stylesheet" href="/css/navbar.css" />
+  <link rel="stylesheet" href="/css/v-listing.css" />
+  <link rel="stylesheet" href="/css/show.css" />
+  <link rel="stylesheet" href="/css/checkout.css" />
+  <link rel="stylesheet" href="/css/cart.css" />
+  <link rel="stylesheet" href="/css/home.css" />
+  <link rel="stylesheet" href="/css/browsing.css" />
+  <link rel="stylesheet" href="/css/footer.css" />
+
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://site-assets.fontawesome.com/releases/v6.6.0/css/all.css" />
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Hind:wght@600&family=Kanit&display=swap" rel="stylesheet" />
+
+  <!-- Scripts -->
+  <script src="/js/cashfree.js" defer></script>
+  <script src="https://sdk.cashfree.com/js/v3/cashfree.js"></script>
+</head>
+
+<body>
+  <div class="main-container-body">
+    <%- include('../includes/navbar.ejs') %> 
+    <%- include('../flash/flash.ejs') %> 
+    <%- body %>
+  </div>
+  <%- include('../includes/footer.ejs') %>
+  
+  <!-- JavaScript Files -->
+  <script src="/js/cart.js"></script>
+  <script src="/js/show.js"></script>
+  <script src="/js/search.js"></script>
+  <script src="/js/home.js"></script>
+  <script src="/js/navbar.js"></script>
+</body>
+</html>

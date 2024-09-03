@@ -1,0 +1,130 @@
+<% layout('layouts/boilerplate') %>
+<% title = 'Profile'; // Set the homepage title
+    ogTitle = title;
+ %>
+
+    <style>
+      .acccount-container-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        background-color: white;
+        margin-top: -20px;
+      }
+
+        .account-container {
+            max-width: 1200px;
+            /* margin: 50px auto; */
+            padding: 0 20px;
+           
+        }
+
+        .account-title {
+            font-size: 28px;
+            font-weight: 400;
+            margin-bottom: 20px;
+        }
+
+        .account-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .account-item {
+          
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            transition: box-shadow 0.2s ease-in-out;
+        }
+
+        .account-item:hover {
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .account-item img {
+            width: 50px;
+            margin-right: 20px;
+            /* display: inline-block; */
+        }
+
+        .account-item h3 {
+            font-size: 18px;
+            font-weight: 500;
+            margin: 0;
+            /* display: inline-block; */
+        }
+
+        .account-item p {
+            font-size: 14px;
+            color: #666;
+            margin: 5px 0 0;
+            /* display: inline-block; */
+        }
+
+        @media screen and (max-width: 768px) {
+            .account-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .account-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .anker-profile-preview{
+          display: flex;
+        }
+    </style>
+<div class="acccount-container-wrapper">
+    <div class="account-container">
+        <h1 class="account-title">Your Account</h1>
+        <div class="account-grid">
+            <div class="account-item">
+              <a class="anker-profile-preview" href="/orders">
+                <img src="/img/package.svg" alt="Your Orders">
+                <div>
+                    <h3>Your Orders</h3>
+                    <p>Track, return, or buy things again</p>
+                </div>
+              </a>
+            </div>
+            <div class="account-item">
+              <a class="anker-profile-preview" href="/profile/user">
+                <img src="/img/locked.svg" alt="Login & Security">
+                <div>
+                    <h3>Login & security</h3>
+                    <p>Edit login, name, and mobile number</p>
+                </div>
+              </a>
+            </div>
+ 
+            <div class="account-item">
+              <a class="anker-profile-preview" href="/user/view-addresses">
+                <img src="/img/location.png" alt="Your Addresses">
+                <div>
+                    <h3>Your Addresses</h3>
+                    <p>Edit addresses for orders and gifts</p>
+                </div>
+              </a>
+            </div>
+            
+     
+            <div class="account-item">
+              <a class="anker-profile-preview" href="">
+                <img src="/img/contact_us.png" alt="Contact Us">
+                <div>
+                    <h3>Contact Us</h3>
+                    <p>Get help with your orders</p>
+                </div>
+              </a>
+            </div>
+        </div>
+    </div>
+  </div>

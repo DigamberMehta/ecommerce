@@ -1,0 +1,71 @@
+
+    <style>
+        .flash-message {
+            display: none; /* Initially hidden */
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px;
+            background-color: #f44336; /* Red background color */
+            color: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            z-index: 1000; /* Ensure it's on top */
+        }
+        .flash-message.success {
+            background-color: #4CAF50; /* Green background color */
+        }
+        .flash-message.show {
+            display: block; /* Show the flash message */
+        }
+        .flash-message button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            line-height: 20px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+    </style>
+
+    <div id="flash-message" class="flash-message">
+        <span id="flash-message-content"></span>
+        <button id="close-flash-message" onclick="closeFlashMessage()">×</button>
+    </div>
+
+    <script>
+        function showFlashMessage(message, type, duration = 3000) {
+            const flashMessage = document.getElementById('flash-message');
+            const flashMessageContent = document.getElementById('flash-message-content');
+            
+            flashMessageContent.textContent = message;
+            flashMessage.className = `flash-message show ${type}`;
+            
+            // Hide the flash message after the specified duration
+            setTimeout(() => {
+                flashMessage.classList.remove('show');
+            }, duration);
+        }
+
+        function closeFlashMessage() {
+            const flashMessage = document.getElementById('flash-message');
+            flashMessage.classList.remove('show');
+        }
+
+        // Display success messages
+        <% if (successMessages.length > 0) { %>
+            <% successMessages.forEach(message => { %>
+                showFlashMessage('<%= message %>', 'success', 5000);
+            <% }) %>
+        <% } %>
+
+        // Display error messages
+        <% if (errorMessages.length > 0) { %>
+            <% errorMessages.forEach(message => { %>
+                showFlashMessage('<%= message %>', 'error', 5000);
+            <% }) %>
+        <% } %>
+    </script>
+</body>
+</html>

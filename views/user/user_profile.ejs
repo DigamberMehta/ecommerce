@@ -1,0 +1,235 @@
+<% layout('layouts/boilerplate') %>
+<% title = 'Profile'; // Set the homepage title
+    ogTitle = title;
+ %>
+<style>
+  .profile-container {
+    padding: 40px;
+    margin-top: -20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background-color: white;
+  }
+
+  .profile-card {
+    width: 100%;
+    max-width: 600px;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+  }
+  .profile-title-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* margin-bottom: 20px; */
+  }
+  .profile-header {
+    display: inline;
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  .profile-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 1px solid #ddd;
+  }
+  .profile-label {
+    /* font-weight: bold; */
+    color: black;
+    width: 30%;
+    margin-right: 10px;
+  }
+  .profile-data {
+    color: #666;
+    flex-grow: 1;
+    font-size: 14px;
+  }
+  .profile-input {
+    width: 85%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+  .user-profile-btn {
+    padding: 3px 35px;
+    border: 1px solid #ccc;
+    background-color: white;
+    /* color: #007bff; */
+    border-radius: 15px;
+    cursor: pointer;
+    font-size: 13px;
+}
+  .form-actions {
+    text-align: center;
+    margin-top: 20px;
+    display: none;
+  }
+  .form-button {
+    padding: 3px 20px;
+    background-color: #FFD814;
+    border: 1px solid #FFD814;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    /* font-weight: bold; */
+    margin-bottom: 1rem;
+  }
+
+  #profile-reset-options {
+    color: #007bff;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-decoration: underline;
+    padding: 0;
+  }
+  .reset-section {
+    border-top: 1px solid #ddd;
+    padding-top: 20px;
+  }
+  .form-section p {
+    font-size: 14px;
+    color: #666;
+  }
+  .profile-row:last-child {
+    border: none; /* Adjust the color and width as needed */
+}
+@media (max-width:600px){
+    .profile-container{
+        padding: 0;
+    }
+    .profile-label{
+        width: 15%;
+    }
+    .profile-input {
+    width: fit-content;
+    padding: 4px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+.user-profile-btn {
+    padding: 3px 20px;
+    border: 1px solid #ccc;
+    background-color: white;
+    /* color: #007bff; */
+    border-radius: 15px;
+    cursor: pointer;
+    font-size: 13px;
+}
+}
+</style>
+
+
+    
+<div class="profile-container">
+  <div class="profile-title-container">  
+    <h1 class="profile-header">Login and Security</h1>
+  </div>
+  <div class="profile-card">
+   
+
+    <form id="profileForm" action="/profile" method="POST">
+      <div class="profile-row" id="nameRow">
+        <label for="name" class="profile-label">Name</label>
+        <div class="profile-data">
+          <span id="displayName"><%= user.name %></span>
+          <input type="text" id="editName" name="name" value="<%= user.name %>" class="profile-input" style="display:none;">
+        </div>
+        <button type="button" class="user-profile-btn" onclick="toggleEdit('name')">Edit</button>
+      </div>
+      <div class="profile-row" id="phoneRow">
+        <label for="phone" class="profile-label">Mobile</label>
+        <div class="profile-data">
+          <span id="displayPhone"><%= user.phone %></span>
+          <input type="text" id="editPhone" name="phone" value="<%= user.phone %>" class="profile-input" style="display:none;">
+        </div>
+        <button type="button" class="user-profile-btn" onclick="toggleEdit('phone')">Edit</button>
+      </div>
+      <div class="profile-row" id="emailRow">
+        <label for="email" class="profile-label">Email</label>
+        <div class="profile-data">
+          <span id="displayEmail"><%= user.email %></span>
+          <input type="email" id="editEmail" name="email" value="<%= user.email %>" class="profile-input" style="display:none;">
+        </div>
+        <button type="button" class="user-profile-btn" onclick="toggleEdit('email')">Edit</button>
+      </div>
+      <div class="profile-row" id="passwordRow" style="display:none;">
+        <label for="password" class="profile-label">Password</label>
+        <input type="password" id="password" name="password" class="profile-input" required>
+      </div>
+      <div class="form-actions" id="formActions">
+        <button type="submit" class="form-button">Save Changes</button>
+      </div>
+    </form>
+    
+    <div class="reset-section">
+      <p>Change Password? <button id="profile-reset-options" onclick="toggleResetPassword()">Start</button></p>
+
+      <form id="resetPasswordForm" action="/profile/reset-password" method="POST" class="form-section" style="display:none;">
+        <div class="profile-row">
+          <label for="oldPassword" class="profile-label">Old Password</label>
+          <input type="password" id="oldPassword" name="oldPassword" class="profile-input" required>
+        </div>
+        <div class="profile-row">
+          <label for="newPassword" class="profile-label">New Password</label>
+          <input type="password" id="newPassword" name="newPassword" class="profile-input" required>
+        </div>
+        <div class="form-actions reset-form-actions" style="display:none;">
+          <button type="submit" class="form-button">Reset Password</button>
+      </div>
+      
+      </form>
+    </div>
+  </div>
+</div>
+
+
+
+<script>
+  function toggleEdit(field) {
+    const displayElement = document.getElementById(`display${field.charAt(0).toUpperCase() + field.slice(1)}`);
+    const editInput = document.getElementById(`edit${field.charAt(0).toUpperCase() + field.slice(1)}`);
+    const passwordRow = document.getElementById('passwordRow');
+    const button = displayElement.parentElement.nextElementSibling;
+    const formActions = document.getElementById('formActions');
+
+    if (editInput.style.display === 'none') {
+      editInput.style.display = 'inline-block';
+      displayElement.style.display = 'none';
+      button.textContent = 'Cancel';
+      passwordRow.style.display = 'flex';
+      formActions.style.display = 'block';  // Show the form actions
+    } else {
+      editInput.style.display = 'none';
+      displayElement.style.display = 'inline-block';
+      button.textContent = 'Edit';
+      passwordRow.style.display = 'none';
+      formActions.style.display = 'none';  // Hide the form actions
+    }
+  }
+
+  function toggleResetPassword() {
+    const resetPasswordForm = document.getElementById('resetPasswordForm');
+    const resetPasswordButton = document.querySelector('.reset-form-actions'); // Ensure this class is unique to the reset form
+
+    if (resetPasswordForm.style.display === 'none') {
+        resetPasswordForm.style.display = 'block';
+        resetPasswordButton.style.display = 'block'; // Show the reset button
+    } else {
+        resetPasswordForm.style.display = 'none';
+        resetPasswordButton.style.display = 'none'; // Hide the reset button
+    }
+}
+</script>

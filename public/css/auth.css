@@ -1,0 +1,131 @@
+
+
+.authentication-container{
+  font-family: "Hind", sans-serif;
+  background-color: #f9f9f9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  margin-top: 1rem;
+}
+
+.container-auth {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+  padding: 20px;
+  text-align: center;
+}
+
+.heading {
+  font-size: 1.8rem;
+  color: #333;
+}
+
+.auto-signin {
+  display: flex;
+  align-items: center;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 15px;
+  cursor: pointer;
+  font-size: 14px;
+  margin: 10px 0;
+  border: 1px solid #ddd;
+  transition: background-color 0.3s;
+  color: #000000;
+}
+
+.auto-signin.google {
+  background-color: #ffffff;
+}
+
+.auto-signin.facebook {
+  background-color: #ffffff;
+}
+
+.auto-signin:hover {
+  opacity: 0.9;
+}
+
+.auto-signin-icon {
+  width: 18px;
+  height: 18px;
+  margin-right: 10px;
+}
+
+.divider {
+  height: 1px;
+  background-color: #ddd;
+  margin: 15px 0;
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.auth-label {
+  font-size: 14px;
+  color: #555;
+  text-align: left;
+}
+
+.input-feild-auth {
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.auth-submit {
+  background-color: #3bbabe;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 12px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-top: 20px;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.auth-submit:hover {
+  background-color: #339aab;
+}
+
+.other-options {
+  margin-top: 15px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  color: #555;
+}
+
+.create-account,
+.forgot-password {
+  text-decoration: none;
+  color: #555;
+  transition: color 0.3s;
+}
+
+.create-account:hover,
+.forgot-password:hover {
+  color: #333;
+}
+.third-party-login {
+  display: flex;
+  flex-direction: column;
+}
+.third-party-login button span {
+  margin: 0 auto;
+}
+.Google-auth {
+  display: flex;
+  align-items: center;
+}

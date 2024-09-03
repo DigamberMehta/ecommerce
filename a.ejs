@@ -1,0 +1,209 @@
+<% layout('layouts/boilerplate') %>
+<% title = 'Profile'; // Set the homepage title
+    ogTitle = title;
+ %>
+<style>
+  .profile-container {
+    font-family: 'Arial', sans-serif;
+    background-color: #f5f5f5;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+  }
+  .profile-card {
+    width: 100%;
+    max-width: 600px;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  }
+  .profile-header {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  .profile-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+  .profile-label {
+    font-weight: bold;
+    color: #666;
+  }
+  .profile-data, .profile-input {
+    width: 80%;
+    padding: 8px 0;
+  }
+  .profile-input {
+    width: 80%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  /* .edit-btn {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+  } */
+  /* .edit-btn:hover {
+    background-color: #0056b3;
+  } */
+  .alert-box {
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+  }
+  .alert-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+  }
+  .alert-success {
+    background-color: #d4edda;
+    color: #155724;
+  }
+  .form-actions {
+    text-align: center;
+    margin-top: 20px;
+    display: none; /* Initially hide the form actions */
+  }
+  .form-button {
+    padding: 10px 20px;
+    background-color: #10d6f2;
+    box-shadow: 0 17px 24px 0 transparent, 0 5px 12px 0 rgba(48, 229, 252, .5);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+  .form-button:hover {
+    background-color: #218838;
+  }
+  
+
+  .user-profile-btn{
+    margin: 0;
+    padding: 0;
+    border: none;
+    background-color: white;
+    cursor: pointer;
+
+  }
+  #profile-reset-options{
+   margin: 0;
+   padding: 0;
+   border: none;
+   background-color: white;
+  color: blue;
+  }
+</style>
+<%- include('./flash/flash.ejs') %> 
+<div class="profile-container">
+  <div class="profile-card">
+    <h1 class="profile-header">User Profile</h1>
+
+    <% if (errorMessages.length > 0) { %>
+      <div class="alert-box alert-danger">
+        <% errorMessages.forEach(function(message) { %>
+          <p><%= message %></p>
+        <% }) %>
+      </div>
+    <% } %>
+
+    <% if (successMessages.length > 0) { %>
+      <div class="alert-box alert-success">
+        <% successMessages.forEach(function(message) { %>
+          <p><%= message %></p>
+        <% }) %>
+      </div>
+    <% } %>
+
+    <form id="profileForm" action="/profile" method="POST">
+      <div class="profile-row" id="nameRow">
+        <label for="name" class="profile-label">Name:</label>
+        <span class="profile-data" id="displayName"><%= user.name %></span>
+        <input type="text" id="editName" name="name" value="<%= user.name %>" class="profile-input" style="display:none;">
+        <button type="button" class="edit-btn user-profile-btn" onclick="toggleEdit('name')">Edit</button>
+      </div>
+      <div class="profile-row" id="phoneRow">
+        <label for="phone" class="profile-label">Phone:</label>
+        <span class="profile-data" id="displayPhone"><%= user.phone %></span>
+        <input type="text" id="editPhone" name="phone" value="<%= user.phone %>" class="profile-input" style="display:none;">
+        <button type="button" class="edit-btn user-profile-btn" onclick="toggleEdit('phone')">Edit</button>
+      </div>
+      <div class="profile-row" id="emailRow">
+        <label for="email" class="profile-label">Email:</label>
+        <span class="profile-data" id="displayEmail"><%= user.email %></span>
+        <input type="email" id="editEmail" name="email" value="<%= user.email %>" class="profile-input" style="display:none;">
+        <button type="button" class="edit-btn user-profile-btn" onclick="toggleEdit('email')">Edit</button>
+      </div>
+      <div class="profile-row" id="passwordRow" style="display:none;">
+        <label for="password" class="profile-label">Password:</label>
+        <input type="password" id="password" name="password" class="profile-input" required>
+      </div>
+      <div class="form-actions" id="formActions">
+        <button type="submit" class="form-button" style="margin-bottom: 2rem;">Save Changes</button>
+      </div>
+    </form>
+<hr>
+    <p style="margin: 2rem 0;">To reset the password click here <button class="edit-btn" id="profile-reset-options" style="cursor: pointer;" onclick="toggleResetPassword()"> Reset Password</button></p>
+
+    <form id="resetPasswordForm" action="/profile/reset-password" method="POST" class="form-section" style="display:none;">
+      <div class="profile-row">
+        <label for="oldPassword" class="profile-label">Old Password:</label>
+        <input type="password" id="oldPassword" name="oldPassword" class="profile-input" required>
+      </div>
+      <div class="profile-row">
+        <label for="newPassword" class="profile-label">New Password:</label>
+        <input type="password" id="newPassword" name="newPassword" class="profile-input" required>
+      </div>
+      <div class="form-actions reset-form-actions" style="display:none;">
+        <button type="submit" class="form-button">Reset Password</button>
+    </div>
+    
+    </form>
+  </div>
+</div>
+
+<script>
+  function toggleEdit(field) {
+    const displayElement = document.getElementById(`display${field.charAt(0).toUpperCase() + field.slice(1)}`);
+    const editInput = document.getElementById(`edit${field.charAt(0).toUpperCase() + field.slice(1)}`);
+    const passwordRow = document.getElementById('passwordRow');
+    const button = displayElement.nextElementSibling;
+    const formActions = document.getElementById('formActions');
+
+    if (editInput.style.display === 'none') {
+      editInput.style.display = 'inline-block';
+      displayElement.style.display = 'none';
+      button.textContent = 'Cancel';
+      passwordRow.style.display = 'flex';
+      formActions.style.display = 'block';  // Show the form actions
+    } else {
+      editInput.style.display = 'none';
+      displayElement.style.display = 'inline-block';
+      button.textContent = 'Edit';
+      passwordRow.style.display = 'none';
+      formActions.style.display = 'none';  // Hide the form actions
+    }
+  }
+
+  function toggleResetPassword() {
+    const resetPasswordForm = document.getElementById('resetPasswordForm');
+    const resetPasswordButton = document.querySelector('.reset-form-actions'); // Ensure this class is unique to the reset form
+
+    if (resetPasswordForm.style.display === 'none') {
+        resetPasswordForm.style.display = 'block';
+        resetPasswordButton.style.display = 'block'; // Show the reset button
+    } else {
+        resetPasswordForm.style.display = 'none';
+        resetPasswordButton.style.display = 'none'; // Hide the reset button
+    }
+}
+
+</script>

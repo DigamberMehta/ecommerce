@@ -1,0 +1,83 @@
+<% layout('layouts/boilerplate') %>
+<% title = 'login'; // Set the homepage title
+    ogTitle = title;
+ %>
+<style>
+  .auth-submit {
+  position: relative;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.auth-submit.loading {
+  background-color: #ccc;
+  color: #fff;
+  cursor: not-allowed;
+}
+
+.auth-submit.loading::after {
+  content: "";
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  border: 3px solid #fff;
+  border-top: 3px solid #000;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: translateY(-50%) rotate(0deg);
+  }
+  100% {
+    transform: translateY(-50%) rotate(360deg);
+  }
+}
+
+</style>
+<% layout('layouts/boilerplate') %>
+    <%- include('../flash/flash.ejs') %>
+    <div class="authentication-container">
+    <div class="container-auth">
+      <h1 class="heading">Sign In</h1>
+      <div class="third-party-login">
+        <button
+          class="auto-signin google"
+          onclick="window.location.href='/auth/google'"
+        >
+          <span class="Google-auth">
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg"
+              class="auto-signin-icon"
+              alt="Google logo"
+            />
+            Sign in with Google
+          </span>
+        </button>
+      </div>
+      <div class="divider"></div>
+      <!-- auth/login.ejs -->
+      <form action="/login" class="details" method="POST">
+        <label class="auth-label" for="emailOrPhone">Email or Phone:</label>
+        <input class="input-feild-auth"  type="text" id="emailOrPhone" name="emailOrPhone" required />
+
+        <label class="auth-label" for="password">Password:</label>
+        <input class="input-feild-auth" type="password" id="password" name="password" required />
+
+        <button type="submit" class="auth-submit">Login</button>
+      </form>
+      <div class="other-options">
+        <a href="/signup" class="create-account">Create an account</a>
+        <a href="/forgot" class="forgot-password"
+        >Forgot password?</a
+      >
+        <!-- <a href="/forgot-password" class="forgot-password">Forgot password?</a> -->
+      </div>
+    </div>
+  </div>
+<script>
+  
+</script>

@@ -1,0 +1,537 @@
+<% 
+  title = 'UrbanMart - Your Ultimate Destination for Electronics, Fashion, Home Appliances, and More'; 
+  ogTitle = title;
+  ogDescription = 'Explore UrbanMart for a wide variety of products including electronics, fashion, home appliances, and more. Shop now for unbeatable prices, top brands, and fast delivery.';
+  // ogImage = 'https://yourdomain.com/path-to-your-homepage-image.jpg'; // Replace with your actual image URL
+  ogUrl = 'https://urbanmart.live';
+%>
+
+
+<% layout('layouts/boilerplate') %>
+<style>
+
+</style>
+
+<div class="home">
+  <div class ="category-section">
+    <div class ="category-home">
+<div class ="category-card">
+    <div class ="category-img-container">
+        <img src="https://m.media-amazon.com/images/I/718BSofEGRL._AC_UL480_FMwebp_QL65_.jpg" alt="Category 1" />
+    </div>
+    <p class ="category-names">Wears</p>
+</div>
+<div class ="category-card">
+    <div class ="category-img-container">
+        <img src="https://m.media-amazon.com/images/I/41n-7jjv07L._SX300_SY300_QL70_FMwebp_.jpg" alt="Category 1" />
+    </div>
+    <p class ="category-names">Appliances</p>
+</div>
+<div class ="category-card">
+    <div class ="category-img-container">
+        <img src="https://m.media-amazon.com/images/I/61GkvvDNnCL._AC_UY327_FMwebp_QL65_.jpg" alt="Category 1" />
+    </div>
+    <p class ="category-names">Laptop</p>
+</div>
+<div class ="category-card">
+    <div class ="category-img-container">
+        <img src="https://m.media-amazon.com/images/I/41xi2LXCRPL._SX300_SY300_QL70_FMwebp_.jpg" alt="Category 1" />
+    </div>
+    <p class ="category-names">Mobile</p>
+</div>
+<div class ="category-card">
+    <div class ="category-img-container">
+        <img src="https://m.media-amazon.com/images/I/41N4wmHtXML._SX300_SY300_QL70_FMwebp_.jpg" alt="Category 1" />
+    </div>
+    <p class ="category-names">Kitchen</p>
+</div>
+<div class ="category-card">
+    <div class ="category-img-container">
+        <img src="https://m.media-amazon.com/images/I/61GkvvDNnCL._AC_UY327_FMwebp_QL65_.jpg" alt="Category 1" />
+    </div>
+    <p class ="category-names">Laptop</p>
+</div>
+<div class ="category-card">
+    <div class ="category-img-container">
+        <img src="https://m.media-amazon.com/images/I/41xi2LXCRPL._SX300_SY300_QL70_FMwebp_.jpg" alt="Category 1" />
+    </div>
+    <p class ="category-names">Mobile</p>
+</div>
+<div class ="category-card">
+    <div class ="category-img-container">
+        <img src="https://m.media-amazon.com/images/I/41N4wmHtXML._SX300_SY300_QL70_FMwebp_.jpg" alt="Category 1" />
+    </div>
+    <p class ="category-names">Kitchen</p>
+</div>
+</div>
+</div>
+
+<div class="carousel">
+  <div class="carousel-inner">
+      <div class="carousel-item active">
+          <img src="https://rukminim2.flixcart.com/fk-p-flap/1600/270/image/98199ead211dae31.jpeg?q=20" alt="Image 1">
+      </div>
+      <div class="carousel-item">
+          <img src="https://rukminim2.flixcart.com/fk-p-flap/1600/270/image/918146cedcbab5c3.jpeg?q=20" alt="Image 2">
+      </div>
+      <div class="carousel-item">
+          <img src="https://rukminim2.flixcart.com/fk-p-flap/1600/270/image/0248a45667ebd858.jpeg?q=20" alt="Image 3">
+      </div>
+      <div class="carousel-item">
+          <img src="https://rukminim1.flixcart.com/fk-p-flap/1600/270/image/8dda80b526669fc2.jpg?q=20" alt="Image 3">
+      </div>
+      <div class="carousel-item">
+          <img src="https://rukminim1.flixcart.com/fk-p-flap/1600/270/image/3b2b1e0cf72a3109.jpg?q=20" alt="Image 3">
+      </div>
+  </div>
+  <button class="carousel-control prev" onclick="prevSlide()">&#10094;</button>
+  <button class="carousel-control next" onclick="nextSlide()">&#10095;</button>
+</div>
+
+
+
+
+    
+    <div class="product-section">
+      <div class="home-product-card-heading" >
+        <h2 class="home-category-title" >Electronics</h2>
+        </div>
+        <div class="product-row" id="row-2">
+          <% products.forEach(prod => { %>
+            <% if (prod.categories.includes("Mobile")) { %>
+              <a href="/products/<%= prod._id %>/<%= prod.slug %>" class="product-card">
+                <div class="img-container">
+                  <img src="<%= prod.images[0] %>" alt="<%= prod.title %>" />
+                </div>
+                
+                <div class="product-desc">
+                  <p class="product-name" data-maxlength="15"><%= prod.title %></p>
+                  <p class="product-price"><b>₹<%= prod.sellingPrice.toFixed(2) %></b></p>
+                </div>
+              </a>
+            <% } %>
+          <% }); %>
+        </div>
+        <button class="product-button-left" onclick="slide('row-2', -1)">  <i class="fa-light fa-chevron-left"></i></button>
+        <button class="product-button-right" onclick="slide('row-2', 1)">  <i class="fa-light fa-chevron-right"></i></button>
+      </div>
+
+      <div class="product-section">
+        <div class="home-product-card-heading" >
+          <h2 class="home-category-title" >Laptops</h2>
+          </div>
+        <div class="product-row" id="row-3">
+          <% products.forEach(prod => { %>
+            <% if (prod.categories.includes("Laptops")) { %>
+              <a href="/products/<%= prod._id %>/<%= prod.slug %>" class="product-card">
+                <div class="img-container">
+                  <img src="<%= prod.images[0] %>" alt="<%= prod.title %>" />
+                </div>
+                <div class="product-desc">
+                  <p class="product-name" data-maxlength="15"><%= prod.title %></p>
+                  <p class="product-price"><b>₹<%= prod.sellingPrice.toFixed(2) %></b></p>
+                </div>
+              </a>
+            <% } %>
+          <% }); %>
+        </div>
+        <button class="product-button-left" onclick="slide('row-3', -1)">  <i class="fa-light fa-chevron-left"></i></button>
+        <button class="product-button-right" onclick="slide('row-3', 1)">  <i class="fa-light fa-chevron-right"></i></button>
+      </div>
+
+
+
+<div class="product-section">
+  <div class="home-product-card-heading" >
+    <h2 class="home-category-title" >Kitchen Appliances</h2>
+    </div>
+  <div class="product-row" id="row-1">
+    <% products.forEach(prod => { %>
+      <% if (prod.categories.includes("Kitchen Appliances")) { %>
+        <a href="/products/<%= prod._id %>/<%= prod.slug %>" class="product-card">
+          <div class="img-container">
+            <img src="<%= prod.images[0] %>" alt="<%= prod.title %>" />
+          </div>
+     
+          <div class="product-desc">
+            <p class="product-name" data-maxlength="15"><%= prod.title %></p>
+            <p class="product-price"><b>₹<%= prod.sellingPrice.toFixed(2) %></b></p>
+          </div>
+        </a>
+      <% } %>
+    <% }); %>
+  </div>
+  <button class="product-button-left" onclick="slide('row-1', -1)">  <i class="fa-light fa-chevron-left"></i></button>
+  <button class="product-button-right" onclick="slide('row-1', 1)">  <i class="fa-light fa-chevron-right"></i></button>
+</div>
+<!-- <div class="banner">
+  <img src="https://rukminim2.flixcart.com/fk-p-flap/2000/2000/image/08c1a0684f33e5bf.jpg?q=50" alt="Banner Image">
+</div> -->
+
+
+        <div class="big-card-section">
+ 
+            <div class="big-card-right">
+                <div class="big-card-heading">
+                <h2 class="home-category-title" >You may also like</h2></div>
+                <div class="small-cards-container">
+                    <div class="small-card">
+                        <img src="https://m.media-amazon.com/images/I/61SUj2aKoEL._SX679_.jpg" alt="Image 1">
+                        <p class="description">Description 1</p>
+                    </div>
+                    <div class="small-card">
+                        <img src="https://m.media-amazon.com/images/I/61+bsawcIJL._AC_UY327_FMwebp_QL65_.jpg" alt="Image 2">
+                        <p class="description">Description 2</p>
+                    </div>
+                    <div class="small-card">
+                        <img src="https://m.media-amazon.com/images/I/61LO6l4zB4L._AC_UL480_FMwebp_QL65_.jpg" alt="Image 3">
+                        <p class="description">Description 3</p>
+                    </div>
+                    <div class="small-card">
+                        <img src="https://m.media-amazon.com/images/I/51oRHxeUVqL._AC_UY327_FMwebp_QL65_.jpg" alt="Image 4">
+                        <p class="description">Description 4</p>
+                    </div>
+                </div>
+            </div>
+            
+              <div class="big-card-banner">
+                <img src="/img/big-card-banner.png" alt="">
+              </div>
+      
+    </div>
+
+
+
+<div class="grid-container">
+  <div class="grid-card-show">
+    <div class="grig-img-container">
+    <img src="https://m.media-amazon.com/images/I/61Io5-ojWUL._SX679_.jpg" alt="Product Image">
+  </div>
+    <div class="grid-card-rating">4.1 ★</div>
+    <div class="grid-card-sale">Best Selling Product</div>
+    <div class="grid-card-info">
+      <p class="grid-product-name">Product Title 1</p>
+      <p class="grid-card-price">₹11,999</p>
+    </div>
+  </div>
+  <div class="grid-card-show">
+    <img src="https://m.media-amazon.com/images/I/51dzm2O8ZWL._SX300_SY300_QL70_FMwebp_.jpg" alt="Product Image">
+    <div class="grid-card-rating">4.2 ★</div>
+    <div class="grid-card-sale">Best Selling Product</div>
+    <div class="grid-card-info">
+      <p class="grid-product-name">Product Title 2</p>
+      <p class="grid-card-price">₹14,999</p>
+    </div>
+  </div>
+  <div class="grid-card-show">
+    <img src="https://via.placeholder.com/120" alt="Product Image">
+    <div class="grid-card-rating">4.3 ★</div>
+    <div class="grid-card-sale">Best Selling Product</div>
+    <div class="grid-card-info">
+      <p class="grid-product-name">Product Title 3</p>
+      <p class="grid-card-price">₹20,999</p>
+    </div>
+  </div>
+  <div class="grid-card-show">
+    <img src="https://via.placeholder.com/120" alt="Product Image">
+    <div class="grid-card-rating">4.4 ★</div>
+    <div class="grid-card-sale">Best Selling Product</div>
+    <div class="grid-card-info">
+      <p class="grid-product-name">Product Title 4</p>
+      <p class="grid-card-price">₹15,999</p>
+    </div>
+  </div>
+  <div class="grid-card-show">
+    <img src="https://via.placeholder.com/120" alt="Product Image">
+    <div class="grid-card-rating">4.4 ★</div>
+    <div class="grid-card-sale">Best Selling Product</div>
+    <div class="grid-card-info">
+      <p class="grid-product-name">Product Title 4</p>
+      <p class="grid-card-price">₹15,999</p>
+    </div>
+  </div>
+  <div class="grid-card-show">
+    <img src="https://via.placeholder.com/120" alt="Product Image">
+    <div class="grid-card-rating">4.4 ★</div>
+    <div class="grid-card-sale">Best Selling Product</div>
+    <div class="grid-card-info">
+      <p class="grid-product-name">Product Title 4</p>
+      <p class="grid-card-price">₹15,999</p>
+    </div>
+  </div>
+
+</div>
+
+
+
+
+
+<section class="home-sale-banner">
+  <div class="home-sale-container grid grid-three-columns">
+    <div class="banner-item grid grid-two-columns">
+      <div class="banner-text">
+        <p>Get an extra 50% off</p>
+        <a href="#">Shop now</a>
+      </div>
+      <div class="banner-image">
+        <img src="/img/laptop.png" alt="Laptop">
+      </div>
+    </div>
+
+    <div class="banner-item grid grid-two-columns">
+      <div class="banner-text">
+        <p>Get an extra 30% off</p>
+        <a href="#">Shop now</a>
+      </div>
+      <div class="banner-image">
+        <img src="/img/headphoneEcom.png" alt="Headphones">
+      </div>
+    </div>
+
+    <div class="banner-item grid grid-two-columns">
+      <div class="banner-text">
+        <p>Get an extra 50% off</p>
+        <a href="#">Shop now</a>
+      </div>
+      <div class="banner-image">
+        <img src="/img/mobiles.png" alt="Mobile">
+      </div>
+    </div>
+  </div>
+</section>
+
+
+  
+
+<div class="big-card-section">
+ 
+
+  
+    <div class="big-card-banner">
+      <img src="/img/image.png" alt="">
+    </div>
+    
+    <div class="big-card-left">
+      <div class="big-card-heading">
+      <h2 class="home-category-title" >You may also like</h2></div>
+      <div class="small-cards-container">
+          <div class="small-card">
+              <img src="https://m.media-amazon.com/images/I/61SUj2aKoEL._SX679_.jpg" alt="Image 1">
+              <p class="description">Description 1</p>
+          </div>
+          <div class="small-card">
+              <img src="https://m.media-amazon.com/images/I/61+bsawcIJL._AC_UY327_FMwebp_QL65_.jpg" alt="Image 2">
+              <p class="description">Description 2</p>
+          </div>
+          <div class="small-card">
+              <img src="https://m.media-amazon.com/images/I/61LO6l4zB4L._AC_UL480_FMwebp_QL65_.jpg" alt="Image 3">
+              <p class="description">Description 3</p>
+          </div>
+          <div class="small-card">
+              <img src="https://m.media-amazon.com/images/I/51oRHxeUVqL._AC_UY327_FMwebp_QL65_.jpg" alt="Image 4">
+              <p class="description">Description 4</p>
+          </div>
+      </div>
+  </div>
+</div>
+
+<!-- Card carousel Banner -->
+
+<div class="card-carousel-container">
+  <div class="card-carousel-wrapper" id="cardCarouselWrapper">
+      <div class="card-carousel-slide">
+          <div class="card-carousel-row">
+              <div class="card-carousel-card">
+                  <img src="https://assets.myntassets.com/f_webp,w_163,c_limit,fl_progressive,dpr_2.0/assets/images/2023/7/31/6b6c7162-0086-4967-90c8-ec4792ec200c1690773011082-Dorothy_Perkin-_Boohoo.png" alt="Sample Image">
+              </div>
+              <div class="card-carousel-card">
+                  <img src="https://assets.myntassets.com/f_webp,w_163,c_limit,fl_progressive,dpr_2.0/assets/images/2023/8/2/9699db4e-8162-406a-85ba-e92116f0019f1690955825591-image_png2047004151.png" alt="Sample Image">
+              </div>
+              <div class="card-carousel-card">
+                  <img src="https://assets.myntassets.com/f_webp,w_163,c_limit,fl_progressive,dpr_2.0/assets/images/2023/7/31/d400d2ce-5755-4c86-96b8-26899aea6ea61690773011130-GANT.png" alt="Sample Image">
+              </div>
+              <div class="card-carousel-card">
+                  <img src="https://assets.myntassets.com/f_webp,w_163,c_limit,fl_progressive,dpr_2.0/assets/images/2023/7/31/92d5e2ec-a736-4bfd-832b-6972121829c91690773010945-Aldo.png" alt="Sample Image">
+              </div>
+              <div class="card-carousel-card">
+                  <img src="https://assets.myntassets.com/f_webp,w_163,c_limit,fl_progressive,dpr_2.0/assets/images/2023/7/31/331d0d67-95de-4e58-b774-add891464af01690773011037-Calvin_Klein.png" alt="Sample Image">
+              </div>
+              <div class="card-carousel-card">
+                  <img src="https://assets.myntassets.com/f_webp,w_163,c_limit,fl_progressive,dpr_2.0/assets/images/2023/7/31/d521c019-8fcd-4f36-a56f-7a1b9095e2661690773010958-Antony_Morato.png" alt="Sample Image">
+              </div>
+          </div>
+      </div>
+      <div class="card-carousel-slide">
+          <div class="card-carousel-row">
+              <div class="card-carousel-card">
+                  <img src="https://assets.myntassets.com/f_webp,w_163,c_limit,fl_progressive,dpr_2.0/assets/images/2023/7/31/81bcb28d-55f3-4d7b-bb5a-7cf7ee7fd8031690773011370-The_Collective.png" alt="Sample Image">
+              </div>
+              <div class="card-carousel-card">
+                  <img src="https://assets.myntassets.com/f_webp,w_163,c_limit,fl_progressive,dpr_2.0/assets/images/2023/7/31/7aac1f32-1a1a-4ba6-924b-ee1c28553aed1690773011304-Nautica.png" alt="Sample Image">
+              </div>
+              <div class="card-carousel-card">
+                  <img src="https://assets.myntassets.com/f_webp,w_163,c_limit,fl_progressive,dpr_2.0/assets/images/2023/7/31/437645a4-988c-4f53-aff3-b1fdb34938481690773011106-FCUK.png" alt="Sample Image">
+              </div>
+              <div class="card-carousel-card">
+                  <img src="https://assets.myntassets.com/f_webp,w_163,c_limit,fl_progressive,dpr_2.0/assets/images/2023/7/31/0c399e2c-9797-483d-bf6c-0852d5d21db21690773010989-BHPC.png" alt="Sample Image">
+              </div>
+              <div class="card-carousel-card">
+                  <img src="https://assets.myntassets.com/f_webp,w_163,c_limit,fl_progressive,dpr_2.0/assets/images/2023/7/31/044555a5-9987-4a06-8679-8aeb2dd963f91690773011013-boohooMan.png" alt="Sample Image">
+              </div>
+              <div class="card-carousel-card">
+                  <img src="https://assets.myntassets.com/f_webp,w_163,c_limit,fl_progressive,dpr_2.0/assets/images/2023/8/2/805eeb23-ec17-4b50-b798-1244133c02041690955797245-image_png_1993656242.png" alt="Sample Image">
+              </div>
+          </div>
+      </div>
+  </div>
+  <div class="card-carousel-indicators">
+      <span class="card-carousel-indicator" onclick="cardCarousel_showSlide(0)"></span>
+      <span class="card-carousel-indicator" onclick="cardCarousel_showSlide(1)"></span>
+  </div>
+</div>
+
+
+
+<div class="home-card-3x3-container">
+  <div class="home-card-3x3-grid">
+    <div class="home-card-3x3-item">
+      <img src="img/1.png" alt="" />
+      <h2>LD01 LOUNGE CHAIR</h2>
+    </div>
+    <div class="home-card-3x3-item">
+      <img src="img/2.png" alt="" />
+      <h2>LD02 LOUNGE CHAIR</h2>
+    </div>
+    <div class="home-card-3x3-item">
+      <img src="img/3.png" alt="" />
+      <h2>LD03 LOUNGE CHAIR</h2>
+    </div>
+    <div class="home-card-3x3-item">
+      <img src="img/4.png" alt="" />
+      <h2>LD04 LOUNGE CHAIR</h2>
+    </div>
+    <div class="home-card-3x3-item">
+      <img src="img/5.png" alt="" />
+      <h2>LD05 LOUNGE CHAIR</h2>
+    </div>
+    <div class="home-card-3x3-item">
+      <img src="img/6.png" alt="" />
+      <h2>LD06 LOUNGE CHAIR</h2>
+    </div>
+  </div>
+</div>
+
+
+<div class="product-section">
+  <div class="home-product-card-heading" >
+    <h2 class="home-category-title" >Clothing</h2>
+    </div>
+  <div class="product-row" id="row-4">
+    <% products.forEach(prod => { %>
+      <% if (prod.categories.includes("Clothing")) { %>
+        <a href="/products/<%= prod._id %>/<%= prod.slug %>" class="product-card">
+          <div class="img-container">
+            <img src="<%= prod.images[0] %>" alt="<%= prod.title %>" />
+          </div>
+     
+          <div class="product-desc">
+            <p class="product-name" data-maxlength="15"><%= prod.title %></p>
+            <p class="product-price"><b>₹<%= prod.sellingPrice.toFixed(2) %></b></p>
+          </div>
+        </a>
+      <% } %>
+    <% }); %>
+  </div>
+  <button class="product-button-left" onclick="slide('row-4', -1)">  <i class="fa-light fa-chevron-left"></i></button>
+  <button class="product-button-right" onclick="slide('row-4', 1)">  <i class="fa-light fa-chevron-right"></i></button>
+</div>
+    
+
+   
+      
+      
+
+
+</div>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  
+  function updateTextTruncation() {
+    const elements = document.querySelectorAll('.product-name');
+    
+    elements.forEach(element => {
+      const originalText = element.getAttribute('data-original-text');
+      
+      if (!originalText) {
+        element.setAttribute('data-original-text', element.textContent.trim());
+      }
+      
+      const maxLengthAttr = element.getAttribute('data-maxlength');
+      const defaultMaxLength = parseInt(maxLengthAttr, 15);
+      
+      let maxLength;
+      if (window.innerWidth < 576) { // Extra small devices
+        maxLength = defaultMaxLength - 5;
+      } else if (window.innerWidth >= 576 && window.innerWidth < 768) { // Small devices
+        maxLength = defaultMaxLength - 3;
+      } else if (window.innerWidth >= 768 && window.innerWidth < 992) { // Medium devices
+        maxLength = defaultMaxLength;
+      } else if (window.innerWidth >= 992 && window.innerWidth < 1200) { // Large devices
+        maxLength = defaultMaxLength - 3;
+      } else { // Extra large devices
+        maxLength = defaultMaxLength - 2;
+      }
+      
+      const textToDisplay = element.getAttribute('data-original-text');
+      
+      if (!isNaN(maxLength) && maxLength > 0) {
+        if (textToDisplay.length > maxLength) {
+          element.textContent = textToDisplay.slice(0, maxLength) + '...';
+        } else {
+          element.textContent = textToDisplay;
+        }
+      }
+    });
+  }
+  
+  updateTextTruncation();
+  
+  window.addEventListener('resize', updateTextTruncation);
+});
+
+
+
+ let cardCarousel_currentSlide = 0;
+const cardCarousel_totalSlides = document.querySelectorAll('.card-carousel-slide').length;
+
+function cardCarousel_showSlide(index) {
+    const carouselWrapper = document.getElementById('cardCarouselWrapper');
+    carouselWrapper.style.transform = `translateX(-${index * 100}%)`;
+    cardCarousel_currentSlide = index;
+    cardCarousel_updateIndicators();
+}
+
+function cardCarousel_updateIndicators() {
+    const indicators = document.querySelectorAll('.card-carousel-indicator');
+    indicators.forEach((indicator, index) => {
+        if (index === cardCarousel_currentSlide) {
+            indicator.classList.add('active');
+        } else {
+            indicator.classList.remove('active');
+        }
+    });
+}
+
+function cardCarousel_nextSlide() {
+    const nextSlide = (cardCarousel_currentSlide + 1) % cardCarousel_totalSlides;
+    cardCarousel_showSlide(nextSlide);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    cardCarousel_showSlide(0); // Initialize the carousel
+    setInterval(cardCarousel_nextSlide, 5000); // Auto-transition every 5 seconds
+});
+
+</script>

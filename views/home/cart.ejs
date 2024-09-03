@@ -1,0 +1,206 @@
+<% layout('layouts/boilerplate') %>
+<% title = 'Cart'; // Set the homepage title
+    ogTitle = title;
+ %>
+<style>
+    .show-item-count {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+    }
+    .quantity-buttons {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    overflow: hidden;
+    width: fit-content;
+}
+
+.quantity-buttons {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    overflow: hidden;
+    width: fit-content;
+}
+
+.quantity-button {
+    background-color: #f5f5f5;
+    border: none;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    line-height: 30px;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.quantity-button:hover {
+    background-color: #ddd;
+}
+
+.manual-quantity {
+    width: 50px;
+    outline: none;
+    height: 30px;
+    border: none;
+    text-align: center;
+    font-size: 18px;
+    border: none;
+}
+
+/* Removed the update button styling as it's no longer needed */
+
+
+</style>
+
+<div class="cart-page">
+    <div class="cart-wrapper">
+        <div class="cart-items">
+            <div class="items-container">
+                <div class="shopping-heading">
+                    <h1>Shopping Cart</h1>
+                </div>
+                <% if (cartItems.length > 0) { %>
+                    <% cartItems.forEach(item => { %>
+                        <div class="cart-item" data-cart-item-id="<%= item._id %>"
+                            data-product-price="<%= item.price %>">
+                            <div class="item-image">
+                                <img src="<%= item.product.images[0] %>" alt="Product Image">
+                            </div>
+                            <div class="item-details">
+                                <div class="cart-title-container">
+                                <div class="item-title">
+                                    <%= item.product.title %>
+                                </div>
+                                <div class="item-attributes">
+                                    <% if (item.attributes.get('color')) { %>
+                                        <span><%= item.attributes.get('color') %></span> |
+                                    <% } %>
+                                    <% if (item.attributes.get('ram')) { %>
+                                        <span> <%= item.attributes.get('ram') %></span> |
+                                    <% } %>
+                                    <% if (item.attributes.get('storage')) { %>
+                                        <span> <%= item.attributes.get('storage') %></span> 
+                                    <% } %>
+                                    <% if (item.attributes.get('size')) { %>
+                                        <span> <%= item.attributes.get('size') %></span>
+                                    <% } %>
+                                </div>
+                            </div>
+                                <div class="item-purchased">5K+ bought in past month</div>
+                                <div class="item-price">
+                                    <span class="current-price">
+                                        ₹<%= item.price ? item.price : item.product.sellingPrice %>
+                                    </span>
+                                    <span class="original-price">₹<%= item.product.mrpPrice %></span>
+                                    <span class="price-discount">(5% off)</span>
+                                </div>
+                                <div class="card-discount">Flat INR 1000 Off on ICICI Credit Cards</div>
+                                <div class="item-delivery">FREE delivery 
+                                    <% 
+                                    const today = new Date();
+                                    const options = { weekday: 'long', day: 'numeric', month: 'short' };
+                                    const deliveryDate = new Date(today.getTime() + 5 * 24 * 60 * 60 * 1000);
+                                   
+                                  %>
+                                  <span><%= deliveryDate.toLocaleDateString('en-US', options) %> <span style="font-size: 10px;">(Expected )</span> </span>
+                                </div>
+                                <div class="quantity-selector-container">
+                                    <div class="quantity-buttons">
+                                        <button class="quantity-button decrement">-</button>
+                                        <input type="text" class="manual-quantity" min="1" value="<%= item.quantity %>">
+                                        <button class="quantity-button increment">+</button>
+                                    </div>
+                                
+                                    <div class="cart-option-container">
+                                        <ul class="remove-item save-later cart-options">
+                                            <li class="remove-button"><i class="fa-light fa-trash"></i>Remove&nbsp;</li> |
+                                            <li class="save-later">
+                                                <form action="/cart/save-for-later/<%= item._id %>" method="POST">
+                                                    <button class="cart-save-later" type="submit">Save it for later</button>
+                                                </form>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                
+                                
+                            </div>
+                        </div>
+                    <% }); %>
+                <% } else { %>
+                    <p>Your cart is empty.</p>
+                <% } %>
+            </div>
+        </div>
+        <div class="order-summary">
+            <div class="summary-card">
+                <div class="summary-title">Order Summary</div>
+                <div class="show-item-count">
+                    <span> Total Items:</span><span id="item-count"><%= cartItems.length %></span>
+                </div>
+                <div class="summary-item">Subtotal<span id="subtotal">₹<%= cartItems.reduce((sum, item) => sum +
+                    (item.price ? item.price : item.product.sellingPrice) * item.quantity, 0) %></span>
+                </div>
+                <form action="/cart/cart-checkout" method="POST" id="checkoutForm">
+                    <input type="hidden" name="selectedColor" id="selectedColorCheckout" />
+                    <input type="hidden" name="selectedRam" id="selectedRamCheckout" />
+                    <input type="hidden" name="selectedStorage" id="selectedStorageCheckout" />
+                    <input type="hidden" name="selectedSize" id="selectedSizeCheckout" />
+                    <input type="hidden" name="quantity" value="1" />
+                    <button type="submit" class="checkout-button">Proceed to Checkout</button>
+
+                </form>
+                
+            </div>
+        </div>
+    </div>
+    <div class="cart-browsing-suggestion">
+        <%- include('../partials/browsingHistory.ejs') %>
+    </div>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+    const checkoutForm = document.getElementById('checkoutForm');
+    
+    // Ensure all necessary fields are selected before submitting the form
+    checkoutForm.addEventListener('submit', function (event) {
+        if (!validateSelection()) {
+            event.preventDefault(); // Prevent form submission
+            alert("Please select all required options.");
+            return;
+        }
+        updateCheckoutFormFields();
+    });
+
+    function validateSelection() {
+        // Add logic to validate that all necessary selections are made
+        const hasRam = document.querySelectorAll('.ram-option').length > 0;
+        const hasStorage = document.querySelectorAll('.storage-option').length > 0;
+        const hasSize = document.querySelectorAll('.size-option').length > 0;
+
+        if (hasRam && !document.querySelector('.ram-option.selected')) return false;
+        if (hasStorage && !document.querySelector('.storage-option.selected')) return false;
+        if (hasSize && !document.querySelector('.size-option.selected')) return false;
+
+        return true;
+    }
+
+    function updateCheckoutFormFields() {
+        // Populate the hidden inputs with the selected options
+        const selectedColor = document.querySelector('.color-option.active')?.getAttribute('data-color') || '';
+        const selectedRam = document.querySelector('.ram-option.selected')?.textContent || '';
+        const selectedStorage = document.querySelector('.storage-option.selected')?.textContent || '';
+        const selectedSize = document.querySelector('.size-option.selected')?.textContent || '';
+
+        document.getElementById('selectedColorCheckout').value = selectedColor;
+        document.getElementById('selectedRamCheckout').value = selectedRam;
+        document.getElementById('selectedStorageCheckout').value = selectedStorage;
+        document.getElementById('selectedSizeCheckout').value = selectedSize;
+    }
+});
+
+</script>

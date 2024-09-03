@@ -1,0 +1,195 @@
+<style>
+.search-form input:focus,
+.search-form:focus-within {
+    position: relative;
+    z-index: 1;
+}
+
+.search-form input:focus::after,
+.search-form:focus-within::after {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    right: -4px;
+    bottom: -4px;
+    border: 2px solid #7b9ff4; /* SkyBlue */
+    border-radius: 8px; /* Adjust this value as needed */
+    pointer-events: none;
+    z-index: -1;
+}
+</style>
+
+
+<header class="header" id="header">
+  <nav class="navbar">
+    <div class="upper-container">
+      <div class="mobile-left">
+        <div class="burger" id="burger">
+          <i class="fa-sharp fa-solid fa-bars" style="color: white;"></i>
+        </div>
+        <div class="logo-container">
+          <a href="/" style="width: 150x; height: fit-content;" >
+            <h3 style="color: rgb(0, 0, 0);"><i>URBANMART</i></h3>
+          </a>
+        </div>
+      </div>
+      <div class="menu-mobile" id="menu">
+        <div class="menu-inner">
+          <div class="dropdown">
+            <span class="menu-item">
+              <strong>
+                <% if (!currentUser) { %>
+                  <span class="menu-item" style="white-space: nowrap;">
+                    <a href="/login" class="menu-link">
+                      <i class="fa-light fa-user s-icons" style="margin: 3px;"></i>
+                      Sign In
+                      <i class="fa-regular fa-chevron-down s-icons"></i>
+                    </a>
+                  </span>
+                <% } %>
+                <% if (currentUser) { %>
+                  <span class="menu-item" style="white-space: nowrap;">
+                    <a href="/" class="menu-link">
+                      <i class="fa-light fa-user s-icons"></i>
+                      <!-- <i class="fa-regular fa-chevron-down s-icons"></i> -->
+                      <%= currentUser.name.split(' ')[0].charAt(0).toUpperCase() + currentUser.name.split(' ')[0].slice(1).toLowerCase() %>
+                    </a>
+                  </span>
+                <% } %>
+                
+                </strong> 
+            </span>
+            <div class="dropdown-menu">
+              <a href="/profile"><div class="dropdown-item"><i class="fa-light fa-user icons"></i> Profile</div></a>
+             <a href="/orders"> <div class="dropdown-item"><i class="fa-light fa-cube icons"></i> Orders</div></a>
+             <a href="/wishlist"> <div class="dropdown-item"><i class="fa-light fa-heart icons"></i> Wishlist</div></a>
+              <a href="/user/view-addresses"><div class="dropdown-item"><i class="fa-thin fa-map-location-dot icons"></i> Addresses</div></a>
+              <div class="dropdown-item"><i class="fa-sharp fa-light fa-tag icons"></i> Coupon</div>
+              <% if (currentUser) { %>
+                <a href="/logout">
+                <div class="dropdown-item">
+                  <i class="fa-regular fa-arrow-right-from-bracket icons"></i> Logout
+                </div>
+              </a>
+              <% } %>
+            </div>
+          </div>
+          <span class="menu-item"><a href="/orders" class="menu-link">Return <br /> & Order</a></span>
+          <a href="/cart/view" class="menu-link"><span class="menu-item"><i class="fa-light fa-cart-shopping s-icons"></i></span></a>
+        </div>
+      </div>
+    </div>
+    <div class="search">
+      <form class="search-form" id="search-form-navbar" action="/search" method="GET">
+          <input class="search-input" type="text" name="query" id="search-input" placeholder="Search" onfocus="showBrowsingHistory()" oninput="fetchSuggestions()" autocomplete="off" />
+          <button type="submit" class="search-submit">
+              <i class="fa-light fa-magnifying-glass s-icons"></i>
+          </button>
+      </form>
+      <ul class="suggestions-dropdown" id="suggestions-dropdown"></ul>
+    </div>
+    
+    <div class="menu" id="menu">
+      <div class="menu-inner">
+        <div class="dropdown">
+          <strong>
+          <% if (!currentUser) { %>
+            <span class="menu-item" style="white-space: nowrap;">
+              <a href="/login" class="menu-link">
+                <i class="fa-light fa-user s-icons" style="margin: 3px;"></i>
+                Sign In
+                <i class="fa-regular fa-chevron-down s-icons"></i>
+              </a>
+            </span>
+          <% } %>
+          <% if (currentUser) { %>
+            <span class="menu-item profile-currentUser" style="white-space: nowrap;">
+                <i class="fa-light fa-user s-icons"></i>
+                <%= currentUser.name.split(' ')[0].charAt(0).toUpperCase() + currentUser.name.split(' ')[0].slice(1).toLowerCase() %>
+                <i class="fa-regular fa-chevron-down s-icons"></i>
+            </span>
+          <% } %>
+          
+          </strong> 
+          <div class="dropdown-menu">
+            <a href="/profile"><div class="dropdown-item"><i class="fa-light fa-user icons"></i> Profile</div></a>
+            <a href="/dashboard"><div class="dropdown-item"><i class="fa-duotone fa-solid fa-user-tie icons"></i> Dashboard</div></a>
+            <a href="/orders"><div class="dropdown-item"><i class="fa-light fa-cube icons"></i> Orders</div></a>
+           <a href="/wishlist"> <div class="dropdown-item"><i class="fa-light fa-heart icons"></i> Wishlist</div></a>
+            <a href="/user/view-addresses"><div class="dropdown-item"><i class="fa-thin fa-map-location-dot icons"></i> Addresses</div></a>
+            <div class="dropdown-item"><i class="fa-sharp fa-light fa-tag icons"></i> Coupon</div>
+            <% if (currentUser) { %>
+              <a href="/logout">
+              <div class="dropdown-item">
+                <i class="fa-regular fa-arrow-right-from-bracket icons"></i> Logout
+              </div>
+            </a>
+            <% } %>
+          </div>
+        </div>
+        <span class="menu-item"><a href="/orders" class="menu-link">Return & Order</a></span>
+        <span class="menu-item">
+      
+            <a href="/cart/view" class="menu-link">
+              <div class="cart-icon-wrapper">
+                <i class="fa-light fa-cart-shopping s-icons cart-total-item"></i>
+              
+                <!-- <span id="cart-quantity">
+                  <span id="cart-quantity-value"></span>
+                </span> -->
+            
+              </div>
+              Cart
+            </a>
+        </span>
+        
+      </div>
+    </div>
+  </nav>
+</header>
+
+<!-- <nav class="secondary-nav">
+  <ul class="navigation-items">
+    <li><a href=""><strong>Home</strong></a></li>
+    <li><a href=""><strong>About</strong></a></li>
+    <li><a href=""><strong>Reach</strong></a></li>
+    <li><a href=""><strong>Electronic</strong></a></li>
+    <li><a href=""><strong>Footwear</strong></a></li>
+    <li><a href=""><strong>Item</strong></a></li>
+  </ul>
+</nav> -->
+
+<!-- Side Menu -->
+<div class="side-menu" id="side-menu">
+  <div class="side-menu-header">
+    <div>
+      <% if(currentUser) { %>
+      <span class="side-menu-username">
+        <i class="fa-light fa-user s-icons"></i>
+      Hello, <strong><%=currentUser.name.toUpperCase()%></strong>
+      </span>
+      <% } %>
+      <% if(!currentUser) { %>
+      <span>
+      <a href="/login"> Sign</a>
+      </span>
+      <% } %>
+    </div>
+    <div class="side-menu-close">
+    <span class="close-btn" id="close-btn">&times;</span>
+  </div>
+  </div>
+  <ul class="side-menu-options">
+    <li><a href="#">Home</a></li>
+    <li><a href="#">About</a></li>
+    <li><a href="#">Contact</a></li>
+    <li><a href="#">Categories</a></li>
+    <li><a href="#">Cart</a></li>
+    <li><a href="#">Profile</a></li>
+    <li><a href="#">Orders</a></li>
+    <li><a href="#">Wishlist</a></li>
+    <li><a href="#">Addresses</a></li>
+    <li><a href="#">Coupons</a></li>
+  </ul>
+</div>

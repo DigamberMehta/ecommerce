@@ -1,0 +1,431 @@
+<% layout('layouts/boilerplate') %>
+<% title = 'Checkout'; // Set the homepage title
+    ogTitle = title;
+ %>
+<style>
+    
+</style>
+<div class="checkout-container">
+    <div class="checkout-left">
+        <div class="accordion">
+            <div class="accordion-item">
+                <button class="accordion-header active" id="selectAddressHeader">Select a delivery address</button>
+                <div class="accordion-content show" id="selectAddressContent">
+                    <h3 class="section-title">Your addresses</h3>
+                    <% if (addresses.length === 0) { %>
+                        <p id="noAddressMessage" style="color: red;">
+                            You have not added any addresses yet. 
+                            <a href="/user/address/new?backUrl=<%= encodeURIComponent(backUrl) %>" id="firstAddAddressLink">
+                                <span style="color: #007BFF;">Add a new address</span>
+                            </a>
+                        </p>
+                    <% } %>
+                    <form id="addressForm">
+                        <% addresses.forEach(function(address, index) { %>
+                            <div class="address">
+                                <div class="address-checkout">
+                                    <input type="radio" name="selectedAddressIndex" id="address-<%= index %>" value="<%= index %>" <%= index === 0 ? 'checked' : '' %>>
+                                    <label for="address-<%= index %>">
+                                        <%= address.name %><br>
+                                        <%= address.houseNumber %> <%= address.street %>, <%= address.city %>, <%= address.state %>, <%= address.pincode %>, <%= address.country %><br>
+                                        Phone: <%= address.phone %><br>
+                                    </label>
+                                </div>
+                                <div style="margin: 1rem 0;">
+                                    <a href="#" class="link edit-address" data-index="<%= index %>">Edit address</a>
+                                </div>
+                            </div>
+                        <% }); %>
+                        <% if (addresses.length > 0) { %>
+                            <button type="button" id="useAddressBtn" class="btn primary">Use this address</button>
+                        <% } %>
+                       
+                        <span class="add-address-checkout">
+                            <a href="/user/address/new?backUrl=<%= encodeURIComponent(backUrl) %>" id="secondAddAddressLink">Add Address</a>
+                        </span>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="accordion-item">
+                <button class="accordion-header" id="reviewItemsHeader">Review items and delivery</button>
+                <div class="accordion-content" id="reviewItemsContent">
+                    <% 
+                        let totalSavingsPercentage = 0;
+                    %>
+                    <% orderDetails.forEach(function(item) { %>
+                        <% 
+                            // Calculate the savings percentage for this item
+                            const savingsPercentage = ((item.mrp - item.price) / item.mrp) * 100;
+                            totalSavingsPercentage += savingsPercentage;
+                        %>
+                        <div class="product-item">
+                            <!-- <h4 class="item-title-checkout"><%= item.title %></h4> -->
+                            <div class="item-checkout-details" style="display: flex;">
+                                <img src="<%= item.imageUrl %>" alt="<%= item.title %>" style="width:160px; height:auto; margin-right: 1rem;">
+                                <p class="item-details-checkout">
+                                    <span class="item-checkout-details">
+                                    <%= item.title %>
+                                    <% if (item.attributes && item.attributes.color) { %> | Color: <%= item.attributes.color %><% } %>
+                                    <% if (item.attributes && item.attributes.size) { %> | Size: <%= item.attributes.size %><% } %>
+                                    <% if (item.attributes && item.attributes.ram) { %> | RAM: <%= item.attributes.ram %><% } %>
+                                    <% if (item.attributes && item.attributes.storage) { %> | Storage: <%= item.attributes.storage %><% } %>
+                                    <br>
+                                </span>
+                                   <b> MRP:</b> ₹<%= item.mrp.toFixed(2) %><br>
+                                   <b> Selling Price:</b> ₹<%= item.price.toFixed(2) %><br>
+                                   <b> Qty:</b> <%= item.quantity %><br>
+                                   <b> Subtotal:</b> ₹<%= item.subtotal.toFixed(2) %><br>
+                                   <b> Savings:</b> ₹<%= item.savings.toFixed(2) %> (<%= savingsPercentage.toFixed(0) %>%)
+                                </p>
+                                
+                            </div>
+                        </div>
+                    <% }); %>
+                    <% 
+                        // Calculate average savings percentage
+                        totalSavingsPercentage = totalSavingsPercentage / orderDetails.length;
+                    %>
+                   <% 
+                   const today = new Date();
+                   const options = { weekday: 'long', day: 'numeric', month: 'short' };
+                   const deliveryDate = new Date(today.getTime() + 5 * 24 * 60 * 60 * 1000);
+                  
+                 %>
+                 <p><b> Delivery: </b> <%= deliveryDate.toLocaleDateString('en-US', options) %> (Expected ) <br>FREE Standard Delivery</p>
+                 
+                    <button id="payNowBtn" class="btn primary">Pay Now</button>
+                    <!-- <button id="cashOnDeliveryBtn" class="btn primary">Cash on Delivery</button> -->
+                </div>
+            </div>
+            
+          
+        </div>
+    </div>
+
+    <div class="checkout-right">
+        <div class="order-summary-container">
+            <h2 class="order-summary-title">Order Summary</h2>
+            <hr>
+            <!-- Original Order Total -->
+            <p class="order-summary-item">Total Mrp: ₹<%= totalMrp.toFixed(2) %></p>
+            
+            <p class="order-summary-item">Delivery: ₹0.00</p>
+            <!-- Order Total (currently displayed totalCost) -->
+            <h3 class="order-total">Order Total: ₹<%= totalCost.toFixed(2) %></h3>
+            
+            <!-- Delivery -->
+            
+            <!-- Total Savings and Percentage Difference -->
+            <p class="savings">
+                Your Savings: ₹<%= totalSavings.toFixed(2) %> (<%= ((totalSavings / totalMrp) * 100).toFixed(0) %>%)
+            </p>
+        </div>
+    </div>
+    
+
+<!-- Modal for editing address -->
+<div id="editAddressModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Edit Address</h2>
+        <form id="editAddressForm" action="/user/address/update" method="POST">
+            <input type="hidden" name="index" id="addressIndex">
+            <input type="hidden" name="backUrl" value="<%= backUrl %>">
+            <div>
+                <label for="name">Name</label>
+                <input type="text" class="edit-form-input" id="name" name="name" required>
+            </div>
+            <div>
+                <label for="phone">Phone</label>
+                <input type="text" class="edit-form-input" id="phone" name="phone" required>
+            </div>
+            <div>
+                <label for="houseNumber">House Number</label>
+                <input type="text" class="edit-form-input" id="houseNumber" name="houseNumber" required>
+            </div>
+            <div>
+                <label for="street">Street</label>
+                <input type="text" class="edit-form-input" id="street" name="street" required>
+            </div>
+            <div>
+                <label for="city">City</label>
+                <input type="text" class="edit-form-input" id="city" name="city" required>
+            </div>
+            <div>
+                <label for="state">State</label>
+                <input type="text" class="edit-form-input" id="state" name="state" required>
+            </div>
+            <div>
+                <label for="pincode">Pincode</label>
+                <input type="text" class="edit-form-input" id="pincode" name="pincode" required>
+            </div>
+            <div>
+                <label for="country">Country</label>
+                <input type="text" class="edit-form-input" id="country" name="country" required>
+            </div>
+            <button type="submit" class="edit-address-btn-submit">Save</button>
+        </form>
+    </div>
+</div>
+
+<!-- Modal for order success -->
+<div id="orderSuccessModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Order Placed Successfully</h2>
+        <p>Your order has been placed successfully. You will be redirected to the home page in <span id="redirectTimer">5</span> seconds.</p>
+    </div>
+</div>
+
+<script src="https://sdk.cashfree.com/js/v3/cashfree.js"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const encodedOrderDetails = '<%= encodeURIComponent(JSON.stringify(orderDetails)) %>';
+        const orderDetails = JSON.parse(decodeURIComponent(encodedOrderDetails));
+        const addresses = JSON.parse('<%- JSON.stringify(addresses) %>');
+    
+        console.log(orderDetails); // Verify that the JSON is parsed correctly
+    
+        const accordionHeaders = document.querySelectorAll(".accordion-header");
+    
+        accordionHeaders.forEach(header => {
+            header.addEventListener("click", function() {
+                const currentlyActiveHeader = document.querySelector(".accordion-header.active");
+                if (currentlyActiveHeader && currentlyActiveHeader !== header) {
+                    currentlyActiveHeader.classList.remove("active");
+                    currentlyActiveHeader.nextElementSibling.classList.remove("show");
+                }
+    
+                if (header.id === "reviewItemsHeader" && addresses.length === 0) {
+                    let noAddressMessage = document.getElementById("noAddressMessage");
+                    if (!noAddressMessage) {
+                        noAddressMessage = document.createElement("p");
+                        noAddressMessage.id = "noAddressMessage";
+                        noAddressMessage.textContent = "Please add an address first.";
+                        document.getElementById("selectAddressContent").appendChild(noAddressMessage);
+                    }
+                    document.getElementById('selectAddressHeader').classList.add('active');
+                    document.getElementById('selectAddressContent').classList.add('show');
+                    return;
+                }
+    
+                header.classList.toggle("active");
+                header.nextElementSibling.classList.toggle("show");
+            });
+        });
+    
+        // Handle edit address link click
+        const editLinks = document.querySelectorAll(".edit-address");
+        const modal = document.getElementById("editAddressModal");
+        const span = document.querySelector(".modal .close");
+        const form = document.getElementById("editAddressForm");
+    
+        editLinks.forEach(link => {
+            link.addEventListener("click", function(event) {
+                event.preventDefault();
+                const index = this.dataset.index;
+                const address = addresses[index];
+    
+                document.getElementById("addressIndex").value = index;
+                document.getElementById("name").value = address.name;
+                document.getElementById("phone").value = address.phone;
+                document.getElementById("houseNumber").value = address.houseNumber;
+                document.getElementById("street").value = address.street;
+                document.getElementById("city").value = address.city;
+                document.getElementById("state").value = address.state;
+                document.getElementById("pincode").value = address.pincode;
+                document.getElementById("country").value = address.country;
+    
+                modal.style.display = "block";
+            });
+        });
+    
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+    
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    
+        // Initialize Cashfree SDK in sandbox mode for testing
+        const cashfree = Cashfree({
+            mode: "production" // Switch to production for live transactions
+        });
+
+    
+        // Handle the "Use this address" button click
+        document.getElementById('useAddressBtn').addEventListener('click', function() {
+            const selectedAddressIndex = document.querySelector('input[name="selectedAddressIndex"]:checked').value;
+    
+            if (!selectedAddressIndex) {
+                alert("Please select an address first.");
+                return;
+            }
+    
+            // Close the address selection accordion
+            document.getElementById('selectAddressHeader').classList.remove('active');
+            document.getElementById('selectAddressContent').classList.remove('show');
+    
+            // Open the review items and delivery accordion
+            document.getElementById('reviewItemsHeader').classList.add('active');
+            document.getElementById('reviewItemsContent').classList.add('show');
+        });
+    
+        // Handle the "Pay Now" button click
+        document.getElementById('payNowBtn').addEventListener('click', async function() {
+            const selectedAddressIndex = document.querySelector('input[name="selectedAddressIndex"]:checked').value;
+    
+            if (!selectedAddressIndex) {
+                alert("Please select an address first.");
+                return;
+            }
+    
+            const productId = '<%= orderDetails.length === 1 ? orderDetails[0]._id : '' %>';
+            const quantity = '<%= orderDetails.length === 1 ? orderDetails[0].quantity : '' %>';
+            const attributes = {};
+    
+            // Add attributes conditionally based on their existence
+            const color = '<%= orderDetails.length === 1 && orderDetails[0].attributes.color ? orderDetails[0].attributes.color : '' %>';
+            const ram = '<%= orderDetails.length === 1 && orderDetails[0].attributes.ram ? orderDetails[0].attributes.ram : '' %>';
+            const storage = '<%= orderDetails.length === 1 && orderDetails[0].attributes.storage ? orderDetails[0].attributes.storage : '' %>';
+            const size = '<%= orderDetails.length === 1 && orderDetails[0].attributes.size ? orderDetails[0].attributes.size : '' %>';
+    
+            if (color) attributes.color = color;
+            if (ram) attributes.ram = ram;
+            if (storage) attributes.storage = storage;
+            if (size) attributes.size = size;
+    
+            console.log(`Selected Address Index: ${selectedAddressIndex}, Product ID: ${productId}, Quantity: ${quantity}, Attributes: ${JSON.stringify(attributes)}`);
+    
+            try {
+                const response = await fetch('/checkout/create-order', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        selectedAddressIndex,
+                        productId,
+                        quantity,
+                        attributes
+                    })
+                });
+    
+                const data = await response.json();
+                console.log('Order creation response:', data); // Log the response
+    
+                if (data.paymentSessionId) {
+                    cashfree.checkout({
+                        paymentSessionId: data.paymentSessionId,
+                        redirectTarget: "_self"
+                    });
+                } else {
+                    alert("Failed to create order. Please try again.");
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert("An error occurred. Please try again.");
+            }
+        });
+    
+        // Handle the "Cash on Delivery" button click
+        document.getElementById('cashOnDeliveryBtn').addEventListener('click', async function() {
+            const selectedAddressIndex = document.querySelector('input[name="selectedAddressIndex"]:checked').value;
+    
+            if (!selectedAddressIndex) {
+                alert("Please select an address first.");
+                return;
+            }
+    
+            const productId = '<%= orderDetails.length === 1 ? orderDetails[0]._id : '' %>';
+            const quantity = '<%= orderDetails.length === 1 ? orderDetails[0].quantity : '' %>';
+            const attributes = {};
+    
+            // Add attributes conditionally based on their existence
+            const color = '<%= orderDetails.length === 1 && orderDetails[0].attributes.color ? orderDetails[0].attributes.color : '' %>';
+            const ram = '<%= orderDetails.length === 1 && orderDetails[0].attributes.ram ? orderDetails[0].attributes.ram : '' %>';
+            const storage = '<%= orderDetails.length === 1 && orderDetails[0].attributes.storage ? orderDetails[0].attributes.storage : '' %>';
+            const size = '<%= orderDetails.length === 1 && orderDetails[0].attributes.size ? orderDetails[0].attributes.size : '' %>';
+    
+            if (color) attributes.color = color;
+            if (ram) attributes.ram = ram;
+            if (storage) attributes.storage = storage;
+            if (size) attributes.size = size;
+    
+            console.log(`Selected Address Index: ${selectedAddressIndex}, Product ID: ${productId}, Quantity: ${quantity}, Attributes: ${JSON.stringify(attributes)}`);
+    
+            try {
+                const response = await fetch('/checkout/cash-on-delivery', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        selectedAddressIndex,
+                        productId,
+                        quantity,
+                        attributes // Pass attributes to the backend
+                    })
+                });
+    
+                const data = await response.json();
+                console.log('Order creation response:', data); // Log the response
+    
+                if (data.success) {
+                    // Show order success modal
+                    const orderSuccessModal = document.getElementById('orderSuccessModal');
+                    orderSuccessModal.style.display = 'block';
+    
+                    let timer = 5;
+                    const redirectTimer = document.getElementById('redirectTimer');
+                    const countdown = setInterval(() => {
+                        timer--;
+                        redirectTimer.textContent = timer;
+                        if (timer === 0) {
+                            clearInterval(countdown);
+                            window.location.href = '/';
+                        }
+                    }, 1000);
+                } else {
+                    alert("Failed to place order. Please try again.");
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert("An error occurred. Please try again.");
+            }
+        });
+     
+    const firstAddAddressLink = document.getElementById('firstAddAddressLink');
+    if (firstAddAddressLink) {
+        firstAddAddressLink.addEventListener('click', function(event) {
+            event.preventDefault();
+            const currentUrl = window.location.href;
+            console.log("First link - Current URL before encoding:", currentUrl);
+            const encodedUrl = encodeURIComponent(currentUrl);
+            console.log("First link - Encoded URL:", encodedUrl);
+            window.location.href = `/user/address/new?backUrl=${encodedUrl}`;
+        });
+    }
+
+    // Handle the second Add Address link
+    const secondAddAddressLink = document.getElementById('secondAddAddressLink');
+    if (secondAddAddressLink) {
+        secondAddAddressLink.addEventListener('click', function(event) {
+            event.preventDefault();
+            const currentUrl = window.location.href;
+            console.log("Second link - Current URL before encoding:", currentUrl);
+            const encodedUrl = encodeURIComponent(currentUrl);
+            console.log("Second link - Encoded URL:", encodedUrl);
+            window.location.href = `/user/address/new?backUrl=${encodedUrl}`;
+        });
+    }
+
+
+    
+    });
+</script>
