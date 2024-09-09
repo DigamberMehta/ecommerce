@@ -9,171 +9,61 @@
     ogType = 'product';
 %>
 <% layout('layouts/boilerplate') %>
-  <style>
-    .star-rating {
-      display: flex;
-      gap: 5px;
-      cursor: pointer;
-    }
+<style>
 
-    .star {
-      font-size: 2rem;
-      color: #ddd;
-      cursor: pointer;
-      transition: color 0.2s ease-in-out;
-      /* Smooth transition */
-    }
-
-    .star.hover,
-    .star.selected {
-      color: gold;
-    }
-
-    /* Container for color options */
-    .color-options {
-      display: flex;
-      align-items: center;
-      margin-top: 10px;
-    }
-
-    .color-options label {
-      font-weight: bold;
-      margin-right: 10px;
-    }
-
-    .color-selector {
-      display: flex;
-      gap: 10px;
-    }
-
-    .color-option {
-      width: 40px;
-      height: 40px;
-      border: 2px solid #ddd;
-      border-radius: 5px;
-      cursor: pointer;
-      padding: 5px;
-      transition: border-color 0.3s;
-      object-fit: contain;
-    }
-
-    .color-option.active {
-      border-color: #007bff;
-    }
-
-    /* Container for RAM options */
-    .ram-options,
-    .storage-options {
-      display: flex;
-      align-items: center;
-      margin-top: 10px;
-    }
-
-    .ram-options label,
-    .storage-options label {
-      font-weight: bold;
-      margin-right: 10px;
-    }
-
-    .ram-options #ram-options-container,
-    .storage-options #storage-options-container {
-      display: flex;
-      gap: 10px;
-    }
-
-    .ram-option,
-    .storage-option {
-      padding: 5px 15px;
-      border: 2px solid #ddd;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background-color 0.3s, border-color 0.3s;
-    }
-
-    .ram-option:hover,
-    .storage-option:hover {
-      background-color: #f0f0f0;
-    }
-
-    .ram-option.selected,
-    .storage-option.selected {
-      /* background-color: #efefef; */
-      color: rgb(0, 0, 0);
-      border:2px solid #679dd2;
-      /* border-color: #007bff; */
-    }
-
-    /* For uniformity across all options */
-    .ram-option,
-    .storage-option,
-    .color-option {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-
-
-    .show-carousel-item img {
-      border: 1px solid #f0f0f0;
-    padding: 1rem 0;
-    width: 100%;
-    height: 400px;
-    display: block;
-    object-fit: contain;
+.share-product-dropdown {
+  display: none;
+    position: absolute;
+    z-index: 2222000;
+    background-color: #fefefe;
+    border: 1px solid #888;
+    width: 90px;
     border-radius: 8px;
-    }
-
-    .size-options {
-      display: flex;
-      align-items: center;
-    }
-
-    #size-options-container {
-      display: flex;
-      gap: 10px;
-      margin-top: 10px;
-    }
-
-    .size-option {
-      padding: 10px 15px;
-      border: 2px solid #ddd;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background-color 0.3s, border-color 0.3s;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .size-option:hover {
-      background-color: #f0f0f0;
-    }
-
-    .size-option.selected {
-      background-color: #525456;
-      color: white;
-      border-color: #007bff;
-    }
-
-    .show-option-label {
-      font-weight: bold;
-      margin-right: 10px;
-    }
-    .full-width-preview{
-      background-color: white;
-    }
-    .wishlist-btn-show {
-    display: inline-block;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    /* padding: 10px; */
+    text-align: center;
+}
+.share-modal-container{
+  display: inline-block;
     position: absolute;
     top: 5px;
-    right: 5px;
+    left: 5px;
 }
-.show-carousel-inner{
-  margin-right: 1px;
+.shareProductButton {
+  display: inline-block;
+  /* padding: 10px 20px; */
+  font-size: 20px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+  display: flex; /* Flexbox for alignment */
+  align-items: center;
+  background-color: white;
+  position: relative; /* Relative positioning for the dropdown */
 }
-  </style>
 
+.share-product-share-button,
+.share-product-copy-button {
+  border: none;
+  background-color: white;
+  cursor: pointer;
+  font-size: 12px;
+  width: 100%; /* Ensure buttons take full width */
+  padding: 8px 0;
+  margin: 5px 0;
+}
+
+.share-product-share-button:hover,
+.share-product-copy-button:hover {
+  color: orange;
+}
+
+
+ 
+ 
+</style>
+<div class="show-page-container">
   <div class="show-page">
     <div class="product-show-container">
       <div class="product-show-content">
@@ -215,6 +105,30 @@
                 </form>
             </div>
             
+            <div class="share-modal-container">
+              <div class="product-details">
+              
+                <button id="shareProductButton" class="shareProductButton">
+                  <i class="fa-sharp fa-regular fa-arrow-up-from-bracket"></i>
+                </button>
+              </div>
+            
+               
+              <div id="shareProductDropdown" class="share-product-dropdown">
+               
+                <button id="copyShareProductUrlButton" class="share-product-copy-button">
+                  <i class="fas fa-link"></i> Copy Link
+                </button>
+                
+                <button id="shareProductUrlButton" class="share-product-share-button">
+                  <i class="fas fa-share-alt"></i> Share URL
+                </button>
+              </div>
+            
+               
+              <input type="text" id="shareProductShortUrlInput" value="<%= `${request.protocol}://${request.get('host')}/s/${shortCode}` %>" readonly style="opacity: 0; position: absolute; left: -9999px;">
+            </div>
+            
             
           </div>
           <% if (imagesToShow.length> 1) { %>
@@ -238,6 +152,11 @@
               </h1>
             </div>
 
+
+
+
+
+
           </div>
           <p class="product-show-ratings">
             <span class="show-rating">
@@ -254,6 +173,11 @@
             <span class="product-show-original-price">₹<%= product.mrpPrice %></span>
             <span class="product-show-discount"></span>
           </div>
+
+
+ 
+
+
 
 
 
@@ -441,22 +365,45 @@
       <div class="write-review">
         <button id="openModal" class="review-heading">Write a Review</button>
       </div>
+  <div class="rating-review-container">
+      <!-- Rating Summary Section -->
+
+      <div class="rating-overview">
+        <div class="overall-rating">
+          <h2><%= product.rating.toFixed(1) %> ★</h2>
+          <p><%= product.reviews.length %> Ratings & <%= product.reviews.filter(review => review.comment).length %> Reviews</p>
+        </div>
+        <div class="rating-summary">
+          <% const totalReviews = product.reviews.length; %>
+          
+          <% for (let star = 5; star >= 1; star--) { %>
+            <div class="rating-row">
+              <span class="star-label"><%= star %> ★</span>
+              <div class="bar-container">
+                <div class="bar" style="width: <%= totalReviews ? (ratings[star] / totalReviews) * 100 : 0 %>%; background-color: <%= star === 5 ? '#4CAF50' : star === 4 ? '#A5D6A7' : star === 3 ? '#FFEB3B' : star === 2 ? '#FF9800' : '#F44336' %>; "></div>
+              </div>
+              <span class="rating-count"><%= ratings[star].toLocaleString() %></span>
+            </div>
+          <% } %>
+        </div>
+      </div>
+  
+
+
+      <!-- Review Modal -->
       <div id="reviewModal" class="modal">
         <div class="modal-content">
           <span class="close">&times;</span>
           <h2>Write a Review</h2>
-
-          <form action="/products/<%= product._id %>/<%= product.slug %>/reviews" method="POST"
-            enctype="multipart/form-data">
+  
+          <form action="/products/<%= product._id %>/<%= product.slug %>/reviews" method="POST" enctype="multipart/form-data">
             <div class="form-group">
               <label for="review-title">Title</label>
-              <input type="text" id="review-title" name="review[title]"
-                placeholder="Enter the title of your review" />
+              <input type="text" id="review-title" name="review[title]" placeholder="Enter the title of your review" />
             </div>
             <div class="form-group">
               <label for="review-body">Review</label>
-              <textarea id="review-body" name="review[comment]" placeholder="Write your review here"
-                rows="5"></textarea>
+              <textarea id="review-body" name="review[comment]" placeholder="Write your review here" rows="5"></textarea>
             </div>
             <div class="form-group">
               <label for="review-rating">Rating</label>
@@ -477,40 +424,42 @@
           </form>
         </div>
       </div>
-
-      
+  
+      <!-- Reviews Container -->
       <div class="reviews-container">
-        <h2 class="all-reviews-section">Rating & Reviews</h2>
-
-        <% product.reviews.forEach(review=> { %>
+        <% product.reviews.forEach(review => { %>
           <div class="review">
-            <h3 class="customer-review-tittle">
+            <h3 class="customer-review-title">
               <%= review.title %>
             </h3>
             <div class="review-rating">
-              <% for (let i=0; i < review.rating; i++) { %>
+              <% for (let i = 0; i < review.rating; i++) { %>
                 <i class="fa fa-star"></i>
-                <% } %>
+              <% } %>
             </div>
+
+
             <div class="review-images">
-              <% if (review.image && review.image.length> 0) { %>
-                <div class="review-images-show-container">
-                  <% review.image.forEach(imageUrl=> { %>
-                    <img src="<%= imageUrl %>" alt="Review Image" class="review-image user-review-image"
-                      onclick="showOpenPreview('<%= imageUrl %>')" />
+              <% if (review.image && review.image.length > 0) { %>
+                <div class="review-images-container" id="review-images-container-<%= review._id %>">
+                  <button class="scroll-button left" onclick="scrollImagesLeft('<%= review._id %>')">←</button>
+                  <div id="review-images-show-container-<%= review._id %>" class="review-images-show-container">
+                    <% review.image.forEach(imageUrl => { %>
+                      <img src="<%= imageUrl %>" alt="Review Image" class="review-image user-review-image" onclick="showOpenPreview('<%= imageUrl %>')" />
                     <% }) %>
+                  </div>
+                  <button class="scroll-button right" onclick="scrollImagesRight('<%= review._id %>')">→</button>
                 </div>
-                <% } %>
+              <% } %>
             </div>
+
             <p>
               <%= review.comment %>
             </p>
             <div class="user-review-action">
               <small><i style="color: black">Reviewed by </i>: <%= review.user.name %></small>
               <div class="product-review-option">
-                <form
-                  action="/products/<%= product._id %>/<%= product.slug %>/reviews/<%= review._id %>?_method=DELETE"
-                  method="POST">
+                <form action="/products/<%= product._id %>/<%= product.slug %>/reviews/<%= review._id %>?_method=DELETE" method="POST">
                   <button type="submit">Delete |</button>
                 </form>
                 <button class="edit-button" data-review-id="<%= review._id %>">
@@ -519,19 +468,20 @@
               </div>
             </div>
           </div>
-          <% }) %>
+        <% }) %>
       </div>
-
-
+    </div>
     </div>
 
+    <!-- Image Preview Modal -->
     <div id="show-image-preview-modal" class="show-image-preview-modal">
       <span class="show-close-button" onclick="showClosePreview()">&times;</span>
       <img class="show-preview-content" id="show-preview-image" />
     </div>
 
-   
+
   </div>
+
   <script>
    document.addEventListener("DOMContentLoaded", function () {
     const product = <%- JSON.stringify(product) %>;
@@ -928,6 +878,7 @@
         updateFormFields();
     });
 
+ 
 
     document.getElementById('wishlist-form').addEventListener('submit', function(event) {
     event.preventDefault(); 
@@ -1010,6 +961,7 @@ document.addEventListener('visibilitychange', function() {
     sendExitTime();
   }
 });
+
 
   });
 

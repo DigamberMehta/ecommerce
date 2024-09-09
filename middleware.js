@@ -1,5 +1,4 @@
 const Review = require('./models/review');
-
 module.exports.isLoggedIn = (req, res, next) => {
   try {
     const excludeUrls = ['/buy-now'];
@@ -7,6 +6,9 @@ module.exports.isLoggedIn = (req, res, next) => {
     // Check if user is not authenticated
     if (!req.isAuthenticated()) {
       let redirectUrl = req.originalUrl;
+
+      // Log the route that triggered the middleware
+      console.log(`Unauthorized access attempt to: ${req.originalUrl}, Method: ${req.method}`);
 
       // If the original URL is an excluded URL or involves a POST request, use the referer header
       if (excludeUrls.includes(redirectUrl) || req.method === 'POST') {
@@ -31,6 +33,7 @@ module.exports.isLoggedIn = (req, res, next) => {
     res.redirect("/login");
   }
 };
+
 
 
 

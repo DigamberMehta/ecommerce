@@ -8,6 +8,8 @@ body {
   font-family: Inter, -apple-system, Helvetica, Arial, sans-serif;
   background-color: #f0f3f6;
   margin-top: 6rem;
+  max-width: 1800px;
+  /* margin: 0 auto; */
 }
 
 @media (max-width: 768px) {

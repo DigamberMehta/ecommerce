@@ -33,6 +33,7 @@ const paymentCallbackRoutes = require('./routes/paymentCallback');
 const cashOnDeliveryRoutes = require('./routes/cashOnDelivery');
 const orderRoutes = require('./routes/orders');
 const recommendationRoutes = require('./routes/recommendations');
+const shortenerRoutes = require('./routes/shortener');
 app.use(express.json());
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -155,6 +156,13 @@ async (accessToken, refreshToken, profile, done) => {
     done(err);
   }
 }));
+app.get('/auth/google/callback', 
+  passport.authenticate('google', { failureRedirect: '/' }),
+  (req, res) => {
+    res.redirect('/'); 
+  }
+);
+
 
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
@@ -168,7 +176,7 @@ app.use((req, res, next) => {
 
 
 
-
+app.use('/s', shortenerRoutes);
 app.use("/", userRouter);
 app.use('/cart', cartRoutes);
 app.use('/', homeRoutes);
@@ -218,7 +226,7 @@ app.get('/robots.txt', (req, res) => {
 Disallow: /admin`);
 });
 
- 
+
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {

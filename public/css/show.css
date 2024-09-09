@@ -16,7 +16,9 @@ ul{
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
+  /* margin: 0 auto; */
+  /* min-height: 100vh; */
+  /* max-width: 1800px; */
 }
 
 .product-show-container {
@@ -503,15 +505,30 @@ ul{
   }
 }
 
+
+
+
+
 .review-images {
+  position: relative;
   display: flex;
-  flex-direction: row;
+  align-items: center;
+}
+
+.review-images-container {
+  display: flex;
+  align-items: center;
+  position: relative;
+  overflow: hidden; /* Ensures the container hides overflow */
+  cursor: grab; /* Change cursor to grab when hovering over the images */
 }
 
 .review-images-show-container {
-  max-width: 215px;
-  height: 180px;
   display: flex;
+  overflow-x: auto; /* Enable horizontal scrolling */
+  scroll-behavior: smooth; /* Smooth scrolling */
+  height: 180px;
+  user-select: none; /* Prevent text selection during dragging */
 }
 
 .user-review-image {
@@ -519,7 +536,56 @@ ul{
   max-height: 100%;
   margin-right: 10px;
   margin-bottom: 1rem;
+  pointer-events: none; /* Prevent the default drag behavior */
+  -webkit-user-drag: none; /* Disable image dragging in WebKit browsers */
 }
+
+.scroll-button {
+  background-color: rgba(0, 0, 0, 0.7);
+  border: none;
+  color: white;
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+  display: none; /* Hidden by default */
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  opacity: 0; /* Invisible by default */
+  transition: opacity 0.3s ease; /* Smooth transition for opacity */
+}
+
+.scroll-button:hover {
+  background-color: rgba(30, 30, 30, 0.7);
+}
+
+/* Positioning the buttons */
+.scroll-button.left {
+  left: 10px;
+}
+
+.scroll-button.right {
+  right: 10px;
+}
+
+/* Show buttons when container is hovered */
+.review-images-container.overflowing:hover .scroll-button {
+  display: flex;
+  opacity: 1; /* Show button on hover when container is overflowing */
+}
+
+.review-images-container.dragging {
+  cursor: grabbing; /* Change cursor to grabbing when dragging */
+}
+
+
+
+
+
 
 .product-review-option {
   margin-left: 1rem;
@@ -769,4 +835,267 @@ ul , li {
   .product-button-right {
     display: none;
   }
+}
+.rating-overview {
+  display: flex;
+  align-items: flex-start;
+  font-family: Arial, sans-serif;
+  margin: 1rem;
+}
+
+.overall-rating {
+  margin-right: 20px;
+  text-align: center;
+}
+@media (max-width: 500px) {
+  .overall-rating {
+    margin-right: 0;
+  }
+}
+
+.overall-rating h2 {
+  font-size: 36px;
+  color: #000;
+  margin: 0;
+}
+
+.overall-rating p {
+  margin: 5px 0;
+  color: #666;
+  font-size: 14px;
+}
+
+.rating-summary {
+  width: 100%;
+}
+
+.rating-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.star-label {
+  width: 30px;
+  text-align: right;
+  margin-right: 10px;
+  font-size: 14px;
+  color: #333;
+}
+
+.bar-container {
+  flex-grow: 1;
+  height: 8px;
+  background-color: #e0e0e0;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-right: 10px;
+}
+
+.bar {
+  height: 100%;
+  border-radius: 4px;
+}
+
+.rating-count {
+  text-align: right;
+  font-size: 14px;
+  color: #333;
+}
+
+
+  .star-rating {
+    display: flex;
+    gap: 5px;
+    cursor: pointer;
+  }
+
+  .star {
+    font-size: 2rem;
+    color: #ddd;
+    cursor: pointer;
+    transition: color 0.2s ease-in-out;
+    /* Smooth transition */
+  }
+
+  .star.hover,
+  .star.selected {
+    color: gold;
+  }
+
+  /* Container for color options */
+  .color-options {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+  }
+
+  .color-options label {
+    font-weight: bold;
+    margin-right: 10px;
+  }
+
+  .color-selector {
+    display: flex;
+    gap: 10px;
+  }
+
+  .color-option {
+    width: 40px;
+    height: 40px;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    cursor: pointer;
+    padding: 5px;
+    transition: border-color 0.3s;
+    object-fit: contain;
+  }
+
+  .color-option.active {
+    border-color: #007bff;
+  }
+
+  /* Container for RAM options */
+  .ram-options,
+  .storage-options {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+  }
+
+  .ram-options label,
+  .storage-options label {
+    font-weight: bold;
+    margin-right: 10px;
+  }
+
+  .ram-options #ram-options-container,
+  .storage-options #storage-options-container {
+    display: flex;
+    gap: 10px;
+  }
+
+  .ram-option,
+  .storage-option {
+    padding: 5px 15px;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, border-color 0.3s;
+  }
+
+  .ram-option:hover,
+  .storage-option:hover {
+    background-color: #f0f0f0;
+  }
+
+  .ram-option.selected,
+  .storage-option.selected {
+    /* background-color: #efefef; */
+    color: rgb(0, 0, 0);
+    border:2px solid #679dd2;
+    /* border-color: #007bff; */
+  }
+
+  /* For uniformity across all options */
+  .ram-option,
+  .storage-option,
+  .color-option {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+
+
+  .show-carousel-item img {
+    border: 1px solid #f0f0f0;
+  padding: 1rem 0;
+  width: 100%;
+  height: 400px;
+  display: block;
+  object-fit: contain;
+  border-radius: 8px;
+  }
+
+  .size-options {
+    display: flex;
+    align-items: center;
+  }
+
+  #size-options-container {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+  }
+
+  .size-option {
+    padding: 10px 15px;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, border-color 0.3s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .size-option:hover {
+    background-color: #f0f0f0;
+  }
+
+  .size-option.selected {
+    background-color: #525456;
+    color: white;
+    border-color: #007bff;
+  }
+
+  .show-option-label {
+    font-weight: bold;
+    margin-right: 10px;
+  }
+  .full-width-preview{
+    background-color: white;
+  }
+  .wishlist-btn-show {
+  display: inline-block;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+}
+.show-carousel-inner{
+margin-right: 1px;
+}
+.rating-review-container{
+display: flex;
+justify-content: center;
+width: 100%;
+}
+
+.rating-review-container > .rating-overview {
+flex: 0 0 30%; /* 30% width */
+}
+
+.rating-review-container > .reviews-container {
+flex: 0 0 60%; /* 70% width */
+}
+.show-page-container{
+max-width: 1800px;
+}
+
+@media (max-width:800px){
+.rating-review-container{
+  display: block;
+}
+.rating-overview{
+  width: 50%;
+}
+.reviews-container{
+  width: 95%;
+}
+}
+@media (max-width:600px){
+.rating-overview{
+  width: 95%;
+}
 }

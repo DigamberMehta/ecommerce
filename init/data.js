@@ -1,5 +1,154 @@
 const products = [
   {
+    "title": "iPhone 16 Pro Max",
+    "description": "The iPhone 16 Pro Max features a 6.9-inch Super Retina XDR display with ProMotion technology, a powerful A18 Pro chip, and an advanced triple-camera system. Capture stunning photos and videos with the 48MP wide camera, and enjoy longer battery life and faster performance. The phone's titanium design with a textured matte glass back provides a premium look and feel.",
+    "sellingPrice": 144900,
+    "mrpPrice": 184900,
+    "categories": ["Mobile", "Electronics"],
+    "brand": "Apple",
+    "stock": 100,
+    "images": [
+      "https://res.cloudinary.com/dirg3c2ip/image/upload/v1725910306/new1_itrt2f.png",
+     
+    ],
+    "reviews": [],
+    "rating": 5,
+    "specifications": {
+      "screenSize": "6.9 inches",
+      "battery": "4352mAh",
+      "processor": "A18 Pro chip",
+      "camera": {
+        "rearCamera": "48MP + 12MP Ultra Wide + Telephoto",
+        "frontCamera": "12MP"
+      },
+      "operatingSystem": "iOS 18",
+      "display": {
+        "type": "Super Retina XDR",
+        "resolution": "2796 x 1290 pixels",
+        "refreshRate": "120Hz"
+      },
+      "connectivity": {
+        "network": "5G",
+        "wifi": "Wi-Fi 6E",
+        "bluetooth": "Bluetooth 5.3",
+        "gps": "GPS/AGPS/GLONASS/GALILEO/BDS"
+      },
+      "sensors": ["Face ID", "Accelerometer", "Gyroscope", "Proximity", "Compass"],
+      "dimensions": {
+        "height": "160.7mm",
+        "width": "77.6mm",
+        "thickness": "7.85mm"
+      },
+      "weight": "240g",
+      "features": ["Dynamic Island", "Face ID", "Fast Charging", "MagSafe"],
+      "warranty": "1 year manufacturer warranty"
+    },
+    "tags": ["smartphone", "Apple", "iPhone", "Pro"],
+    "additionalImages": ["https://example.com/iphone16promax-box.jpg"],
+    "slug": "iphone-16-pro-max",
+    "colors": [
+      {
+        "color": "Desert Titanium",
+        "images": [
+          "https://res.cloudinary.com/dirg3c2ip/image/upload/v1725910306/new1_itrt2f.png",
+          "https://res.cloudinary.com/dirg3c2ip/image/upload/v1725910306/new2_pc4e4v.png",
+          "https://res.cloudinary.com/dirg3c2ip/image/upload/v1725910307/new3_uh8pzi.png",
+          "https://res.cloudinary.com/dirg3c2ip/image/upload/v1725910306/new4_ldate1.png"
+        ],
+        "variants": [
+          {
+
+            "ram": "8GB",
+            "storage": "256GB",
+            "stock": 50,
+            "price": 144900
+          },
+          {
+            "ram": "8GB",
+            "storage": "512GB",
+            "stock": 30,
+            "price": 164900
+          },
+          {
+            "ram": "8GB",
+            "storage": "1TB",
+            "stock": 20,
+            "price": 184900
+          }
+        ]
+      },
+      {
+        "color": "Natural Titanium",
+        "images": [
+          "https://res.cloudinary.com/dirg3c2ip/image/upload/v1725909781/natural1_cwzes0.png",
+          "https://res.cloudinary.com/dirg3c2ip/image/upload/v1725909956/natural2_llnpku.png",
+          "https://res.cloudinary.com/dirg3c2ip/image/upload/v1725909957/natural3_mi5nop.png",
+          "https://res.cloudinary.com/dirg3c2ip/image/upload/v1725909957/natural4_o5134f.png"
+        ],
+        "variants": [
+          {
+            "ram": "8GB",
+            "storage": "256GB",
+            "stock": 40,
+            "price": 144900
+          },
+          {
+            "ram": "8GB",
+            "storage": "512GB",
+            "stock": 20,
+            "price": 164900
+          },
+          {
+            "ram": "8GB",
+            "storage": "1TB",
+            "stock": 15,
+            "price": 184900
+          }
+        ]
+      },
+      {
+        "color": "White Titanium",
+        "images": [
+          "https://res.cloudinary.com/dirg3c2ip/image/upload/v1725909977/white2_x2h3ab.png",
+          "https://res.cloudinary.com/dirg3c2ip/image/upload/v1725909990/white1_i6owrw.png",
+          "https://res.cloudinary.com/dirg3c2ip/image/upload/v1725909990/white4_s2wp6k.png",
+          "https://res.cloudinary.com/dirg3c2ip/image/upload/v1725909977/white3_q60ncw.png"
+        ],
+        "variants": [
+          {
+            "ram": "8GB",
+            "storage": "256GB",
+            "stock": 60,
+            "price": 144900
+          },
+          {
+            "ram": "8GB",
+            "storage": "512GB",
+            "stock": 25,
+            "price": 164900
+          },
+          {
+            "ram": "8GB",
+            "storage": "1TB",
+            "stock": 15,
+            "price": 184900
+          }
+        ]
+      }
+    ],
+    "discount": 10,
+    "featured": true,
+    "bestseller": true,
+    "active": true,
+    "metadata": {
+      "isLimitedEdition": false,
+      "releaseDate": "2024-09-20"
+    },
+    "createdAt": new Date(),
+    "updatedAt": new Date()
+  },
+  
+  {
     title: "Oppo F19 Pro",
     description: "Oppo F19 Pro is a revolutionary smartphone that combines style and function. Its sleek, compact design unfolds to reveal a stunning, immersive display. Capture unforgettable moments with its advanced camera system, while enjoying lightning-fast performance and seamless multitasking. Experience the future of smartphones with the Z Flip 3's durable build, water resistance, and long-lasting battery. Whether you're on the go or relaxing, this device offers a truly unique user experience.",
     sellingPrice: 17599,
