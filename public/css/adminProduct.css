@@ -5,7 +5,13 @@
     justify-content: end;
     background-color: #f8f9fa;
   }
-
+.admin-panel-product-listing {
+    margin: 0;
+    font-family: "Arial", sans-serif;
+    display: flex;
+    justify-content: end;
+    background-color: #f8f9fa;
+  }
   .container {
     width: 80%;
     padding: 20px;
